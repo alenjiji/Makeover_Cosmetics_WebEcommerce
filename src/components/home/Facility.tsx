@@ -25,13 +25,13 @@ export function Facility() {
           <p className="pop eyebrow eyebrow-light mb-6">Built by us</p>
           <h2
             id="facility"
-            className="mb-6 font-display text-[34px] font-medium leading-[1.12] tracking-[-0.02em] md:text-[48px]"
+            className="mb-6 font-display text-[34px] font-bold leading-[1.12] tracking-[-0.01em] md:text-[48px]"
           >
             <SplitWords>
               Made in our own <span className="italic text-accent text-accent-light">modernized factory</span>
             </SplitWords>
           </h2>
-          <p className="rise-late text-[15px] leading-[1.85] text-white/70 md:text-[17px]">
+          <p className="rise-late text-base leading-[1.8] text-white/80 md:text-[17px]">
             Our self-owned facility and in-house R&amp;D team mean consistent quality, and a support team
             that knows every machine we ship, from the first install to the thousandth treatment.
           </p>
@@ -44,8 +44,8 @@ export function Facility() {
                 style={{ "--i": i } as React.CSSProperties}
                 className="flex flex-col-reverse bg-navy-deep/70 p-6 transition-colors duration-300 hover:bg-navy-deep/30 md:p-8"
               >
-                <dt className="mt-2 text-[13px] leading-snug text-white/60 md:text-sm">{fact.label}</dt>
-                <dd className="font-display text-[34px] font-medium text-rose-light md:text-[42px]">{fact.value}</dd>
+                <dt className="mt-2 text-[13px] leading-snug text-white/75 md:text-sm">{fact.label}</dt>
+                <dd className="font-display text-[34px] font-bold text-rose-light md:text-[42px]">{fact.value}</dd>
               </div>
             ))}
           </dl>

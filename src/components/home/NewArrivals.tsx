@@ -127,7 +127,7 @@ export function NewArrivals() {
                       sizes="(min-width: 1024px) 640px, 100vw"
                       className="settle object-contain p-8 mix-blend-multiply md:p-12"
                     />
-                    <span className="absolute left-5 top-5 rounded-full bg-navy px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white">
+                    <span className="absolute left-5 top-5 rounded-full bg-navy px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-white">
                       New
                     </span>
                   </Reveal>
@@ -148,10 +148,10 @@ export function NewArrivals() {
 
                 <div>
                   <p className="pop eyebrow mb-4">{item.eyebrow}</p>
-                  <h3 className="mb-5 font-display text-[32px] font-medium leading-[1.1] tracking-[-0.02em] text-ink md:text-[44px]">
+                  <h3 className="mb-5 font-display text-[32px] font-bold leading-[1.1] tracking-[-0.01em] text-ink md:text-[44px]">
                     <SplitWords>{item.name}</SplitWords>
                   </h3>
-                  <p className="rise-late mb-8 text-[15px] leading-[1.85] text-muted md:text-[17px]">{item.lead}</p>
+                  <p className="rise-late mb-8 text-base leading-[1.8] text-muted md:text-[17px]">{item.lead}</p>
 
                   <dl className="stagger mb-8 grid grid-cols-2 gap-px overflow-hidden rounded-[20px] bg-line ring-1 ring-line sm:grid-cols-4">
                     {item.stats.map(([value, label], n) => (
@@ -160,8 +160,8 @@ export function NewArrivals() {
                         style={{ "--i": n + 3 } as React.CSSProperties}
                         className="flex flex-col-reverse bg-white px-4 py-4"
                       >
-                        <dt className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted">{label}</dt>
-                        <dd className="font-display text-[22px] font-medium text-navy md:text-[26px]">{value}</dd>
+                        <dt className="mt-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">{label}</dt>
+                        <dd className="font-display text-[22px] font-bold text-navy md:text-[26px]">{value}</dd>
                       </div>
                     ))}
                   </dl>

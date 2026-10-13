@@ -183,7 +183,7 @@ export function CatalogView({ categoryParam, query, onCategory, onQuery }: ViewP
                   <div>
                     <h2
                       id={`range-${family.slug}`}
-                      className="font-display text-[34px] font-medium tracking-[-0.02em] text-ink md:text-[42px]"
+                      className="font-display text-[34px] font-bold tracking-[-0.01em] text-ink md:text-[42px]"
                     >
                       {family.label}
                     </h2>
@@ -266,7 +266,7 @@ function SubPill({ label, count, pressed, onClick }: PillProps) {
 function EmptyState({ query, onClear }: { query: string; onClear?: () => void }) {
   return (
     <div className="rounded-[24px] border border-dashed border-divider bg-white px-6 py-16 text-center">
-      <p className="font-display text-[30px] font-medium text-ink">No products found</p>
+      <p className="font-display text-[30px] font-bold text-ink">No products found</p>
       <p className="mx-auto mt-2 max-w-md text-muted">
         {query.trim()
           ? `Nothing in this range matches “${query.trim()}”.`

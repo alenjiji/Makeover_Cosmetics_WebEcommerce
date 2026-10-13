@@ -94,7 +94,7 @@ function ChooserDialog({
               <Icon size={22} />
             </span>
             <div>
-              <h2 id="contact-chooser-title" className="font-display text-[22px] font-medium leading-tight">
+              <h2 id="contact-chooser-title" className="font-display text-[22px] font-bold leading-tight">
                 {isCall ? "Call us" : "Chat on WhatsApp"}
               </h2>
               <p className="text-sm text-muted">Which number would you like to reach?</p>
@@ -124,7 +124,7 @@ function ChooserDialog({
                   {line.id === "uae" ? "UAE" : "IN"}
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-muted">
+                  <span className="block text-[11px] font-semibold uppercase tracking-[0.15em] text-muted">
                     {line.region}
                   </span>
                   <span className="block text-lg font-bold">{line.display}</span>

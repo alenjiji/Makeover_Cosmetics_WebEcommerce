@@ -2,9 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { CountUp } from "@/components/ui/CountUp";
 import { ArrowRightIcon, BadgeIcon, HeadsetIcon, ShieldIcon } from "@/components/ui/icons";
-import { SplitWords } from "@/components/ui/SplitWords";
 import { site } from "@/lib/site";
 import { HeroParallax } from "./HeroParallax";
+import { HeroTitle } from "./HeroTitle";
 
 const stats = [
   { value: 5, label: "Countries" },
@@ -42,7 +42,7 @@ export function Hero() {
         <div>
           <p
             style={rise(0)}
-            className="mb-8 inline-flex animate-rise-in items-center gap-3 rounded-full border border-line bg-surface py-2.5 pl-4 pr-5 text-[10.5px] font-semibold uppercase tracking-[0.22em] text-ink sm:text-[11px]"
+            className="mb-8 inline-flex animate-rise-in items-center gap-3 rounded-full border border-line bg-surface py-2.5 pl-4 pr-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-ink sm:text-[11px]"
           >
             <span className="relative flex size-2">
               <span className="absolute inset-0 animate-ping-soft rounded-full bg-rose" />
@@ -51,17 +51,10 @@ export function Hero() {
             <span className="hidden sm:inline">{site.descriptor} · </span>
             {site.markets.join(" · ")}
           </p>
-          <h1
-            style={{ "--split-delay": "0.15s" } as React.CSSProperties}
-            className="split-load opsz-auto mb-8 font-display text-[54px] font-medium leading-[1.02] tracking-[-0.025em] text-ink sm:text-[68px] lg:text-[76px] xl:text-[92px]"
-          >
-            <SplitWords>
-              Quality Beyond <span className="italic text-accent">Borders.</span>
-            </SplitWords>
-          </h1>
+          <HeroTitle className="mb-9 w-full max-w-[520px] sm:max-w-[580px] xl:max-w-[640px]" />
           <p
             style={rise(0.55)}
-            className="mb-10 max-w-[540px] animate-rise-in text-[15px] leading-[1.85] text-muted md:text-[17px]"
+            className="mb-10 max-w-[540px] animate-rise-in text-base leading-[1.8] text-muted md:text-[17px]"
           >
             Experience the pinnacle of medical aesthetics technology with our comprehensive range of 40+
             advanced devices, transforming beauty standards across 5+ countries.
@@ -91,10 +84,10 @@ export function Hero() {
                   <span aria-hidden="true" className="hidden h-11 w-px bg-gradient-to-b from-transparent via-divider to-transparent sm:block" />
                 )}
                 <div className="flex flex-col-reverse text-center sm:text-left">
-                  <dt className="mt-2 text-[9px] font-semibold uppercase tracking-[0.08em] text-muted sm:text-[11px] sm:tracking-[0.2em]">
+                  <dt className="mt-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-muted sm:text-[11px] sm:tracking-[0.15em]">
                     {stat.label}
                   </dt>
-                  <dd className="font-display text-[30px] font-medium leading-none text-navy sm:text-[40px]">
+                  <dd className="font-display text-[30px] font-bold leading-none text-navy sm:text-[40px]">
                     <CountUp to={stat.value} />
                     <span className="text-rose-deep">+</span>
                   </dd>
@@ -131,8 +124,8 @@ export function Hero() {
                 className="group absolute inset-x-4 bottom-4 flex animate-rise-in items-center justify-between gap-3 rounded-2xl bg-navy-deep/40 px-5 py-4 text-white ring-1 ring-white/15 backdrop-blur-md transition-colors hover:bg-navy-deep/60"
               >
                 <span>
-                  <span className="block text-[10px] font-semibold uppercase tracking-[0.24em] text-rose-light">New arrival</span>
-                  <span className="mt-1 block font-display text-xl font-medium">2-in-1 Diode + Nd:YAG Laser</span>
+                  <span className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-rose-light">New arrival</span>
+                  <span className="mt-1 block font-display text-xl font-bold">2-in-1 Diode + Nd:YAG Laser</span>
                 </span>
                 <ArrowRightIcon size={20} className="shrink-0 transition-transform group-hover:translate-x-1" />
               </Link>

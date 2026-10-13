@@ -23,7 +23,8 @@ export function SeriesGrid() {
         <Reveal variant="none">
           <ul className="stagger mb-14 grid grid-cols-2 gap-px overflow-hidden rounded-[24px] bg-line ring-1 ring-line md:grid-cols-3 xl:grid-cols-4">
             {series.map((item, i) => (
-              <li key={item.title} className="flex" style={{ "--i": i % 8 } as React.CSSProperties}>
+              // 16 tiles leave one over in the 3-column layout; let it fill the row.
+              <li key={item.title} className="flex md:max-xl:last:col-span-3" style={{ "--i": i % 8 } as React.CSSProperties}>
                 <Link
                   href={item.href}
                   className="group relative flex min-h-[112px] w-full flex-col items-center justify-center gap-2 overflow-hidden bg-white px-4 py-8 text-center md:min-h-[140px] md:px-8 md:py-12"
@@ -33,7 +34,7 @@ export function SeriesGrid() {
                     aria-hidden="true"
                     className="absolute inset-0 origin-bottom scale-y-0 bg-[linear-gradient(20deg,#0b1c31_0%,#122b49_55%,#645b67_100%)] transition-transform duration-500 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-y-100 group-focus-visible:scale-y-100"
                   />
-                  <span className="relative font-display text-[17px] font-medium leading-snug text-ink transition-colors duration-300 group-hover:text-white group-focus-visible:text-white md:text-[21px]">
+                  <span className="relative font-display text-[17px] font-bold leading-snug text-ink transition-colors duration-300 group-hover:text-white group-focus-visible:text-white md:text-[21px]">
                     {item.title}
                   </span>
                   <ArrowRightIcon

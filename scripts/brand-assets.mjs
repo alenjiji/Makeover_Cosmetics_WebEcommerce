@@ -43,10 +43,18 @@ const logo = await sharp(path.join(brand, "logo-final.png"))
   .toBuffer();
 await writeFile(path.join(pub, "logo.png"), logo);
 
-// 3. World map, used as a CSS mask.
+// 3. Landscape lockup (mark beside the wordmark) for the navbar, trimmed to the artwork.
+const LANDSCAPE_W = 1400;
+const landscape = await sharp(path.join(brand, "logo-landscape-final.png")).trim().toBuffer();
+await sharp(landscape)
+  .resize({ width: LANDSCAPE_W })
+  .png({ compressionLevel: 9, palette: false })
+  .toFile(path.join(pub, "logo-landscape.png"));
+
+// 4. World map, used as a CSS mask.
 await copyFile(path.join(brand, "world-map.svg"), path.join(pub, "world-map.svg"));
 
-// 4. App icons. favicon.ico holds PNG frames, which every current browser accepts.
+// 5. App icons. favicon.ico holds PNG frames, which every current browser accepts.
 const icoSizes = [16, 32, 48];
 const frames = await Promise.all(icoSizes.map((size) => renderSquare(badgeSvg, size)));
 const header = Buffer.alloc(6 + 16 * frames.length);

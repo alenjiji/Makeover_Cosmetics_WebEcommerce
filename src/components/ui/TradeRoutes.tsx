@@ -98,7 +98,7 @@ export function TradeRoutes({ landClassName = "bg-white/10", className = "" }: P
             />
             <span className="absolute -left-1 -top-1 size-2 rounded-full bg-rose ring-2 ring-navy-deep" />
             <span
-              className={`absolute whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.22em] text-white/80 md:text-[11px] ${
+              className={`absolute whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.16em] text-white/80 md:text-[11px] ${
                 m.label === "left"
                   ? "right-3 top-0 -translate-y-1/2"
                   : m.label === "right"

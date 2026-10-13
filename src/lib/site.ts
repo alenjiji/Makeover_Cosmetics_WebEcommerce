@@ -8,10 +8,9 @@ export const site = {
   markets: ["India", "UAE", "China"],
   description:
     "Makeover Overseas exports and imports medical aesthetic and dental equipment across India, the UAE and China: 40+ models across laser, HIFU, body sculpting, facial and dental ranges, trusted since 2009.",
-  // TODO(owner): confirm the production domain and the inbox for Makeover Overseas;
-  // both still point at the Seductive site this one was built from.
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://seductive.ae",
-  email: "admin@seductive.ae",
+
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://makeoveroverseas.com",
+  email: "admin@makeoveroverseas.com",
   /** Both lines take calls and WhatsApp; visitors pick one before we dial or open a chat. */
   lines: [
     { id: "uae", region: "UAE", display: "+971 52 524 8785", number: "971525248785" },

@@ -18,13 +18,18 @@ All of these live in `src/lib/site.ts`.
 | `assets/brand/mark.svg` | Vector master: the gradient M with the world map, transparent background |
 | `assets/brand/badge.svg` | The mark on the mist disc; source for every small use and icon |
 | `assets/brand/world-map.svg` | The logo's map on its own, used as a CSS mask (`world-map` utility) |
-| `assets/brand/logo-final.png` | The full lockup export from the designer (wordmark included) |
-| `public/brand/badge.png`, `public/brand/logo.png` | Generated rasters (navbar, footer, JSON-LD) |
+| `assets/brand/logo-final.png` | The full circular lockup export from the designer (wordmark included) |
+| `assets/brand/logo-landscape-final.png` | The landscape lockup export (mark beside wordmark and markets) |
+| `public/brand/logo-landscape.png` | Generated: the navbar logo |
+| `public/brand/badge.png`, `public/brand/logo.png` | Generated: footer badge, JSON-LD logo |
+| `public/assets/hero_title.svg` | The hero motto artwork; inlined as `components/home/HeroTitle.tsx` |
 | `src/app/favicon.ico`, `icon.png`, `apple-icon.png` | Generated app icons |
 
 - Regenerate the SVG masters from the PDF with `python scripts/extract-brand-vectors.py public/logo_makeover.pdf assets/brand`.
 - Regenerate the rasters and icons with `node scripts/brand-assets.mjs`.
-- On the site the logo appears as a horizontal lockup (`components/layout/Logo.tsx`): the badge, then the wordmark and descriptor set in Montserrat. The full circular lockup's text is unreadable below about 200px, so keep it for large placements only.
+- The navbar uses the landscape lockup. Its navy mark and black wordmark vanish on navy, so the footer uses `components/layout/Logo.tsx` instead: the badge on its mist disc with the wordmark in white Montserrat.
+- The full circular lockup's text is unreadable below about 200px, so keep it for large placements only.
+- If the hero title artwork changes, regenerate `HeroTitle.tsx` from the new SVG; don't hand-edit the paths.
 - **Clear space:** keep at least X around the logo, where X is about 0.19 × the disc diameter (the squares on the logo sheet).
 - Don't recolour the M, stretch the mark, or set it on busy photography. On navy it keeps its mist disc.
 
@@ -41,18 +46,20 @@ All of these live in `src/lib/site.ts`.
 | `mist` | `#E7E9E8` | The logo's disc: icon chips, image backdrops |
 | `blush` | `#F8F0ED` | Soft warm panels |
 | `surface` | `#F5F6F5` | Alternate section background |
-| `ink` / `muted` | `#101B2B` / `#56616F` | Body text / secondary text (5.2:1 even on mist) |
+| `ink` / `muted` | `#101B2B` / `#444D5A` | Body text / secondary text (8.6:1 on white, 7:1 on mist) |
 | `whatsapp` | `#0F7A40` | WhatsApp buttons (white text 5.4:1; the stock `#25D366` fails with white) |
 
 **The M gradient** (`bg-gradient-m`, `--gradient-m`): navy for ~45% of the run, then mauve,
 ending on rose, at 135°. Use it sparingly: check marks, the scroll bar, step badges on hover.
-Accent words in headings use `text-accent`: italic, with the same gradient ending on
-rose-deep so it stays legible (add `text-accent-light` on dark backgrounds).
+Accent words in headings use `italic text-accent`, the treatment of "Borders" in the hero
+artwork: bold italic, navy for most of the word, warming to rose at the end (stopping at
+`#A5807A`, the lightest rose that still meets 3:1 for large text). Add `text-accent-light`
+on dark backgrounds.
 
 ## Type
 
-- **Display: Bodoni Moda.** A high-contrast Didone in the spirit of the logo's M. Medium (500) for big headings, semibold (600) for card titles. Display text is pinned to optical size 24 so the hairlines in `+`, `/` and `-` stay visible in product names and specs. All-word statement headlines (hero, page titles, footer motto) use `opsz-auto` for finer hairlines.
-- **Text and UI: Montserrat.** This is the wordmark's typeface. Buttons, eyebrows and labels use tracked capitals (0.12 to 0.26em), echoing "EXPORT & IMPORTS". Don't uppercase product specs, because units like "nm" change meaning.
+- **Titles: Playfair Display Bold (700)**, every title on the site, matching the hero title artwork: bold roman with a bold-italic gradient accent word. Lighter weights are too thin to read comfortably.
+- **Body and UI: Montserrat**, the wordmark's typeface. Paragraphs are 16px or larger in `muted`. Buttons, eyebrows and labels use tracked capitals (11px or larger, 0.06 to 0.2em), echoing "EXPORT & IMPORTS". Don't uppercase product specs, because units like "nm" change meaning.
 
 ## Components
 
@@ -64,6 +71,7 @@ rose-deep so it stays legible (add `text-accent-light` on dark backgrounds).
 ## Motion
 
 The existing motion system is kept (word-by-word heading rise, staggered cards, clip wipes,
-count-ups, parallax hero cards), recoloured to the palette. Additions: the trade-route
-draw and pulse, a soft "ping" on location dots, and the gradient sweep on primary buttons.
+count-ups, parallax hero cards), recoloured to the palette. Additions: the hero artwork's
+lines rising in on load, the trade-route draw and pulse, a soft "ping" on location dots,
+and the gradient sweep on primary buttons.
 Everything respects `prefers-reduced-motion`.

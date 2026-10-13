@@ -32,13 +32,13 @@ export function ClosingInvite() {
               <p className="eyebrow eyebrow-light mb-6">We&apos;re here to help</p>
               <h2
                 id="invite"
-                className="mb-6 font-display text-[34px] font-medium leading-[1.1] tracking-[-0.02em] md:text-[52px]"
+                className="mb-6 font-display text-[34px] font-bold leading-[1.1] tracking-[-0.01em] md:text-[52px]"
               >
                 <SplitWords>
                   We&apos;d love to hear about <span className="italic text-accent text-accent-light">your clinic</span>
                 </SplitWords>
               </h2>
-              <p className="rise-late mb-9 max-w-xl text-[15px] leading-[1.85] text-white/80 md:text-[17px]">
+              <p className="rise-late mb-9 max-w-xl text-base leading-[1.8] text-white/80 md:text-[17px]">
                 Tell us about the treatments you offer and where you&apos;re based. We&apos;ll reply within 24
                 hours with recommendations and a quote tailored to you.
               </p>
@@ -56,7 +56,7 @@ export function ClosingInvite() {
                       <Icon size={22} />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-rose-light">{label}</span>
+                      <span className="block text-[11px] font-semibold uppercase tracking-[0.16em] text-rose-light">{label}</span>
                       {values.map((value) => (
                         <span key={value} className="block truncate text-[15px] font-bold md:text-base">
                           {value}

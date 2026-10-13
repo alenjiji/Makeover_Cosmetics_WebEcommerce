@@ -17,7 +17,7 @@ function Row({ hidden = false }: { hidden?: boolean }) {
   return (
     <ul aria-hidden={hidden || undefined} className="flex shrink-0 items-center">
       {items.map((item) => (
-        <li key={item} className="flex items-center whitespace-nowrap px-6 text-[12px] font-semibold uppercase tracking-[0.24em] text-white/85 md:px-8">
+        <li key={item} className="flex items-center whitespace-nowrap px-6 text-[12px] font-semibold uppercase tracking-[0.18em] text-white/85 md:px-8">
           <span aria-hidden="true" className="mr-6 size-1.5 rotate-45 bg-rose md:mr-8" />
           {item}
         </li>

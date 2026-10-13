@@ -21,12 +21,12 @@ export function SectionHeader({ label, title, subtitle, align = "center", id, cl
       <p className={`pop eyebrow mb-6 ${centered ? "eyebrow-center" : ""}`}>{label}</p>
       <h2
         id={id}
-        className="mb-5 font-display text-[34px] font-medium leading-[1.12] tracking-[-0.02em] text-ink md:text-[46px] xl:text-[54px]"
+        className="mb-5 font-display text-[34px] font-bold leading-[1.12] tracking-[-0.01em] text-ink md:text-[46px] xl:text-[54px]"
       >
         <SplitWords>{title}</SplitWords>
       </h2>
       {subtitle && (
-        <p className={`rise-late text-[15px] leading-[1.8] text-muted md:text-[17px] ${centered ? "mx-auto max-w-[620px]" : ""}`}>
+        <p className={`rise-late text-base leading-[1.8] text-muted md:text-[17px] ${centered ? "mx-auto max-w-[620px]" : ""}`}>
           {subtitle}
         </p>
       )}

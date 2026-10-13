@@ -20,14 +20,14 @@ async function CopyrightYear() {
 function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h2 className="mb-6 text-[11px] font-semibold uppercase tracking-[0.26em] text-rose-light">{title}</h2>
+      <h2 className="mb-6 text-[11px] font-semibold uppercase tracking-[0.18em] text-rose-light">{title}</h2>
       {children}
     </div>
   );
 }
 
 const linkClass =
-  "inline-block text-sm text-white/60 transition-all hover:translate-x-1 hover:text-white";
+  "inline-block text-sm text-white/75 transition-all hover:translate-x-1 hover:text-white";
 
 export function Footer() {
   return (
@@ -42,10 +42,10 @@ export function Footer() {
         <div className="grid items-center gap-10 border-b border-white/[.08] py-16 md:py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <div>
             <p className="eyebrow eyebrow-light mb-6">{site.markets.join(" · ")}</p>
-            <p className="opsz-auto font-display text-[40px] font-medium leading-[1.05] tracking-[-0.02em] text-white md:text-[56px] xl:text-[64px]">
+            <p className=" font-display text-[40px] font-bold leading-[1.05] tracking-[-0.01em] text-white md:text-[56px] xl:text-[64px]">
               Quality Beyond <em className="text-accent text-accent-light">Borders.</em>
             </p>
-            <p className="mt-6 max-w-md text-[15px] leading-[1.8] text-white/60">
+            <p className="mt-6 max-w-md text-base leading-[1.8] text-white/75">
               Medical aesthetic and dental equipment, exported and imported across India, the UAE and
               China.
             </p>
@@ -58,7 +58,7 @@ export function Footer() {
             <Link href="/" aria-label={`${site.name} home`} className="mb-6 inline-block">
               <Logo tone="light" />
             </Link>
-            <p className="text-sm leading-[1.8] text-white/55">
+            <p className="text-sm leading-[1.8] text-white/70">
               16 years of excellence in medical aesthetics. Trusted by professionals worldwide.
             </p>
           </div>
@@ -90,8 +90,8 @@ export function Footer() {
                   [site.claims.models, "Models"],
                 ].map(([num, label]) => (
                   <div key={label} className="flex flex-col-reverse gap-1.5">
-                    <dt className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/45">{label}</dt>
-                    <dd className="font-display text-3xl font-medium leading-none text-rose-light">{num}</dd>
+                    <dt className="text-[11px] font-semibold uppercase tracking-[0.15em] text-white/60">{label}</dt>
+                    <dd className="font-display text-3xl font-bold leading-none text-rose-light">{num}</dd>
                   </div>
                 ))}
               </dl>
@@ -99,11 +99,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-between gap-3 py-7 text-center text-[12px] text-white/45 sm:flex-row">
+        <div className="flex flex-col items-center justify-between gap-3 py-7 text-center text-[12px] text-white/60 sm:flex-row">
           <p>
             © <CopyrightYear /> {site.name}. All rights reserved.
           </p>
-          <p className="uppercase tracking-[0.2em]">ISO Certified · CE Approved</p>
+          <p className="uppercase tracking-[0.15em]">ISO Certified · CE Approved</p>
         </div>
       </div>
     </footer>

@@ -111,19 +111,19 @@ export default function AboutPage() {
           <Reveal variant="none">
             <h2
               id="overview"
-              className="mb-8 font-display text-[34px] font-medium leading-[1.12] tracking-[-0.02em] text-ink md:text-[48px]"
+              className="mb-8 font-display text-[34px] font-bold leading-[1.12] tracking-[-0.01em] text-ink md:text-[48px]"
             >
               <SplitWords>
                 Leading the Industry for Over <span className="block italic text-accent">16 Years</span>
               </SplitWords>
             </h2>
-            <p className="rise-late mb-5 text-[15px] leading-[1.85] text-muted md:text-[17px]">
+            <p className="rise-late mb-5 text-base leading-[1.8] text-muted md:text-[17px]">
               With over 16 years of continuous development and innovation, our products have earned an
               outstanding reputation in both domestic and international markets. We are committed to
               developing and manufacturing premium medical and beauty equipment, combining cutting-edge
               technology with unwavering dedication to excellence.
             </p>
-            <p className="rise-late mb-9 text-[15px] leading-[1.85] text-muted md:text-[17px]">
+            <p className="rise-late mb-9 text-base leading-[1.8] text-muted md:text-[17px]">
               Our comprehensive product portfolio spans 14 specialized series, including CO2 laser systems,
               diode laser hair removal machines, 1064nm long pulse ND YAG lasers, picosecond laser
               technology, dental lasers, Q-Switch ND YAG lasers, spider vein removal lasers, multifunctional
@@ -152,7 +152,7 @@ export default function AboutPage() {
                   <dt className={`mt-2 text-[11px] font-semibold uppercase tracking-[0.18em] ${i === 0 ? "text-white/80" : "text-muted"}`}>{label}</dt>
                   <dd>
                     <Icon size={24} className={`mb-5 ${i === 0 ? "text-rose-light" : "text-rose-deep"}`} />
-                    <span className={`block font-display text-[44px] font-medium leading-none md:text-[56px] ${i === 0 ? "" : "text-navy"}`}>
+                    <span className={`block font-display text-[44px] font-bold leading-none md:text-[56px] ${i === 0 ? "" : "text-navy"}`}>
                       <CountUp to={to} />
                       {suffix}
                     </span>
@@ -216,7 +216,7 @@ export default function AboutPage() {
                   <span className="mb-6 flex size-14 items-center justify-center rounded-full bg-mist text-navy transition-all duration-500 group-hover:scale-110 group-hover:bg-navy group-hover:text-white">
                     <Icon size={24} />
                   </span>
-                  <h3 className="mb-3 font-display text-[22px] font-semibold leading-snug text-ink">{title}</h3>
+                  <h3 className="mb-3 font-display text-[22px] font-bold leading-snug text-ink">{title}</h3>
                   <p className="text-[15px] leading-relaxed text-muted">{text}</p>
                 </div>
               </li>
@@ -246,7 +246,7 @@ export default function AboutPage() {
                   <span className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full bg-gradient-m text-white shadow-navy transition-transform duration-500 group-hover:-translate-y-1 group-hover:scale-105">
                     <Icon size={26} />
                   </span>
-                  <h3 className="mb-3 font-display text-[24px] font-semibold leading-snug text-ink">{title}</h3>
+                  <h3 className="mb-3 font-display text-[24px] font-bold leading-snug text-ink">{title}</h3>
                   <p className="text-[15px] leading-relaxed text-muted">{text}</p>
                 </div>
               </li>

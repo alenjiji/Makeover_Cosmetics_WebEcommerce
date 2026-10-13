@@ -23,10 +23,10 @@ export function InquiryBand({
         className="absolute -bottom-40 -right-24 size-[420px] rounded-full bg-[radial-gradient(circle,rgb(202_153_142/0.35),transparent_65%)]"
       />
       <div className="relative mx-auto max-w-2xl">
-        <h2 className="mb-4 font-display text-[28px] font-medium leading-tight tracking-[-0.01em] md:text-[38px]">
+        <h2 className="mb-4 font-display text-[28px] font-bold leading-tight tracking-[-0.01em] md:text-[38px]">
           {title}
         </h2>
-        <p className="mb-9 text-[15px] leading-[1.8] text-white/75 md:text-[17px]">{text}</p>
+        <p className="mb-9 text-base leading-[1.8] text-white/75 md:text-[17px]">{text}</p>
         <div className="flex flex-col justify-center gap-3 sm:flex-row">
           <Link href="/contact" className="btn btn-light group">
             Request Full Catalog
@@ -37,7 +37,7 @@ export function InquiryBand({
             Chat on WhatsApp
           </ContactChooser>
         </div>
-        <p className="mt-7 text-sm text-white/65">
+        <p className="mt-7 text-sm text-white/75">
           Or{" "}
           <ContactChooser channel="call" className="font-semibold text-rose-light underline-offset-4 hover:underline">
             call us in the UAE or India

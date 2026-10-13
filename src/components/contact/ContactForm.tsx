@@ -46,7 +46,7 @@ function InquiryForm({ product: initialProduct, onReset }: { product?: Product; 
         <span className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full bg-gradient-m text-white shadow-navy">
           <CheckIcon size={30} />
         </span>
-        <h3 className="mb-3 font-display text-[34px] font-medium text-ink">Message sent</h3>
+        <h3 className="mb-3 font-display text-[34px] font-bold text-ink">Message sent</h3>
         <p className="mx-auto mb-8 max-w-md leading-relaxed text-muted">
           Thanks, {state.name}. We&apos;ve received your inquiry and will reply to{" "}
           <strong className="text-ink">{state.email}</strong> within 24 hours.
@@ -81,7 +81,7 @@ function InquiryForm({ product: initialProduct, onReset }: { product?: Product; 
             <Image src={product.image} alt="" fill sizes="56px" className="object-contain p-1 mix-blend-multiply" />
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-rose-deep">
+            <span className="block text-[11px] font-semibold uppercase tracking-[0.15em] text-rose-deep">
               Asking about
             </span>
             <span className="block truncate font-semibold text-ink">{productTitle(product)}</span>
@@ -145,7 +145,7 @@ function InquiryForm({ product: initialProduct, onReset }: { product?: Product; 
           <select
             {...fieldProps("interest", errors)}
             defaultValue={values.interest ?? fallbackInterest}
-            className={`${inputClass} appearance-none bg-[url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='16'%20height='16'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%2356616f'%20stroke-width='2'%3E%3Cpath%20d='m6%209%206%206%206-6'/%3E%3C/svg%3E")] bg-[position:right_18px_center] bg-no-repeat pr-12`}
+            className={`${inputClass} appearance-none bg-[url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='16'%20height='16'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23444d5a'%20stroke-width='2'%3E%3Cpath%20d='m6%209%206%206%206-6'/%3E%3C/svg%3E")] bg-[position:right_18px_center] bg-no-repeat pr-12`}
           >
             <option value="" disabled>
               Select a product

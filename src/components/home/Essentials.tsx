@@ -32,11 +32,11 @@ export function Essentials() {
                 >
                   <span
                     aria-hidden="true"
-                    className="absolute -right-2 -top-6 font-display text-[120px] font-medium italic leading-none text-mist transition-colors duration-500 group-hover:text-blush"
+                    className="absolute -right-2 -top-6 font-display text-[120px] font-bold italic leading-none text-mist transition-colors duration-500 group-hover:text-blush"
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="relative mb-2 mt-6 font-display text-[24px] font-semibold leading-snug text-ink">{group.title}</h3>
+                  <h3 className="relative mb-2 mt-6 font-display text-[24px] font-bold leading-snug text-ink">{group.title}</h3>
                   <p className="relative mb-6 text-[15px] leading-relaxed text-muted">{group.description}</p>
                   <ul className="relative mt-auto flex flex-wrap gap-2">
                     {group.items.map((item) => (
@@ -57,7 +57,7 @@ export function Essentials() {
         <Reveal variant="scale">
           <div className="mt-12 flex flex-col items-center justify-between gap-6 rounded-[24px] bg-white p-6 ring-1 ring-line md:flex-row md:p-8">
             <div className="text-center md:text-left">
-              <p className="font-display text-[24px] font-medium text-ink md:text-[28px]">Stocking up for your clinic?</p>
+              <p className="font-display text-[24px] font-bold text-ink md:text-[28px]">Stocking up for your clinic?</p>
               <p className="mt-1 text-[15px] text-muted">
                 Ask for our latest price list. Volume pricing is available on most consumables.
               </p>

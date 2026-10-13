@@ -22,11 +22,11 @@ export function ProductCard({ product, headingLevel: Heading = "h3" }: Props) {
           className="object-contain p-8 mix-blend-multiply transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-105"
         />
         <span className="absolute left-4 top-4 flex gap-1.5">
-          <span className="rounded-full bg-navy px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white">
+          <span className="rounded-full bg-navy px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white">
             {product.category}
           </span>
           {product.isNew && (
-            <span className="rounded-full bg-rose-light px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-navy-deep">
+            <span className="rounded-full bg-rose-light px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-navy-deep">
               New
             </span>
           )}
@@ -39,7 +39,7 @@ export function ProductCard({ product, headingLevel: Heading = "h3" }: Props) {
       </div>
 
       <div className="flex flex-1 flex-col p-6 md:p-7">
-        <Heading className="mb-2 font-display text-[22px] font-semibold leading-snug tracking-[-0.01em] text-ink">
+        <Heading className="mb-2 font-display text-[22px] font-bold leading-snug tracking-[-0.01em] text-ink">
           {/* Stretched link: the whole card opens the detail page. */}
           <Link href={href} className="after:absolute after:inset-0 after:z-0 focus-visible:outline-none group-has-[:focus-visible]:underline">
             {product.name}
@@ -51,7 +51,7 @@ export function ProductCard({ product, headingLevel: Heading = "h3" }: Props) {
           {product.features.map((feature) => (
             <li
               key={feature}
-              className="relative pl-5 text-sm leading-[1.7] text-muted before:absolute before:left-0 before:top-[11px] before:h-px before:w-2.5 before:bg-gradient-to-r before:from-navy before:to-rose"
+              className="relative pl-5 text-[15px] leading-[1.65] text-muted before:absolute before:left-0 before:top-[11px] before:h-px before:w-2.5 before:bg-gradient-to-r before:from-navy before:to-rose"
             >
               {feature}
             </li>
@@ -62,14 +62,14 @@ export function ProductCard({ product, headingLevel: Heading = "h3" }: Props) {
             href={href}
             tabIndex={-1}
             aria-hidden="true"
-            className="flex items-center justify-center rounded-full bg-surface px-3 py-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-ink ring-1 ring-divider transition-colors hover:bg-mist"
+            className="flex items-center justify-center whitespace-nowrap rounded-full bg-surface px-2 py-3 text-[11px] font-semibold uppercase tracking-[0.06em] text-ink ring-1 ring-divider transition-colors hover:bg-mist"
           >
             View Details
           </Link>
           <Link
             href={`/contact?product=${product.slug}#inquiry`}
             aria-label={`Inquire about ${product.name}${product.model ? ` ${product.model}` : ""}`}
-            className="group/btn flex items-center justify-center gap-2 rounded-full bg-navy px-3 py-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-white transition-colors hover:bg-navy-deep"
+            className="group/btn flex items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-navy px-2 py-3 text-[11px] font-semibold uppercase tracking-[0.06em] text-white transition-colors hover:bg-navy-deep"
           >
             Inquire Now
             <ArrowRightIcon className="transition-transform group-hover/btn:translate-x-1" />

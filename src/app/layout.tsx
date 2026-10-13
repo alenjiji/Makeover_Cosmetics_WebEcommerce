@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Bodoni_Moda, Montserrat } from "next/font/google";
+import { Montserrat, Playfair_Display } from "next/font/google";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -10,13 +10,11 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
-// High-contrast serif in the spirit of the logo's "M". The optical-size axis keeps
-// hairlines sturdy on smaller headings and refined on large ones.
-const bodoni = Bodoni_Moda({
-  variable: "--font-bodoni",
+// The serif of the hero title artwork (public/assets/hero_title.svg), used bold for headings.
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
   style: ["normal", "italic"],
-  axes: ["opsz"],
   display: "swap",
 });
 
@@ -42,7 +40,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${montserrat.variable} ${bodoni.variable} h-full antialiased`}>
+    <html lang="en" className={`${montserrat.variable} ${playfair.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col font-sans">{children}</body>
     </html>
   );

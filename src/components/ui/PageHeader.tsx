@@ -19,11 +19,11 @@ export function PageHeader({ badge, title, subtitle, children }: Props) {
         <p className="eyebrow eyebrow-center mb-7 animate-pop-in">{badge}</p>
         <h1
           style={{ "--split-delay": "0.1s" } as React.CSSProperties}
-          className="split-load opsz-auto mb-6 font-display text-[40px] font-medium leading-[1.1] tracking-[-0.02em] text-ink md:text-[52px] xl:text-[64px]"
+          className="split-load mb-6 font-display text-[40px] font-bold leading-[1.1] tracking-[-0.01em] text-ink md:text-[52px] xl:text-[64px]"
         >
           <SplitWords>{title}</SplitWords>
         </h1>
-        <p className="mx-auto max-w-[620px] animate-rise-in text-[15px] leading-[1.8] text-muted [--rise-delay:.45s] md:text-lg">
+        <p className="mx-auto max-w-[620px] animate-rise-in text-base leading-[1.8] text-muted [--rise-delay:.45s] md:text-lg">
           {subtitle}
         </p>
         {children}

@@ -131,7 +131,7 @@ async function deliver(inquiry: InquiryFields): Promise<boolean> {
 <table style="font-family:sans-serif;font-size:14px;border-collapse:collapse">${rows
     .map(
       ([k, v]) =>
-        `<tr><td style="padding:4px 16px 4px 0;color:#56616f">${k}</td><td style="padding:4px 0"><strong>${escapeHtml(v)}</strong></td></tr>`,
+        `<tr><td style="padding:4px 16px 4px 0;color:#444d5a">${k}</td><td style="padding:4px 0"><strong>${escapeHtml(v)}</strong></td></tr>`,
     )
     .join("")}</table>
 <p style="font-family:sans-serif;font-size:14px;white-space:pre-wrap">${escapeHtml(inquiry.message)}</p>`;

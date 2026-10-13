@@ -106,7 +106,7 @@ export default function ContactPage() {
 
         <div className="relative mx-auto grid max-w-[1400px] items-center gap-12 xl:grid-cols-2 xl:gap-20">
           <div>
-            <p className="mb-8 inline-flex animate-pop-in items-center gap-3 rounded-full border border-line bg-white py-2.5 pl-4 pr-5 text-[11px] font-semibold uppercase tracking-[0.22em] text-ink shadow-card">
+            <p className="mb-8 inline-flex animate-pop-in items-center gap-3 rounded-full border border-line bg-white py-2.5 pl-4 pr-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-ink shadow-card">
               <span className="relative flex size-2">
                 <span className="absolute inset-0 animate-ping-soft rounded-full bg-rose" />
                 <span className="relative size-2 rounded-full bg-rose-deep" />
@@ -115,13 +115,13 @@ export default function ContactPage() {
             </p>
             <h1
               style={{ "--split-delay": "0.1s" } as React.CSSProperties}
-              className="split-load mb-7 font-display text-[40px] font-medium leading-[1.08] tracking-[-0.02em] text-ink sm:text-[48px] md:mb-8 md:text-[60px] xl:text-[72px]"
+              className="split-load mb-7 font-display text-[40px] font-bold leading-[1.08] tracking-[-0.01em] text-ink sm:text-[48px] md:mb-8 md:text-[60px] xl:text-[72px]"
             >
               <SplitWords>
                 Start Your Journey to <span className="italic text-accent">Success</span>
               </SplitWords>
             </h1>
-            <p className="mb-10 max-w-[540px] animate-rise-in text-[15px] leading-[1.85] text-muted [--rise-delay:.45s] md:text-[17px]">
+            <p className="mb-10 max-w-[540px] animate-rise-in text-base leading-[1.8] text-muted [--rise-delay:.45s] md:text-[17px]">
               Connect with our experts today and discover how our advanced medical beauty equipment
               can transform your business and elevate your services to new heights.
             </p>
@@ -135,8 +135,8 @@ export default function ContactPage() {
                     <Icon size={22} />
                   </span>
                   <div className="flex flex-col-reverse">
-                    <dt className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted sm:text-[11px]">{label}</dt>
-                    <dd className="font-display text-[24px] font-medium leading-none text-navy sm:text-[28px]">{value}</dd>
+                    <dt className="mt-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-muted sm:text-[11px]">{label}</dt>
+                    <dd className="font-display text-[24px] font-bold leading-none text-navy sm:text-[28px]">{value}</dd>
                   </div>
                 </div>
               ))}
@@ -152,7 +152,7 @@ export default function ContactPage() {
                     <Icon size={26} />
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.22em] text-muted">{label}</span>
+                    <span className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">{label}</span>
                     {values.map((value) => (
                       <span
                         key={value}
@@ -189,7 +189,7 @@ export default function ContactPage() {
           <div className="relative rounded-[28px] border border-line bg-white p-5 shadow-[0_8px_32px_rgb(18_43_73/0.08)] sm:p-8 md:p-14">
             <header className="mb-10">
               <SectionLabel>Send Message</SectionLabel>
-              <h2 className="mb-4 font-display text-[34px] font-medium leading-tight tracking-[-0.02em] text-ink md:text-[48px]">
+              <h2 className="mb-4 font-display text-[34px] font-bold leading-tight tracking-[-0.01em] text-ink md:text-[48px]">
                 How Can We <span className="italic text-accent">Help You?</span>
               </h2>
               <p className="leading-relaxed text-muted">
@@ -203,7 +203,7 @@ export default function ContactPage() {
 
           <aside className="flex flex-col gap-6 xl:sticky xl:top-[calc(var(--nav-h)+24px)]">
             <div className="rounded-[24px] border border-line bg-white p-6 shadow-card md:p-10">
-              <h2 className="mb-6 font-display text-[28px] font-medium text-ink">Why Choose Us?</h2>
+              <h2 className="mb-6 font-display text-[28px] font-bold text-ink">Why Choose Us?</h2>
               <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1">
                 {reasons.map((reason) => (
                   <li key={reason} className="flex items-center gap-3 text-[15px] font-semibold text-ink">
@@ -221,7 +221,7 @@ export default function ContactPage() {
                 aria-hidden="true"
                 className="absolute -bottom-24 -right-16 size-72 rounded-full bg-[radial-gradient(circle,rgb(202_153_142/0.4),transparent_65%)]"
               />
-              <h2 className="relative mb-6 font-display text-[28px] font-medium">Visit Our Office</h2>
+              <h2 className="relative mb-6 font-display text-[28px] font-bold">Visit Our Office</h2>
               <div className="relative flex gap-4">
                 <MapPinIcon size={22} className="mt-1 shrink-0 text-rose-light" />
                 <div>
@@ -251,7 +251,7 @@ export default function ContactPage() {
         <div className="mx-auto max-w-[1400px]">
           <div className="mb-12 text-center md:mb-14">
             <SectionLabel center>Find Us</SectionLabel>
-            <h2 id="location" className="font-display text-[34px] font-medium tracking-[-0.02em] text-ink md:text-[48px]">
+            <h2 id="location" className="font-display text-[34px] font-bold tracking-[-0.01em] text-ink md:text-[48px]">
               Our <span className="italic text-accent">Location</span>
             </h2>
           </div>
@@ -273,7 +273,7 @@ export default function ContactPage() {
         <div className="mx-auto max-w-[900px]">
           <div className="mb-12 text-center md:mb-14">
             <SectionLabel center>FAQ</SectionLabel>
-            <h2 id="faq" className="mb-5 font-display text-[34px] font-medium tracking-[-0.02em] text-ink md:text-[48px]">
+            <h2 id="faq" className="mb-5 font-display text-[34px] font-bold tracking-[-0.01em] text-ink md:text-[48px]">
               Frequently Asked <span className="italic text-accent">Questions</span>
             </h2>
             <p className="mx-auto max-w-[600px] text-[15px] text-muted md:text-[17px]">

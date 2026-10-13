@@ -30,17 +30,17 @@ export function Welcome() {
           <p className="pop eyebrow mb-6">Welcome to {site.name}</p>
           <h2
             id="welcome"
-            className="mb-7 font-display text-[34px] font-medium leading-[1.12] tracking-[-0.02em] text-ink md:text-[46px] xl:text-[54px]"
+            className="mb-7 font-display text-[34px] font-bold leading-[1.12] tracking-[-0.01em] text-ink md:text-[46px] xl:text-[54px]"
           >
             <SplitWords>
               Let&apos;s find the <span className="italic text-accent">right machine</span> for your clinic
             </SplitWords>
           </h2>
-          <p className="rise-late mb-5 max-w-[600px] text-[15px] leading-[1.85] text-muted md:text-[17px]">
+          <p className="rise-late mb-5 max-w-[600px] text-base leading-[1.8] text-muted md:text-[17px]">
             Since 2009, clinic owners, dermatologists and beauty professionals in 5+ countries
             have trusted us with the equipment behind their treatments.
           </p>
-          <p className="rise-late mb-10 max-w-[600px] text-[15px] leading-[1.85] text-muted md:text-[17px]">
+          <p className="rise-late mb-10 max-w-[600px] text-base leading-[1.8] text-muted md:text-[17px]">
             Whether you&apos;re opening your first studio or adding a new service, we&apos;re happy to walk
             you through the options. No pressure, just honest advice from people who know the machines.
           </p>
@@ -71,7 +71,7 @@ export function Welcome() {
                   <Icon size={24} />
                 </span>
                 <span>
-                  <span className="mb-1.5 block font-display text-[22px] font-semibold text-ink">{title}</span>
+                  <span className="mb-1.5 block font-display text-[22px] font-bold text-ink">{title}</span>
                   <span className="block text-[15px] leading-relaxed text-muted">{text}</span>
                 </span>
               </div>

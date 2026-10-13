@@ -44,13 +44,13 @@ export function Process() {
           />
           {steps.map((step, i) => (
             <li key={step.title} className="group relative" style={{ "--i": i } as React.CSSProperties}>
-              <span className="pop relative mb-6 flex size-14 items-center justify-center rounded-full bg-navy font-display text-2xl font-medium italic text-white shadow-navy ring-8 ring-white transition-all duration-300 group-hover:scale-110 group-hover:bg-gradient-m">
+              <span className="pop relative mb-6 flex size-14 items-center justify-center rounded-full bg-navy font-display text-2xl font-bold italic text-white shadow-navy ring-8 ring-white transition-all duration-300 group-hover:scale-110 group-hover:bg-gradient-m">
                 {i + 1}
               </span>
               <div className="stagger">
                 <h3
                   style={{ "--i": i + 1 } as React.CSSProperties}
-                  className="mb-3 font-display text-[24px] font-semibold leading-snug text-ink"
+                  className="mb-3 font-display text-[24px] font-bold leading-snug text-ink"
                 >
                   {step.title}
                 </h3>

@@ -13,7 +13,7 @@ export function Faq({ items }: { items: FaqItem[] }) {
           className="group rounded-2xl border border-divider bg-white shadow-card transition-all duration-300 open:border-navy/25 open:shadow-card-hover"
         >
           <summary className="flex cursor-pointer list-none items-center justify-between gap-6 px-6 py-5 md:px-8 md:py-6 [&::-webkit-details-marker]:hidden">
-            <h3 className="font-display text-[19px] font-semibold leading-snug tracking-[-0.01em] text-ink md:text-[23px]">
+            <h3 className="font-display text-[19px] font-bold leading-snug tracking-[-0.01em] text-ink md:text-[23px]">
               {item.question}
             </h3>
             <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-mist text-navy transition-all duration-300 group-open:rotate-180 group-open:bg-navy group-open:text-white">

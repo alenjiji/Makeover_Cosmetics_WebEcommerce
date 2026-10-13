@@ -212,7 +212,7 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
                   sizes="(min-width: 1400px) 680px, (min-width: 1024px) 50vw, 100vw"
                   className="animate-settle object-contain p-10 mix-blend-multiply transition-transform duration-700 group-hover:scale-[1.03] md:p-16"
                 />
-                <span className="absolute left-5 top-5 rounded-full bg-navy px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white">
+                <span className="absolute left-5 top-5 rounded-full bg-navy px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white">
                   {product.category}
                 </span>
               </div>
@@ -221,7 +221,7 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
 
             {/* Summary */}
             <div className="flex flex-col">
-              <p className="mb-5 flex flex-wrap items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.22em]">
+              <p className="mb-5 flex flex-wrap items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.16em]">
                 <Link
                   href={`/products?category=${categorySlug(product.category)}`}
                   className="text-rose-deep hover:text-navy"
@@ -236,16 +236,16 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
               </p>
               <h1
                 style={{ "--split-delay": "0.2s" } as React.CSSProperties}
-                className="split-load mb-7 font-display text-[40px] font-medium leading-[1.08] tracking-[-0.02em] text-ink md:text-[52px] xl:text-[62px]"
+                className="split-load mb-7 font-display text-[40px] font-bold leading-[1.08] tracking-[-0.01em] text-ink md:text-[52px] xl:text-[62px]"
               >
                 <SplitWords>{product.name}</SplitWords>
               </h1>
 
               <div className="mb-9 rounded-[20px] border border-rose/30 bg-blush px-6 py-5">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
                   {specLabel(product.spec)}
                 </p>
-                <p className="mt-1.5 font-display text-[24px] font-medium text-navy md:text-[28px]">{product.spec}</p>
+                <p className="mt-1.5 font-display text-[24px] font-bold text-navy md:text-[28px]">{product.spec}</p>
               </div>
 
               <h2 className="eyebrow mb-5">Key features</h2>
@@ -308,7 +308,7 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
         <div className="mx-auto max-w-[1400px]">
           <div className="mb-10 max-w-2xl">
             <p className="eyebrow mb-5">Buying from {site.name}</p>
-            <h2 id="ordering" className="font-display text-[34px] font-medium tracking-[-0.02em] text-ink md:text-[46px] md:leading-tight">
+            <h2 id="ordering" className="font-display text-[34px] font-bold tracking-[-0.01em] text-ink md:text-[46px] md:leading-tight">
               Ordering &amp; <span className="italic text-accent">Support</span>
             </h2>
           </div>
@@ -318,7 +318,7 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
                 <span className="mb-5 flex size-12 items-center justify-center rounded-full bg-mist text-navy">
                   <Icon size={20} />
                 </span>
-                <h3 className="mb-2 font-display text-[22px] font-semibold text-ink">{title}</h3>
+                <h3 className="mb-2 font-display text-[22px] font-bold text-ink">{title}</h3>
                 <p className="text-sm leading-relaxed text-muted">{text}</p>
               </li>
             ))}
@@ -330,7 +330,7 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
       <section aria-labelledby="related" className="bg-white px-6 py-16 md:px-10 md:py-20 xl:px-[60px]">
         <div className="mx-auto max-w-[1400px]">
           <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
-            <h2 id="related" className="font-display text-[34px] font-medium tracking-[-0.02em] text-ink md:text-[46px]">
+            <h2 id="related" className="font-display text-[34px] font-bold tracking-[-0.01em] text-ink md:text-[46px]">
               More in <span className="italic text-accent">{family.label}</span>
             </h2>
             <Link
@@ -415,10 +415,10 @@ function AdjacentLink({ product, direction }: { product: Product; direction: "pr
         {isNext ? <ArrowRightIcon /> : <ArrowLeftIcon />}
       </span>
       <span className="min-w-0">
-        <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-muted">
+        <span className="block text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
           {isNext ? "Next" : "Previous"}
         </span>
-        <span className="block truncate font-display text-[20px] font-semibold text-ink">
+        <span className="block truncate font-display text-[20px] font-bold text-ink">
           {productTitle(product)}
         </span>
       </span>

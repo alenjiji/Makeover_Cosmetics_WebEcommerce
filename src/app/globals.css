@@ -18,7 +18,7 @@
   --color-mist: #e7e9e8;
   --color-surface: #f5f6f5;
   --color-ink: #101b2b;
-  --color-muted: #56616f;
+  --color-muted: #444d5a;
   --color-line: #e5e8e7;
   --color-divider: #d8dddb;
   --color-whatsapp: #0f7a40;
@@ -93,10 +93,11 @@
   }
 }
 
-/* Bodoni Moda echoes the logo's high-contrast "M"; Montserrat is the wordmark's face. */
+/* Playfair Display, bold, as in the hero title artwork; Montserrat is the wordmark's face.
+   The serif is kept to large headings and numbers; small titles are set in Montserrat. */
 @theme inline {
   --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-bodoni), "Bodoni 72", Didot, Georgia, serif;
+  --font-display: var(--font-playfair), Georgia, serif;
 }
 
 :root {
@@ -105,8 +106,10 @@
 
   /* The logo's M: navy for most of its length, warming through mauve to rose. */
   --gradient-m: linear-gradient(135deg, #122b49 0%, #122b49 42%, #394257 60%, #645b67 72%, #9d7d7d 86%, #ca998e 100%);
-  /* Same journey, ending on rose-deep so text stays legible on light backgrounds. */
-  --gradient-ink: linear-gradient(100deg, #122b49 0%, #2c3b55 35%, #645b67 70%, #8c5d54 100%);
+  /* Accent words, as in the hero title artwork: navy for most of the word, warming to rose
+     at the end. Stops follow the artwork, ending on the darkest rose that still meets
+     3:1 for large text. */
+  --gradient-ink: linear-gradient(100deg, #122b49 0%, #122b49 40%, #3c4458 62%, #867074 82%, #a5807a 100%);
   --gradient-ink-dark: linear-gradient(100deg, #ffffff 0%, #f1e2dd 45%, #e3c4bb 75%, #ca998e 100%);
 }
 @media (min-width: 768px) {
@@ -262,9 +265,9 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 0.875rem;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
-    letter-spacing: 0.26em;
+    letter-spacing: 0.2em;
     line-height: 1.4;
     text-transform: uppercase;
     color: var(--color-rose-deep);
@@ -348,6 +351,19 @@ body {
 @keyframes word-rise {
   from {
     transform: translateY(115%);
+  }
+}
+
+/* Hero title artwork (<HeroTitle>): each line of lettering rises in on load. */
+.hero-line {
+  transform-box: fill-box;
+  animation: hero-line-in 1.1s var(--ease-out) both;
+  animation-delay: calc(0.15s + var(--i, 0) * 0.2s);
+}
+@keyframes hero-line-in {
+  from {
+    opacity: 0;
+    transform: translateY(30%);
   }
 }
 
@@ -571,18 +587,9 @@ body {
   animation-play-state: paused;
 }
 
-/* Keep model codes like GL068 in lining figures in the display face. Bodoni's hairlines
-   get finer at large optical sizes, which leaves the +, / and - in product names and
-   specs barely visible, so pin a sturdier optical size. All-word statement headlines
-   opt back into automatic sizing with .opsz-auto. */
+/* Playfair defaults to old-style figures, which make model codes like GL068 read as "GLo68". */
 .font-display {
   font-variant-numeric: lining-nums;
-  font-optical-sizing: none;
-  font-variation-settings: "opsz" 24;
-}
-.font-display.opsz-auto {
-  font-optical-sizing: auto;
-  font-variation-settings: normal;
 }
 
 :focus-visible {

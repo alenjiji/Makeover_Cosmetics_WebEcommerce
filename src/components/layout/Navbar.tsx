@@ -1,11 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowRightIcon } from "@/components/ui/icons";
 import { site } from "@/lib/site";
-import { Logo } from "./Logo";
 
 const links = [
   { href: "/", label: "Home" },
@@ -56,7 +56,18 @@ export function Navbar() {
           }`}
         >
           <Link href="/" aria-label={`${site.name} home`} className="relative z-[60] shrink-0">
-            <Logo compact={scrolled} preload />
+            {/* The landscape lockup: the mark beside the wordmark and markets. */}
+            <Image
+              src="/brand/logo-landscape.png"
+              alt={`${site.name}, ${site.descriptor}, ${site.markets.join(" · ")}`}
+              width={1400}
+              height={462}
+              sizes="200px"
+              preload
+              className={`w-auto transition-all duration-300 ${
+                scrolled ? "h-[44px] md:h-[50px]" : "h-[52px] md:h-[62px]"
+              }`}
+            />
           </Link>
 
           <div className="hidden items-center gap-10 lg:flex xl:gap-12">
@@ -130,7 +141,7 @@ export function Navbar() {
               href={link.href}
               onClick={() => setOpen(false)}
               aria-current={isActive(link.href) ? "page" : undefined}
-              className="border-b border-line py-4 font-display text-[32px] font-medium text-ink aria-[current=page]:italic aria-[current=page]:text-rose-deep"
+              className="border-b border-line py-4 font-display text-[32px] font-bold text-ink aria-[current=page]:italic aria-[current=page]:text-rose-deep"
             >
               {link.label}
             </Link>
@@ -145,8 +156,8 @@ export function Navbar() {
         </div>
         {/* Motto and markets, as a quiet sign-off at the foot of the menu. */}
         <div className="mt-auto px-8 pb-10">
-          <p className="font-display text-xl italic text-navy">{site.tagline}.</p>
-          <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.26em] text-muted">
+          <p className="font-display text-[22px] font-bold italic text-navy">{site.tagline}.</p>
+          <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
             {site.markets.join(" · ")}
           </p>
         </div>
