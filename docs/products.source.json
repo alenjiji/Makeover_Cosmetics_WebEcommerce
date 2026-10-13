@@ -1,0 +1,302 @@
+[
+  {
+    "name": "808nm Diode Laser",
+    "category": "Diode Laser",
+    "spec": "808nm / 755+808+940+1064nm",
+    "image": "diod1.png",
+    "alt": "Diode Laser GLD01",
+    "features": [
+      "Fast and permanent hair removal",
+      "Suitable for all hair and skin types",
+      "Water + air + semiconductor cooling"
+    ]
+  },
+  {
+    "name": "Dual-Handpiece Diode Laser",
+    "category": "Diode Laser",
+    "spec": "808nm / 755+808+940+1064nm",
+    "image": "dual hand diode.png",
+    "alt": "Dual-Handpiece Diode Laser",
+    "features": [
+      "Sapphire TEC cooling system",
+      "-12.4°C handpiece cooling",
+      "2000W peak power"
+    ]
+  },
+  {
+    "name": "Diode Laser Hair Removal",
+    "category": "Diode Laser",
+    "spec": "808nm / 4-Wavelength Options",
+    "image": "diod17.png",
+    "alt": "Diode Laser GLD17",
+    "features": [
+      "USA Coherent brand laser emitter",
+      "10.4 inch color touch screen",
+      "Efficient hair removal results"
+    ]
+  },
+  {
+    "name": "Diode Laser Hair Removal",
+    "category": "Diode Laser",
+    "spec": "808nm / 755+808+940+1064nm",
+    "image": "DIOD18.png",
+    "alt": "Diode Laser GLD18",
+    "features": [
+      "Pain-free hair removal",
+      "Quick effect and permanent results",
+      "Double safety system"
+    ]
+  },
+  {
+    "name": "Picosecond Laser Machine",
+    "category": "Picosecond Laser",
+    "spec": "1064nm/532nm/755nm",
+    "image": "pico30.png",
+    "alt": "Picosecond Laser GL030",
+    "features": [
+      "Tattoo & pigment removal",
+      "Skin rejuvenation treatment",
+      "15.6 inch color LCD screen"
+    ]
+  },
+  {
+    "name": "Picosecond Laser Machine",
+    "category": "Picosecond Laser",
+    "spec": "1064nm/532nm/755nm/585nm/650nm",
+    "image": "PICO22.png",
+    "alt": "Picosecond Laser GL028",
+    "features": [
+      "Higher pigment clear rate",
+      "Faster pigment removal speed",
+      "World's safest pico-second laser"
+    ]
+  },
+  {
+    "name": "755nm Alexandrite + 1064nm ND YAG",
+    "category": "ND YAG Laser",
+    "spec": "755nm + 1064nm",
+    "image": "pico.png",
+    "alt": "Alexandrite Laser",
+    "features": [
+      "Hair removal for all skin types",
+      "Support lens replacement",
+      "15.6 color touch LCD screen"
+    ]
+  },
+  {
+    "name": "Portable Q Switch ND YAG",
+    "category": "Q Switch Laser",
+    "spec": "1064nm/532nm/1320nm/755nm",
+    "image": "qhori.png",
+    "alt": "Portable Q Switch",
+    "features": [
+      "Tattoo & spot removal",
+      "Carbon peeling, skin whitening",
+      "Wind + water cooling system"
+    ]
+  },
+  {
+    "name": "Vertical Q Switch ND YAG",
+    "category": "Q Switch Laser",
+    "spec": "1064nm/532nm/1320nm/755nm",
+    "image": "VERT.png",
+    "alt": "Vertical Q Switch",
+    "features": [
+      "Tattoo removal equipment",
+      "Pigment & birthmark removal",
+      "Carbon peeling treatment"
+    ]
+  },
+  {
+    "name": "CO2 Fractional Laser",
+    "category": "CO2 Laser",
+    "spec": "10600nm",
+    "image": "CO2.png",
+    "alt": "CO2 Laser GL066",
+    "features": [
+      "Skin resurfacing & rejuvenation",
+      "Korea 7-joints articulated arm",
+      "Fast treatment & quick recovery"
+    ]
+  },
+  {
+    "name": "CO2 Fractional Laser",
+    "category": "CO2 Laser",
+    "spec": "10600nm",
+    "image": "CO268.png",
+    "alt": "CO2 Laser GL068",
+    "features": [
+      "Non-invasive, no irritation",
+      "Scar removal treatment",
+      "Variable treatment graphics"
+    ]
+  },
+  {
+    "name": "7D HIFU Machine",
+    "category": "HIFU Machine",
+    "spec": "Layered Anti-aging",
+    "image": "7d.png",
+    "alt": "7D HIFU",
+    "features": [
+      "Facial lift & body contouring",
+      "7 depths of cartridges",
+      "20000 shots per cartridge"
+    ]
+  },
+  {
+    "name": "12D MAX HIFU",
+    "category": "HIFU Machine",
+    "spec": "Innovative Technology",
+    "image": "12d.png",
+    "alt": "12D MAX HIFU",
+    "features": [
+      "Epidermal & dermal activation",
+      "Tighten fascia instantly",
+      "Collagen regeneration"
+    ]
+  },
+  {
+    "name": "22D HIFU Machine",
+    "category": "HIFU Machine",
+    "spec": "Layered Anti-aging",
+    "image": "22d.png",
+    "alt": "22D HIFU",
+    "features": [
+      "Maximum efficiency for facial lift",
+      "Body contour shaping",
+      "Enhanced fascia support"
+    ]
+  },
+  {
+    "name": "EMS Body Sculpting",
+    "category": "EMS Machine",
+    "spec": "HIFEM Technology",
+    "image": "sculp.png",
+    "alt": "EMS Body Sculpting",
+    "features": [
+      "+16% muscle mass increase",
+      "-19% fat reduction average",
+      "Independent 2/4 handles"
+    ]
+  },
+  {
+    "name": "Cryolipolysis + EMS Slimming",
+    "category": "Slimming Machine",
+    "spec": "Body Slimming",
+    "image": "crylis.png",
+    "alt": "Cryolipolysis + EMS",
+    "features": [
+      "360-degree refrigeration",
+      "Safe & non-invasive",
+      "30 minutes = 30000 muscle contractions"
+    ]
+  },
+  {
+    "name": "Elight Hair Removal Machine",
+    "category": "IPL Machine",
+    "spec": "480nm/530nm/590nm/640nm/690nm",
+    "image": "elight.png",
+    "alt": "Elight Hair Removal",
+    "features": [
+      "8 operation modes available",
+      "UK imported xenon lamp",
+      "Skin rejuvenation & wrinkle removal"
+    ]
+  },
+  {
+    "name": "LED PDT Skin Therapy",
+    "category": "LED Machine",
+    "spec": "Seven Different Colors",
+    "image": "led.png",
+    "alt": "LED PDT Machine",
+    "features": [
+      "Germany import LED diode",
+      "Acne treatment & collagen regeneration",
+      "Adjustable head for coverage"
+    ]
+  },
+  {
+    "name": "Cold Air Skin Cooling System",
+    "category": "Cooling System",
+    "spec": "-35°C Temperature",
+    "image": "air.png",
+    "alt": "Cold Air Cooling System",
+    "features": [
+      "Cool skin to numbness",
+      "Minimize pain during treatment",
+      "10.4 inch touch screen control"
+    ]
+  },
+  {
+    "name": "10 in 1 Hydra Skin Facial Spa",
+    "category": "Hydra Facial",
+    "spec": "Water Dermabrasion",
+    "image": "101hydra.png",
+    "alt": "10 in 1 Hydra Facial",
+    "features": [
+      "Deep cleaning & tightening",
+      "Ultrasound head for skin rejuvenation",
+      "Hydrodermabrasion & cold hammer"
+    ]
+  },
+  {
+    "name": "9 in 1 Hydra Facial Microdermabrasion",
+    "category": "Hydra Facial",
+    "spec": "Skin Cleaning Machine",
+    "image": "91hydra.png",
+    "alt": "9 in 1 Hydra Facial",
+    "features": [
+      "Skin tightening & wrinkle removal",
+      "Diamond dermabrasion & bio-polar RF",
+      "Full body anti-aging treatment"
+    ]
+  },
+  {
+    "name": "Dental Treatment Chair System",
+    "category": "Dental Chair",
+    "spec": "Complete Unit",
+    "image": "CHAIR.png",
+    "alt": "Dental Treatment Chair",
+    "features": [
+      "Tri-fold patient chair with electric leg plate",
+      "LED dental light with induction control",
+      "Rotary mouthwash basin & floor control box"
+    ]
+  },
+  {
+    "name": "High-Speed Dental Handpiece",
+    "category": "High Speed",
+    "spec": "LED & Standard Models",
+    "image": "HIGH.png",
+    "alt": "High-Speed Handpiece",
+    "features": [
+      "Speed: 300,000-450,000 RPM",
+      "E-type air turbine with 1:1 ratio",
+      "2-hole & 4-hole options available"
+    ]
+  },
+  {
+    "name": "Low-Speed Handpiece Kit",
+    "category": "Low Speed",
+    "spec": "Multiple Ratio Options",
+    "image": "LOW.png",
+    "alt": "Low-Speed Handpiece",
+    "features": [
+      "1:1, 1:5 speed increase options",
+      "4:1 & 20:1 contra angle models",
+      "Internal & external water spray systems"
+    ]
+  },
+  {
+    "name": "Surgical & Implant Handpiece",
+    "category": "Surgical",
+    "spec": "Specialized Tools",
+    "image": "SUR.png",
+    "alt": "Surgical Handpiece",
+    "features": [
+      "20:1 speed reduction without light",
+      "Dental implant handpiece available",
+      "Reciprocating saw handpiece for IPR"
+    ]
+  }
+]

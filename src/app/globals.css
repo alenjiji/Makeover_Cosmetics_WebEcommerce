@@ -1,0 +1,623 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Makeover Overseas palette, taken from the final logo (docs/BRAND.md):
+   navy M and map, the M's navy -> mauve -> rose gradient, and the mist disc.
+   Rose and mauve are accents: rose is too light for text on white, so text that
+   needs a warm accent uses rose-deep (5.5:1 on white) and rose-light on navy.
+   --------------------------------------------------------------------------- */
+@theme {
+  --color-navy: #122b49;
+  --color-navy-deep: #0b1c31;
+  --color-navy-soft: #1f3b5e;
+  --color-mauve: #645b67;
+  --color-rose: #ca998e;
+  --color-rose-light: #e3c4bb;
+  --color-rose-deep: #8c5d54;
+  --color-blush: #f8f0ed;
+  --color-mist: #e7e9e8;
+  --color-surface: #f5f6f5;
+  --color-ink: #101b2b;
+  --color-muted: #56616f;
+  --color-line: #e5e8e7;
+  --color-divider: #d8dddb;
+  --color-whatsapp: #0f7a40;
+  --color-whatsapp-dark: #0b6534;
+
+  --shadow-card: 0 2px 10px rgb(18 43 73 / 0.06);
+  --shadow-card-hover: 0 22px 44px rgb(18 43 73 / 0.14);
+  --shadow-navy: 0 6px 18px rgb(18 43 73 / 0.22);
+  --shadow-navy-hover: 0 14px 30px rgb(18 43 73 / 0.3);
+  --shadow-float: 0 24px 48px rgb(11 28 49 / 0.18);
+
+  --animate-pulse-dot: pulse-dot 2s infinite;
+  --animate-ping-soft: ping-soft 2.4s var(--ease-out) infinite;
+  --animate-fade: fade-in 0.8s ease both;
+  --animate-slide-up: slide-up 0.8s ease both;
+  --animate-blob: blob 20s ease-in-out infinite;
+  --animate-float: float 3s ease-in-out infinite;
+
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.8;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+  @keyframes blob {
+    0%,
+    100% {
+      transform: translate(0) scale(1);
+    }
+    33% {
+      transform: translate(50px, -50px) scale(1.1);
+    }
+    66% {
+      transform: translate(-30px, 30px) scale(0.9);
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+  }
+  @keyframes ping-soft {
+    0% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    80%,
+    100% {
+      transform: scale(3.2);
+      opacity: 0;
+    }
+  }
+}
+
+/* Bodoni Moda echoes the logo's high-contrast "M"; Montserrat is the wordmark's face. */
+@theme inline {
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bodoni), "Bodoni 72", Didot, Georgia, serif;
+}
+
+:root {
+  /* Height of the fixed navbar once it has condensed on scroll. */
+  --nav-h: 72px;
+
+  /* The logo's M: navy for most of its length, warming through mauve to rose. */
+  --gradient-m: linear-gradient(135deg, #122b49 0%, #122b49 42%, #394257 60%, #645b67 72%, #9d7d7d 86%, #ca998e 100%);
+  /* Same journey, ending on rose-deep so text stays legible on light backgrounds. */
+  --gradient-ink: linear-gradient(100deg, #122b49 0%, #2c3b55 35%, #645b67 70%, #8c5d54 100%);
+  --gradient-ink-dark: linear-gradient(100deg, #ffffff 0%, #f1e2dd 45%, #e3c4bb 75%, #ca998e 100%);
+}
+@media (min-width: 768px) {
+  :root {
+    --nav-h: 84px;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #fff;
+  color: var(--color-ink);
+}
+
+::selection {
+  background: var(--color-rose-light);
+  color: var(--color-navy-deep);
+}
+
+/* Accent words in headings take the M's gradient. Inside <SplitWords> each word is its
+   own animated layer, which a parent's text clip can't follow, so the gradient moves onto
+   the words themselves. The inline padding keeps italic overhangs from being clipped. */
+@utility text-accent {
+  background-image: var(--accent, var(--gradient-ink));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  padding-inline: 0.06em;
+  margin-inline: -0.06em;
+  &:has(.split-word) {
+    background-image: none;
+    padding-inline: 0;
+    margin-inline: 0;
+  }
+  & .split-word {
+    padding-inline: 0.08em;
+    margin-inline: -0.08em;
+  }
+  & .split-word > span {
+    background-image: var(--accent, var(--gradient-ink));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+}
+/* Pair with text-accent on dark backgrounds. */
+@utility text-accent-light {
+  --accent: var(--gradient-ink-dark);
+}
+@utility bg-gradient-m {
+  background-image: var(--gradient-m);
+}
+
+/* World map from the logo, as a mask so it can take any colour (set `background`). */
+@utility world-map {
+  -webkit-mask: url("/brand/world-map.svg") center / contain no-repeat;
+  mask: url("/brand/world-map.svg") center / contain no-repeat;
+}
+
+@layer components {
+  /* Buttons: pill-shaped like the logo's disc, set in the wordmark's tracked capitals. */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    border-radius: 9999px;
+    padding: 1rem 2rem;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    line-height: 1.25;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition:
+      transform 0.3s var(--ease-out),
+      box-shadow 0.3s var(--ease-out),
+      background-color 0.3s ease,
+      background-position 0.6s var(--ease-out),
+      border-color 0.3s ease,
+      color 0.3s ease;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+  .btn:disabled {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+  .btn-sm {
+    padding: 0.8rem 1.4rem;
+    font-size: 12px;
+  }
+  .btn-lg {
+    padding: 1.15rem 2.5rem;
+  }
+  /* Navy that warms along the M's gradient on hover (all stops keep white text above 4.5:1). */
+  .btn-primary {
+    color: #fff;
+    background-color: var(--color-navy);
+    background-image: linear-gradient(110deg, #122b49 0%, #122b49 50%, #645b67 80%, #8c5d54 100%);
+    background-size: 220% 100%;
+    background-position: 0% 0;
+    box-shadow: var(--shadow-navy);
+  }
+  .btn-primary:hover {
+    background-position: 100% 0;
+    box-shadow: var(--shadow-navy-hover);
+  }
+  .btn-secondary {
+    color: var(--color-navy);
+    background-color: #fff;
+    border: 1.5px solid rgb(18 43 73 / 0.18);
+    padding: calc(1rem - 1.5px) calc(2rem - 1.5px);
+  }
+  .btn-secondary:hover {
+    border-color: var(--color-navy);
+    background-color: var(--color-surface);
+  }
+  .btn-light {
+    color: var(--color-navy);
+    background-color: #fff;
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.18);
+  }
+  .btn-light:hover {
+    background-color: var(--color-blush);
+  }
+  .btn-outline-light {
+    color: #fff;
+    border: 1.5px solid rgb(255 255 255 / 0.4);
+    padding: calc(1rem - 1.5px) calc(2rem - 1.5px);
+  }
+  .btn-outline-light:hover {
+    border-color: #fff;
+    background-color: rgb(255 255 255 / 0.1);
+  }
+  .btn-whatsapp {
+    color: #fff;
+    background-color: var(--color-whatsapp);
+    box-shadow: 0 6px 18px rgb(15 122 64 / 0.25);
+  }
+  .btn-whatsapp:hover {
+    background-color: var(--color-whatsapp-dark);
+  }
+
+  /* Section eyebrow: tracked capitals after a short navy-to-rose rule, like the
+     logo's "EXPORT & IMPORTS" line. Add .eyebrow-center for a rule on both sides. */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.875rem;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.26em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: var(--color-rose-deep);
+  }
+  .eyebrow::before,
+  .eyebrow-center::after {
+    content: "";
+    width: 2rem;
+    height: 1px;
+    flex-shrink: 0;
+    background: linear-gradient(90deg, var(--color-navy), var(--color-rose));
+  }
+  .eyebrow-center::after {
+    background: linear-gradient(90deg, var(--color-rose), var(--color-navy));
+  }
+  .eyebrow-light {
+    color: var(--color-rose-light);
+  }
+  .eyebrow-light::before,
+  .eyebrow-light.eyebrow-center::after {
+    background: linear-gradient(90deg, rgb(255 255 255 / 0.5), var(--color-rose));
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Motion system. <Reveal> sets data-reveal="hidden" only on content that starts
+   below the fold, then "shown" when it scrolls in, so server HTML is never hidden.
+   --------------------------------------------------------------------------- */
+:root {
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.reveal {
+  transition:
+    opacity 0.9s var(--ease-out),
+    transform 0.9s var(--ease-out),
+    clip-path 1.2s var(--ease-out);
+}
+.reveal[data-variant="up"][data-reveal="hidden"] {
+  opacity: 0;
+  transform: translateY(40px);
+}
+.reveal[data-variant="fade"][data-reveal="hidden"] {
+  opacity: 0;
+}
+.reveal[data-variant="scale"][data-reveal="hidden"] {
+  opacity: 0;
+  transform: translateY(24px) scale(0.94);
+}
+/* Wipe up from the bottom; negative insets once shown so shadows aren't clipped. */
+.reveal[data-variant="clip"] {
+  clip-path: inset(-20% -20% -20% -20%);
+}
+.reveal[data-variant="clip"][data-reveal="hidden"] {
+  clip-path: inset(100% 0 0 0);
+}
+
+/* Headings: each word rises out of a mask. --w is the word index. */
+.split-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* Room for descenders so the mask doesn't crop them. */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.split-word > span {
+  display: inline-block;
+  transition: transform 1s var(--ease-out);
+  transition-delay: calc(var(--w, 0) * 55ms);
+}
+.reveal[data-reveal="hidden"] .split-word > span {
+  transform: translateY(115%);
+}
+/* Above-the-fold headings animate on load instead of on scroll. */
+.split-load .split-word > span {
+  animation: word-rise 1s var(--ease-out) both;
+  animation-delay: calc(var(--split-delay, 0s) + var(--w, 0) * 65ms);
+}
+@keyframes word-rise {
+  from {
+    transform: translateY(115%);
+  }
+}
+
+/* Lists and grids: direct children cascade in. --i is the child index. */
+.stagger > * {
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+.reveal[data-reveal="hidden"] .stagger > *,
+.reveal.stagger[data-reveal="hidden"] > * {
+  opacity: 0;
+  transform: translateY(36px) scale(0.97);
+}
+
+/* Lines that draw across, and badges that pop, once their section is shown. */
+.draw-x {
+  transform-origin: left;
+  transition: transform 1.6s var(--ease-out) 0.2s;
+}
+.reveal[data-reveal="hidden"] .draw-x {
+  transform: scaleX(0);
+}
+.pop {
+  transition:
+    transform 0.7s var(--ease-spring),
+    opacity 0.4s ease;
+  transition-delay: calc(0.25s + var(--i, 0) * 180ms);
+}
+.reveal[data-reveal="hidden"] .pop {
+  opacity: 0;
+  transform: scale(0.3);
+}
+
+/* Product shot that rises and settles as its panel wipes in; lifts a touch on hover. */
+.settle {
+  transition: transform 1.6s var(--ease-out);
+}
+.reveal[data-reveal="hidden"] .settle {
+  transform: translateY(8%) scale(1.08);
+}
+.group:hover .settle {
+  transform: translateY(-2%) scale(1.03);
+  transition-duration: 0.7s;
+}
+
+/* Supporting copy that follows a heading in. */
+.rise-late {
+  transition:
+    opacity 0.9s var(--ease-out) 0.35s,
+    transform 0.9s var(--ease-out) 0.35s;
+}
+.reveal[data-reveal="hidden"] .rise-late {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+/* One-off load animations for page tops. */
+@keyframes wipe-up {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(-20% -20% -20% -20%);
+  }
+}
+.animate-wipe-up {
+  animation: wipe-up 1.3s var(--ease-out) both;
+}
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
+  }
+}
+.animate-rise-in {
+  animation: rise-in 0.9s var(--ease-out) both;
+  animation-delay: calc(var(--rise-delay, 0s) + var(--i, 0) * 80ms);
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6) translateY(12px);
+  }
+}
+.animate-pop-in {
+  animation: pop-in 0.8s var(--ease-spring) both;
+}
+
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+@keyframes wave-in {
+  from {
+    opacity: 0;
+    transform: translateX(18%) scale(0.96);
+  }
+}
+.animate-wave-in {
+  animation: wave-in 1.4s var(--ease-out) both;
+}
+/* Image drifts from a slight zoom to rest after it is revealed. */
+@keyframes settle {
+  from {
+    transform: scale(1.14);
+  }
+}
+.animate-settle {
+  animation: settle 2.2s var(--ease-out) 0.3s both;
+}
+
+/* Cursor spotlight on cards (pointer position set by <PointerGlow>). */
+[data-glow] {
+  isolation: isolate;
+}
+[data-glow]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(
+    420px circle at var(--gx, 50%) var(--gy, 50%),
+    rgb(202 153 142 / 0.18),
+    transparent 45%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+[data-glow]:hover::before {
+  opacity: 1;
+}
+
+/* Hero depth: <HeroParallax> sets --px/--py in the range -1..1. */
+[data-depth] {
+  transform: translate3d(
+    calc(var(--px, 0) * var(--depth) * 1px),
+    calc(var(--py, 0) * var(--depth) * 1px),
+    0
+  );
+  transition: transform 0.6s var(--ease-out);
+}
+.tilt {
+  transform: perspective(1200px) rotateY(calc(var(--px, 0) * 5deg)) rotateX(calc(var(--py, 0) * -5deg));
+  transition: transform 0.6s var(--ease-out);
+}
+
+/* Continuous trust strip. */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 40s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Product cards entering after a filter change. */
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+}
+.card-in {
+  animation: card-in 0.6s var(--ease-out) both;
+  animation-delay: calc(min(var(--i, 0), 8) * 60ms);
+}
+
+/* Trade routes between the logo's three markets (<TradeRoutes>): each arc draws in,
+   then a light travels along it. Paths use pathLength="100"; --i staggers the arcs. */
+.route {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: route-draw 2.2s var(--ease-out) forwards;
+  animation-delay: calc(0.5s + var(--i, 0) * 0.45s);
+}
+@keyframes route-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.route-pulse {
+  stroke-dasharray: 4 96;
+  stroke-dashoffset: 104;
+  opacity: 0;
+  animation: route-pulse 3.6s ease-in-out infinite;
+  animation-delay: calc(2.6s + var(--i, 0) * 1.2s);
+}
+@keyframes route-pulse {
+  0% {
+    stroke-dashoffset: 104;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  75% {
+    stroke-dashoffset: 4;
+    opacity: 1;
+  }
+  85%,
+  100% {
+    stroke-dashoffset: 4;
+    opacity: 0;
+  }
+}
+.reveal[data-reveal="hidden"] .route,
+.reveal[data-reveal="hidden"] .route-pulse {
+  animation-play-state: paused;
+}
+
+/* Keep model codes like GL068 in lining figures in the display face. Bodoni's hairlines
+   get finer at large optical sizes, which leaves the +, / and - in product names and
+   specs barely visible, so pin a sturdier optical size. All-word statement headlines
+   opt back into automatic sizing with .opsz-auto. */
+.font-display {
+  font-variant-numeric: lining-nums;
+  font-optical-sizing: none;
+  font-variation-settings: "opsz" 24;
+}
+.font-display.opsz-auto {
+  font-optical-sizing: auto;
+  font-variation-settings: normal;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 3px;
+}
+/* Navy would vanish on the dark sections. */
+.theme-dark :focus-visible {
+  outline-color: var(--color-rose-light);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+  .marquee-track {
+    animation: none;
+  }
+  .route {
+    stroke-dashoffset: 0;
+  }
+  .route-pulse {
+    display: none;
+  }
+  [data-depth],
+  .tilt {
+    transform: none;
+  }
+}
