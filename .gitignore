@@ -45,3 +45,9 @@ REBUILD.md
 
 # brochure/price-list sources: local input for scripts/optimize-images.mjs, not for the public repo
 /assets/source/
+
+# designer exports; the masters used by scripts/brand-assets.mjs live in assets/brand/.
+# Kept out of the repo so they aren't published from public/.
+/public/final/
+/public/landscape_final/
+/public/logo_makeover.pdf

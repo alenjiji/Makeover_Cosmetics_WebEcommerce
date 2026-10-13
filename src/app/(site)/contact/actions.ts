@@ -1,11 +1,10 @@
 "use server";
 
 import { headers } from "next/headers";
-import { Resend } from "resend";
+import { sendMail } from "@/lib/mail";
 import { z } from "zod";
 import { getProduct, productTitle } from "@/lib/catalog";
 import { interestLabel, interestValues, type InquiryFields } from "@/lib/contact";
-import { site } from "@/lib/site";
 
 export type FieldName = "name" | "email" | "phone" | "interest" | "message";
 
@@ -136,27 +135,5 @@ async function deliver(inquiry: InquiryFields): Promise<boolean> {
     .join("")}</table>
 <p style="font-family:sans-serif;font-size:14px;white-space:pre-wrap">${escapeHtml(inquiry.message)}</p>`;
 
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    if (process.env.NODE_ENV === "production") {
-      console.error("[contact] RESEND_API_KEY is not set; inquiry was not delivered.");
-      return false;
-    }
-    console.info(`[contact] RESEND_API_KEY not set, logging instead of sending.\n${subject}\n${plain}`);
-    return true;
-  }
-
-  const { error } = await new Resend(apiKey).emails.send({
-    from: process.env.CONTACT_FROM_EMAIL ?? `${site.name} Website <onboarding@resend.dev>`,
-    to: process.env.CONTACT_TO_EMAIL ?? site.email,
-    replyTo: inquiry.email,
-    subject,
-    text: plain,
-    html,
-  });
-  if (error) {
-    console.error("[contact] Resend failed:", error);
-    return false;
-  }
-  return true;
+  return sendMail({ subject, text: plain, html, replyTo: inquiry.email });
 }
