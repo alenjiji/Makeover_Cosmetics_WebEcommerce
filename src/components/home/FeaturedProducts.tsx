@@ -21,7 +21,7 @@ export function FeaturedProducts() {
 
   return (
     <section aria-labelledby="featured" className="bg-white px-6 py-20 md:px-10 md:py-28 xl:px-[60px]">
-      <div className="mx-auto max-w-[1400px]">
+      <div className="mx-auto max-w-[1640px]">
         <Reveal variant="fade">
           <div className="mb-14 flex flex-col items-start justify-between gap-6 md:mb-16 lg:flex-row lg:items-end">
             <SectionHeader

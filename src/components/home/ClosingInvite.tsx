@@ -20,7 +20,7 @@ export function ClosingInvite() {
   return (
     <section aria-labelledby="invite" className="bg-white px-6 py-20 md:px-10 md:py-28 xl:px-[60px]">
       <Reveal variant="scale">
-        <div className="theme-dark relative mx-auto max-w-[1400px] overflow-hidden rounded-[36px] bg-navy px-6 py-14 text-white md:px-16 md:py-20">
+        <div className="theme-dark relative mx-auto max-w-[1640px] overflow-hidden rounded-[36px] bg-navy px-6 py-14 text-white md:px-16 md:py-20">
           <div aria-hidden="true" className="world-map absolute -left-[5%] top-[10%] aspect-[262/124] w-[110%] bg-white/[.05]" />
           {/* The M's gradient, blooming from the far corner. */}
           <div

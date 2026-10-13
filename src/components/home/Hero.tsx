@@ -28,9 +28,10 @@ const panelClass = "bg-[linear-gradient(160deg,#0b1c31_0%,#122b49_50%,#2c3b55_78
 export function Hero() {
   return (
     <section className="relative overflow-hidden bg-white lg:min-h-screen">
-      {/* Desktop: a navy disc edge sweeping in from the right, carrying the logo's map.
-          On small screens a panel sits behind the image instead. */}
-      <div aria-hidden="true" className="absolute inset-y-0 right-0 hidden w-[55%] animate-wave-in lg:block">
+      {/* Desktop: a navy disc edge sweeping in from the right, carrying the logo's map. It
+          starts at the page centre, where the image column begins, so on any screen width
+          it stays clear of the title. On small screens a panel sits behind the image instead. */}
+      <div aria-hidden="true" className="absolute inset-y-0 left-1/2 right-0 hidden animate-wave-in lg:block">
         <div className={`absolute -right-[5%] -top-[10%] h-[120%] w-[105%] overflow-hidden rounded-l-[50%] ${panelClass}`}>
           <div className="world-map absolute left-[6%] top-[16%] aspect-[262/124] w-[115%] bg-white/[.07]" />
           <div className="absolute -bottom-[15%] -right-[10%] size-[70%] rounded-full bg-[radial-gradient(circle,rgb(202_153_142/0.45),transparent_65%)]" />
@@ -38,7 +39,7 @@ export function Hero() {
         <div className="absolute -bottom-[20%] -right-[10%] h-[60%] w-full animate-blob rounded-t-[50%] bg-rose-light opacity-[.07] [animation-duration:18s]" />
       </div>
 
-      <div className="relative mx-auto grid max-w-[1400px] items-center gap-14 px-6 pb-16 pt-[124px] md:px-10 lg:min-h-screen lg:grid-cols-2 lg:gap-20 lg:pb-20 lg:pt-[140px] xl:px-[60px]">
+      <div className="relative mx-auto grid max-w-[1640px] items-center gap-14 px-6 pb-16 pt-[124px] md:px-10 lg:min-h-screen lg:grid-cols-2 lg:gap-20 lg:pb-20 lg:pt-[140px] xl:px-[60px]">
         <div>
           <p
             style={rise(0)}
@@ -51,7 +52,8 @@ export function Hero() {
             <span className="hidden sm:inline">{site.descriptor} · </span>
             {site.markets.join(" · ")}
           </p>
-          <HeroTitle className="mb-9 w-full max-w-[520px] sm:max-w-[580px] xl:max-w-[640px]" />
+          {/* Sized to its column (never past the panel), capped so it doesn't dwarf the copy. */}
+          <HeroTitle className="mb-9 w-full max-w-[600px] lg:pr-4" />
           <p
             style={rise(0.55)}
             className="mb-10 max-w-[540px] animate-rise-in text-base leading-[1.8] text-muted md:text-[17px]"

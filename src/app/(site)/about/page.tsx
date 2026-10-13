@@ -107,7 +107,7 @@ export default function AboutPage() {
 
       {/* Overview */}
       <section aria-labelledby="overview" className="bg-white px-6 pb-20 pt-8 md:px-10 md:pb-28 xl:px-[60px]">
-        <div className="mx-auto grid max-w-[1400px] items-center gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-20">
+        <div className="mx-auto grid max-w-[1640px] items-center gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-20">
           <Reveal variant="none">
             <h2
               id="overview"
@@ -166,7 +166,7 @@ export default function AboutPage() {
 
       {/* Facility */}
       <section aria-labelledby="facility" className="bg-surface px-6 py-20 md:px-10 md:py-28 xl:px-[60px]">
-        <div className="mx-auto max-w-[1400px]">
+        <div className="mx-auto max-w-[1640px]">
           <SectionHeader
             id="facility"
             label="Our Facility"
@@ -227,7 +227,7 @@ export default function AboutPage() {
 
       {/* People */}
       <section aria-labelledby="people" className="bg-white px-6 py-20 md:px-10 md:py-28 xl:px-[60px]">
-        <div className="mx-auto max-w-[1400px]">
+        <div className="mx-auto max-w-[1640px]">
           <SectionHeader
             id="people"
             label="Our People"

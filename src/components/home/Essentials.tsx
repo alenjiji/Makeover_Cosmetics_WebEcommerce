@@ -9,7 +9,7 @@ import { site } from "@/lib/site";
 export function Essentials() {
   return (
     <section aria-labelledby="essentials" className="bg-surface px-6 py-20 md:px-10 md:py-28 xl:px-[60px]">
-      <div className="mx-auto max-w-[1400px]">
+      <div className="mx-auto max-w-[1640px]">
         <SectionHeader
           id="essentials"
           label="Clinic Essentials"

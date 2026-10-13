@@ -8,7 +8,7 @@ import { site } from "@/lib/site";
 export function SeriesGrid() {
   return (
     <section aria-labelledby="series" className="bg-surface px-6 py-20 md:px-10 md:py-28 xl:px-[60px]">
-      <div className="mx-auto max-w-[1400px]">
+      <div className="mx-auto max-w-[1640px]">
         <SectionHeader
           id="series"
           label="Our Product Series"

@@ -51,7 +51,7 @@ export function Navbar() {
       >
         <nav
           aria-label="Main"
-          className={`mx-auto flex max-w-[1400px] items-center justify-between px-6 transition-[padding] duration-300 md:px-10 xl:px-[60px] ${
+          className={`mx-auto flex max-w-[1640px] items-center justify-between px-6 transition-[padding] duration-300 md:px-10 xl:px-[60px] ${
             scrolled ? "py-3.5 md:py-4" : "py-4 md:py-6"
           }`}
         >

@@ -104,7 +104,7 @@ export default function ContactPage() {
           <div className="absolute -bottom-36 -left-24 size-[400px] animate-blob rounded-full bg-[radial-gradient(circle,var(--color-navy),transparent)] opacity-[.08] [animation-direction:reverse] [animation-duration:25s]" />
         </div>
 
-        <div className="relative mx-auto grid max-w-[1400px] items-center gap-12 xl:grid-cols-2 xl:gap-20">
+        <div className="relative mx-auto grid max-w-[1640px] items-center gap-12 xl:grid-cols-2 xl:gap-20">
           <div>
             <p className="mb-8 inline-flex animate-pop-in items-center gap-3 rounded-full border border-line bg-white py-2.5 pl-4 pr-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-ink shadow-card">
               <span className="relative flex size-2">
@@ -185,7 +185,7 @@ export default function ContactPage() {
 
       {/* Form + sidebar */}
       <section id="inquiry" className="scroll-mt-[var(--nav-h)] bg-surface px-4 py-16 sm:px-6 md:px-10 md:py-24 xl:px-[60px] xl:py-[120px]">
-        <div className="mx-auto grid max-w-[1400px] items-start gap-10 xl:grid-cols-[1.5fr_1fr] xl:gap-14">
+        <div className="mx-auto grid max-w-[1640px] items-start gap-10 xl:grid-cols-[1.5fr_1fr] xl:gap-14">
           <div className="relative rounded-[28px] border border-line bg-white p-5 shadow-[0_8px_32px_rgb(18_43_73/0.08)] sm:p-8 md:p-14">
             <header className="mb-10">
               <SectionLabel>Send Message</SectionLabel>
@@ -248,7 +248,7 @@ export default function ContactPage() {
 
       {/* Map */}
       <section aria-labelledby="location" className="bg-white px-4 py-16 sm:px-6 md:px-10 md:py-24 xl:px-[60px] xl:py-[120px]">
-        <div className="mx-auto max-w-[1400px]">
+        <div className="mx-auto max-w-[1640px]">
           <div className="mb-12 text-center md:mb-14">
             <SectionLabel center>Find Us</SectionLabel>
             <h2 id="location" className="font-display text-[34px] font-bold tracking-[-0.01em] text-ink md:text-[48px]">

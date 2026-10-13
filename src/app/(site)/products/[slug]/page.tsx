@@ -102,7 +102,7 @@ export default function ProductPage({ params }: PageProps<"/products/[slug]">) {
 function ProductSkeleton() {
   return (
     <section aria-busy="true" className="bg-white px-6 pb-16 pt-[112px] md:px-10 md:pt-[150px] xl:px-[60px]">
-      <div className="mx-auto max-w-[1400px] animate-pulse">
+      <div className="mx-auto max-w-[1640px] animate-pulse">
         <div className="mb-8 h-4 w-72 rounded bg-line md:mb-10" />
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-16 xl:gap-20">
           <div className="aspect-square rounded-[28px] bg-surface ring-1 ring-line" />
@@ -179,7 +179,7 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
           aria-hidden="true"
           className="world-map pointer-events-none absolute -right-[20%] -top-10 aspect-[262/124] w-[90%] bg-navy/[.04]"
         />
-        <div className="relative mx-auto max-w-[1400px]">
+        <div className="relative mx-auto max-w-[1640px]">
           <nav aria-label="Breadcrumb" className="mb-8 md:mb-10">
             <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-muted">
               <li><Link href="/" className="hover:text-navy">Home</Link></li>
@@ -305,7 +305,7 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
 
       {/* Ordering & support */}
       <section aria-labelledby="ordering" className="bg-surface px-6 py-16 md:px-10 md:py-20 xl:px-[60px]">
-        <div className="mx-auto max-w-[1400px]">
+        <div className="mx-auto max-w-[1640px]">
           <div className="mb-10 max-w-2xl">
             <p className="eyebrow mb-5">Buying from {site.name}</p>
             <h2 id="ordering" className="font-display text-[34px] font-bold tracking-[-0.01em] text-ink md:text-[46px] md:leading-tight">
@@ -328,7 +328,7 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
 
       {/* Related */}
       <section aria-labelledby="related" className="bg-white px-6 py-16 md:px-10 md:py-20 xl:px-[60px]">
-        <div className="mx-auto max-w-[1400px]">
+        <div className="mx-auto max-w-[1640px]">
           <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
             <h2 id="related" className="font-display text-[34px] font-bold tracking-[-0.01em] text-ink md:text-[46px]">
               More in <span className="italic text-accent">{family.label}</span>

@@ -87,7 +87,7 @@ export function CatalogView({ categoryParam, query, onCategory, onQuery }: ViewP
     <>
       <div id="catalog" className="scroll-mt-[var(--nav-h)]" />
       <div className="relative z-20 -mx-6 md:sticky md:top-[var(--nav-h)] border-b border-line bg-surface/90 px-6 py-4 backdrop-blur-xl md:-mx-10 md:px-10 xl:-mx-[60px] xl:px-[60px]">
-        <div className="mx-auto flex max-w-[1400px] flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div className="mx-auto flex max-w-[1640px] flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div
             ref={rangeRef}
             role="group"
@@ -132,7 +132,7 @@ export function CatalogView({ categoryParam, query, onCategory, onQuery }: ViewP
           <div
             role="group"
             aria-label={`${activeFamily.label} categories`}
-            className="mx-auto mt-3 flex max-w-[1400px] gap-2 overflow-x-auto pb-1 [scrollbar-width:none]"
+            className="mx-auto mt-3 flex max-w-[1640px] gap-2 overflow-x-auto pb-1 [scrollbar-width:none]"
           >
             <SubPill
               label={`All ${activeFamily.label}`}
@@ -152,7 +152,7 @@ export function CatalogView({ categoryParam, query, onCategory, onQuery }: ViewP
         )}
       </div>
 
-      <div className="mx-auto max-w-[1400px] pt-8">
+      <div className="mx-auto max-w-[1640px] pt-8">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
           <p aria-live="polite" className="text-sm text-muted">
             Showing <strong className="font-semibold text-ink">{results.length}</strong> of{" "}

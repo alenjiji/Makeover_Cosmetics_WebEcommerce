@@ -41,7 +41,7 @@ export default function ProductsPage() {
         <Suspense fallback={<CatalogView categoryParam={null} query="" />}>
           <ProductCatalog />
         </Suspense>
-        <div className="mx-auto mt-20 max-w-[1400px] md:mt-24">
+        <div className="mx-auto mt-20 max-w-[1640px] md:mt-24">
           <InquiryBand />
         </div>
       </section>

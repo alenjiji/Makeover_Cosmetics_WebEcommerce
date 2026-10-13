@@ -37,7 +37,7 @@ export function Footer() {
         aria-hidden="true"
         className="pointer-events-none absolute -bottom-48 -right-40 size-[560px] rounded-full bg-[radial-gradient(circle,rgb(202_153_142/0.22),transparent_65%)]"
       />
-      <div className="relative mx-auto max-w-[1400px] px-6 md:px-10 xl:px-[60px]">
+      <div className="relative mx-auto max-w-[1640px] px-6 md:px-10 xl:px-[60px]">
         {/* Motto, with the logo's three markets on the map. */}
         <div className="grid items-center gap-10 border-b border-white/[.08] py-16 md:py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <div>

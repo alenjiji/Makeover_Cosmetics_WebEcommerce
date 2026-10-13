@@ -20,7 +20,7 @@ export function Facility() {
         aria-hidden="true"
         className="absolute -right-40 -top-40 size-[520px] animate-blob rounded-full bg-[radial-gradient(circle,rgb(202_153_142/0.28),transparent_70%)] [animation-duration:24s]"
       />
-      <div className="relative mx-auto grid max-w-[1400px] items-center gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
+      <div className="relative mx-auto grid max-w-[1640px] items-center gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
         <Reveal variant="none">
           <p className="pop eyebrow eyebrow-light mb-6">Built by us</p>
           <h2

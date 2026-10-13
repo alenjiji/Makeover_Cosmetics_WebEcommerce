@@ -25,7 +25,7 @@ const promises = [
 export function Welcome() {
   return (
     <section aria-labelledby="welcome" className="bg-surface px-6 py-20 md:px-10 md:py-28 xl:px-[60px]">
-      <div className="mx-auto grid max-w-[1400px] items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
+      <div className="mx-auto grid max-w-[1640px] items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
         <Reveal variant="none">
           <p className="pop eyebrow mb-6">Welcome to {site.name}</p>
           <h2
