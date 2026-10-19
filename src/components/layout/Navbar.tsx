@@ -4,20 +4,34 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ArrowRightIcon } from "@/components/ui/icons";
+import { UserIcon } from "@/components/ui/icons";
 import { site } from "@/lib/site";
+import { CartButton } from "@/components/cart/CartButton";
+import { useCart } from "@/components/cart/CartProvider";
+import { Logo } from "./Logo";
 
 const links = [
   { href: "/", label: "Home" },
   { href: "/products", label: "Products" },
   { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ] as const;
+
+/** Pages that open on a navy <PageHeader> (or navy hero) at every width. */
+const navyTopPages = ["/products", "/about", "/contact", "/cart", "/checkout"];
 
 export function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const overHero = pathname === "/" && !scrolled;
+  const { accountUrl } = useCart();
+  const navyPage = navyTopPages.includes(pathname) || pathname.startsWith("/policies/");
+  // Light links and CTA over navy: the home hero's right-hand panel (lg+) or a navy page header.
+  const overHero = (pathname === "/" || navyPage) && !scrolled;
+  // The header's own artwork turns light where the page behind it is navy: the home hero
+  // below lg, navy page headers at every width. The open menu is white, so it switches back.
+  const navyBehind = !scrolled && !open ? (navyPage ? "all" : pathname === "/" ? "below-lg" : null) : null;
+  const onNavy = navyBehind !== null;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -44,6 +58,8 @@ export function Navbar() {
     <>
       <header
         className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${
+          navyBehind === "all" ? "theme-dark" : navyBehind === "below-lg" ? "theme-dark-below-lg" : ""
+        } ${
           scrolled
             ? "border-navy/[.08] bg-white/85 shadow-[0_4px_30px_rgb(18_43_73/0.07)] backdrop-blur-xl"
             : "border-transparent"
@@ -66,8 +82,10 @@ export function Navbar() {
               preload
               className={`w-auto transition-all duration-300 ${
                 scrolled ? "h-[44px] md:h-[50px]" : "h-[52px] md:h-[62px]"
-              }`}
+              } ${navyBehind === "all" ? "hidden" : navyBehind === "below-lg" ? "max-lg:hidden" : ""}`}
             />
+            {/* The landscape artwork's navy M and black wordmark vanish on navy. */}
+            {onNavy && <Logo tone="light" className={navyBehind === "below-lg" ? "lg:hidden" : ""} />}
           </Link>
 
           <div className="hidden items-center gap-10 lg:flex xl:gap-12">
@@ -93,37 +111,37 @@ export function Navbar() {
                 />
               </Link>
             ))}
-            <Link
-              href="/contact"
-              // Over the hero's navy panel (lg+) it turns white, like .btn-light.
-              className={`btn btn-sm btn-primary group ${
-                overHero ? "lg:bg-white lg:bg-none lg:text-navy lg:shadow-[0_10px_30px_rgb(0_0_0/0.18)] lg:hover:bg-blush" : ""
-              }`}
-            >
-              Get Quote
-              <ArrowRightIcon className="transition-transform group-hover:translate-x-0.5" />
-            </Link>
+            <div className="-mx-4 flex items-center gap-1">
+              {accountUrl && <AccountLink href={accountUrl} light={overHero} />}
+              <CartButton light={overHero} />
+            </div>
           </div>
 
-          <button
-            type="button"
-            className="relative z-[60] flex flex-col gap-[5px] p-2 lg:hidden"
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            aria-controls="mobile-menu"
-            onClick={() => setOpen((v) => !v)}
-          >
-            {[0, 1, 2].map((i) => (
-              <span
-                key={i}
-                className={`block h-[2px] w-[26px] rounded-full bg-navy transition-all duration-300 ${
-                  open && i === 0 ? "translate-x-0 translate-y-[7.5px] rotate-45" : ""
-                } ${open && i === 1 ? "opacity-0" : ""} ${
-                  open && i === 2 ? "-translate-y-[7.5px] -rotate-45" : ""
-                }`}
-              />
-            ))}
-          </button>
+          <div className="relative z-[60] flex items-center gap-1 lg:hidden">
+            {accountUrl && <AccountLink href={accountUrl} light={onNavy} className="max-sm:hidden" />}
+            <CartButton light={onNavy} />
+            <button
+              type="button"
+              className="flex flex-col gap-[5px] p-2"
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+              onClick={() => setOpen((v) => !v)}
+            >
+              {[0, 1, 2].map((i) => (
+                <span
+                  key={i}
+                  className={`block h-[2px] w-[26px] rounded-full transition-all duration-300 ${
+                    onNavy ? "bg-white" : "bg-navy"
+                  } ${
+                    open && i === 0 ? "translate-x-0 translate-y-[7.5px] rotate-45" : ""
+                  } ${open && i === 1 ? "opacity-0" : ""} ${
+                    open && i === 2 ? "-translate-y-[7.5px] -rotate-45" : ""
+                  }`}
+                />
+              ))}
+            </button>
+          </div>
         </nav>
       </header>
 
@@ -146,13 +164,15 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/contact"
-            onClick={() => setOpen(false)}
-            className="btn btn-primary mt-8"
-          >
-            Get Quote
-          </Link>
+          {accountUrl && (
+            <a
+              href={accountUrl}
+              className="mt-6 inline-flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.14em] text-navy"
+            >
+              <UserIcon size={18} />
+              My Account &amp; Orders
+            </a>
+          )}
         </div>
         {/* Motto and markets, as a quiet sign-off at the foot of the menu. */}
         <div className="mt-auto px-8 pb-10">
@@ -163,5 +183,20 @@ export function Navbar() {
         </div>
       </div>
     </>
+  );
+}
+
+/** Shopify customer account (orders, addresses). Shown once the store is connected. */
+function AccountLink({ href, light, className = "" }: { href: string; light: boolean; className?: string }) {
+  return (
+    <a
+      href={href}
+      aria-label="My account and orders"
+      className={`flex size-11 items-center justify-center rounded-full transition-colors ${
+        light ? "text-white hover:bg-white/10" : "text-navy hover:bg-mist"
+      } ${className}`}
+    >
+      <UserIcon size={21} />
+    </a>
   );
 }

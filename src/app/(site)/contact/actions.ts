@@ -1,10 +1,10 @@
 "use server";
 
-import { headers } from "next/headers";
-import { sendMail } from "@/lib/mail";
 import { z } from "zod";
 import { getProduct, productTitle } from "@/lib/catalog";
 import { interestLabel, interestValues, type InquiryFields } from "@/lib/contact";
+import { detailsTable, escapeHtml, sendMail } from "@/lib/mail";
+import { isRateLimited } from "@/lib/rate-limit";
 
 export type FieldName = "name" | "email" | "phone" | "interest" | "message";
 
@@ -35,27 +35,10 @@ const schema = z.object({
     .max(5000, "Please keep your message under 5,000 characters."),
 });
 
-// In-memory limiter: fine for a single server, but each serverless instance keeps its own
-// counts, so swap for a shared store (e.g. Upstash Redis) if abuse becomes a problem.
-const WINDOW_MS = 10 * 60 * 1000;
-const MAX_PER_WINDOW = 5;
-const hits = new Map<string, number[]>();
-
-function isRateLimited(ip: string) {
-  const now = Date.now();
-  const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
-  recent.push(now);
-  hits.set(ip, recent);
-  return recent.length > MAX_PER_WINDOW;
-}
-
 const text = (formData: FormData, key: string) => {
   const value = formData.get(key);
   return typeof value === "string" ? value : "";
 };
-
-const escapeHtml = (value: string) =>
-  value.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
 export async function sendInquiry(prev: InquiryState, formData: FormData): Promise<InquiryState> {
   const attempt = prev.status === "error" ? prev.attempt + 1 : 1;
@@ -80,12 +63,7 @@ export async function sendInquiry(prev: InquiryState, formData: FormData): Promi
     return { status: "error", values, fieldErrors, attempt };
   }
 
-  const requestHeaders = await headers();
-  const ip =
-    requestHeaders.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    requestHeaders.get("x-real-ip") ??
-    "unknown";
-  if (isRateLimited(ip)) {
+  if (await isRateLimited("contact")) {
     return {
       status: "error",
       values,
@@ -127,12 +105,7 @@ async function deliver(inquiry: InquiryFields): Promise<boolean> {
   const subject = `New inquiry: ${inquiry.product ?? interest} – ${inquiry.name}`;
   const plain = `${rows.map(([k, v]) => `${k}: ${v}`).join("\n")}\n\nMessage:\n${inquiry.message}`;
   const html = `<h2 style="font-family:sans-serif">New website inquiry</h2>
-<table style="font-family:sans-serif;font-size:14px;border-collapse:collapse">${rows
-    .map(
-      ([k, v]) =>
-        `<tr><td style="padding:4px 16px 4px 0;color:#444d5a">${k}</td><td style="padding:4px 0"><strong>${escapeHtml(v)}</strong></td></tr>`,
-    )
-    .join("")}</table>
+${detailsTable(rows)}
 <p style="font-family:sans-serif;font-size:14px;white-space:pre-wrap">${escapeHtml(inquiry.message)}</p>`;
 
   return sendMail({ subject, text: plain, html, replyTo: inquiry.email });

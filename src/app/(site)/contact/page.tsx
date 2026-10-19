@@ -97,31 +97,32 @@ export default function ContactPage() {
       />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-[linear-gradient(135deg,#fff_0%,var(--color-surface)_55%,var(--color-blush)_100%)] px-4 pb-16 pt-[124px] sm:px-6 md:px-10 md:pb-24 md:pt-[174px] xl:px-[60px]">
+      <section className="theme-dark relative overflow-hidden bg-[linear-gradient(165deg,#0b1c31_0%,#122b49_55%,#1d3352_100%)] px-4 pb-16 pt-[124px] sm:px-6 md:px-10 md:pb-24 md:pt-[174px] xl:px-[60px]">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="world-map absolute -left-[10%] top-[18%] aspect-[262/124] w-[120%] bg-navy/[.04] xl:w-[90%]" />
-          <div className="absolute -right-24 -top-48 size-[600px] animate-blob rounded-full bg-[radial-gradient(circle,var(--color-rose),transparent)] opacity-20" />
-          <div className="absolute -bottom-36 -left-24 size-[400px] animate-blob rounded-full bg-[radial-gradient(circle,var(--color-navy),transparent)] opacity-[.08] [animation-direction:reverse] [animation-duration:25s]" />
+          <div className="world-map absolute -left-[10%] top-[16%] aspect-[262/124] w-[130%] bg-white/[.06] xl:w-[95%]" />
+          <div className="absolute -right-24 -top-48 size-[600px] animate-blob rounded-full bg-[radial-gradient(circle,rgb(202_153_142/0.3),transparent_65%)]" />
+          <div className="absolute -bottom-36 -left-24 size-[420px] animate-blob rounded-full bg-[radial-gradient(circle,rgb(100_91_103/0.4),transparent_70%)] [animation-direction:reverse] [animation-duration:25s]" />
+          <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-rose/60 to-transparent" />
         </div>
 
         <div className="relative mx-auto grid max-w-[1640px] items-center gap-12 xl:grid-cols-2 xl:gap-20">
           <div>
-            <p className="mb-8 inline-flex animate-pop-in items-center gap-3 rounded-full border border-line bg-white py-2.5 pl-4 pr-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-ink shadow-card">
+            <p className="mb-8 inline-flex animate-pop-in items-center gap-3 rounded-full border border-white/15 bg-white/[.07] py-2.5 pl-4 pr-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white backdrop-blur">
               <span className="relative flex size-2">
                 <span className="absolute inset-0 animate-ping-soft rounded-full bg-rose" />
-                <span className="relative size-2 rounded-full bg-rose-deep" />
+                <span className="relative size-2 rounded-full bg-rose" />
               </span>
               Let&apos;s Talk
             </p>
             <h1
               style={{ "--split-delay": "0.1s" } as React.CSSProperties}
-              className="split-load mb-7 font-display text-[40px] font-bold leading-[1.08] tracking-[-0.01em] text-ink sm:text-[48px] md:mb-8 md:text-[60px] xl:text-[72px]"
+              className="split-load mb-7 font-display text-[40px] font-bold leading-[1.08] tracking-[-0.01em] text-white sm:text-[48px] md:mb-8 md:text-[60px] xl:text-[72px]"
             >
               <SplitWords>
                 Start Your Journey to <span className="italic text-accent">Success</span>
               </SplitWords>
             </h1>
-            <p className="mb-10 max-w-[540px] animate-rise-in text-base leading-[1.8] text-muted [--rise-delay:.45s] md:text-[17px]">
+            <p className="mb-10 max-w-[540px] animate-rise-in text-base leading-[1.8] text-white/75 [--rise-delay:.45s] md:text-[17px]">
               Connect with our experts today and discover how our advanced medical beauty equipment
               can transform your business and elevate your services to new heights.
             </p>
@@ -131,12 +132,12 @@ export default function ContactPage() {
                   key={label}
                   style={{ "--i": i } as React.CSSProperties}
                   className="flex flex-1 animate-rise-in flex-col [--rise-delay:.6s] items-center gap-2 text-center sm:flex-none sm:flex-row sm:gap-3 sm:text-left">
-                  <span className="flex size-10 items-center justify-center rounded-full bg-white text-navy shadow-card sm:size-12">
+                  <span className="flex size-10 items-center justify-center rounded-full bg-white/10 text-rose-light ring-1 ring-white/15 sm:size-12">
                     <Icon size={22} />
                   </span>
                   <div className="flex flex-col-reverse">
-                    <dt className="mt-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-muted sm:text-[11px]">{label}</dt>
-                    <dd className="font-display text-[24px] font-bold leading-none text-navy sm:text-[28px]">{value}</dd>
+                    <dt className="mt-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-white/65 sm:text-[11px]">{label}</dt>
+                    <dd className="font-display text-[24px] font-bold leading-none text-white sm:text-[28px]">{value}</dd>
                   </div>
                 </div>
               ))}

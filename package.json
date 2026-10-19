@@ -9,7 +9,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "shopify:check": "node --env-file-if-exists=.env.local scripts/check-shopify.mts",
+    "shopify:export": "node scripts/export-shopify-products.mts"
   },
   "dependencies": {
     "next": "16.4.0",

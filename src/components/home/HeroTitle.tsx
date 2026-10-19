@@ -57,19 +57,21 @@ const stops: [offset: number, color: string][] = [
 /** The hero motto as the supplied artwork, with the words kept as real text for assistive tech and search. */
 export function HeroTitle({ className = "" }: { className?: string }) {
   return (
-    <h1 className={className}>
+    <h1 className={`text-[#020202] ${className}`}>
       <span className="sr-only">Quality. Beyond Borders</span>
       <svg aria-hidden="true" focusable="false" viewBox="0 0 342.29 105.37" className="block h-auto w-full overflow-visible">
         <defs>
           {gradients.map(([x1, y1, x2, y2], i) => (
             <linearGradient key={i} id={`hero-title-${i + 1}`} x1={x1} y1={y1} x2={x2} y2={y2} gradientUnits="userSpaceOnUse">
-              {stops.map(([offset, color]) => (
-                <stop key={offset} offset={offset} stopColor={color} />
+              {/* --hero-stop-N lets a theme recolour the gradient (see .hero-title-light). */}
+              {stops.map(([offset, color], n) => (
+                <stop key={offset} offset={offset} style={{ stopColor: `var(--hero-stop-${n}, ${color})` }} />
               ))}
             </linearGradient>
           ))}
         </defs>
-        <g className="hero-line" fill="#020202" style={{ "--i": 0 } as React.CSSProperties}>
+        {/* Line one takes the heading's text colour: near-black by default, white on navy. */}
+        <g className="hero-line" fill="currentColor" style={{ "--i": 0 } as React.CSSProperties}>
           {lineOne.map((d) => (
             <path key={d} d={d} />
           ))}

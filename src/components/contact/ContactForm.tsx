@@ -4,13 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useActionState, useEffect, useRef, useState } from "react";
-import { sendInquiry, type FieldName, type InquiryState } from "@/app/(site)/contact/actions";
+import { sendInquiry, type InquiryState } from "@/app/(site)/contact/actions";
 import { getProduct, productTitle } from "@/lib/catalog";
 import { inquiryWhatsappMessage, interestForCategory, interestOptions } from "@/lib/contact";
 import { ContactChooser } from "@/components/ui/ContactChooser";
 import type { Product } from "@/data/products";
 import { site } from "@/lib/site";
 import { AlertIcon, ArrowRightIcon, CheckIcon, CloseIcon, WhatsAppIcon } from "@/components/ui/icons";
+import { Field, fieldProps, inputClass } from "@/components/ui/form";
 
 /** Reads `?product=<slug>`; must render inside <Suspense>. */
 export function ContactFormFromUrl() {
@@ -84,7 +85,7 @@ function InquiryForm({ product: initialProduct, onReset }: { product?: Product; 
             <span className="block text-[11px] font-semibold uppercase tracking-[0.15em] text-rose-deep">
               Asking about
             </span>
-            <span className="block truncate font-semibold text-ink">{productTitle(product)}</span>
+            <span className="block font-semibold leading-snug text-ink">{productTitle(product)}</span>
           </span>
           <button
             type="button"
@@ -214,46 +215,5 @@ function InquiryForm({ product: initialProduct, onReset }: { product?: Product; 
         {pending ? "Sending your message" : ""}
       </p>
     </form>
-  );
-}
-
-const inputClass =
-  "w-full rounded-xl border border-divider bg-surface px-5 py-4 text-[15px] text-ink transition-all placeholder:text-muted/70 focus:border-navy focus:bg-white focus:outline-none focus:ring-4 focus:ring-navy/10 aria-invalid:border-rose-deep aria-invalid:bg-blush";
-
-function fieldProps(name: FieldName, errors: Partial<Record<FieldName, string>>) {
-  return {
-    id: name,
-    name,
-    required: true,
-    "aria-invalid": errors[name] ? true : undefined,
-    "aria-describedby": errors[name] ? `${name}-error` : undefined,
-    className: inputClass,
-  };
-}
-
-function Field({
-  name,
-  label,
-  error,
-  children,
-}: {
-  name: FieldName;
-  label: string;
-  error?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="flex flex-col">
-      <label htmlFor={name} className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-ink">
-        {label}
-      </label>
-      {children}
-      {error && (
-        <p id={`${name}-error`} className="mt-2 flex items-center gap-1.5 text-[13px] font-medium text-rose-deep">
-          <AlertIcon size={14} className="shrink-0" />
-          {error}
-        </p>
-      )}
-    </div>
   );
 }

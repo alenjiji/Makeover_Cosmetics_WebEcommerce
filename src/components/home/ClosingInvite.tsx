@@ -58,7 +58,7 @@ export function ClosingInvite() {
                     <span className="min-w-0 flex-1">
                       <span className="block text-[11px] font-semibold uppercase tracking-[0.16em] text-rose-light">{label}</span>
                       {values.map((value) => (
-                        <span key={value} className="block truncate text-[15px] font-bold md:text-base">
+                        <span key={value} className="block text-[15px] font-bold [overflow-wrap:anywhere] md:text-base">
                           {value}
                         </span>
                       ))}

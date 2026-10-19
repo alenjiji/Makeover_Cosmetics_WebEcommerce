@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { cacheLife } from "next/cache";
 import { TradeRoutes } from "@/components/ui/TradeRoutes";
+import { getPolicies } from "@/lib/commerce/shopify";
 import { site } from "@/lib/site";
 import { Logo } from "./Logo";
 
@@ -29,7 +30,9 @@ function FooterColumn({ title, children }: { title: string; children: React.Reac
 const linkClass =
   "inline-block text-sm text-white/75 transition-all hover:translate-x-1 hover:text-white";
 
-export function Footer() {
+export async function Footer() {
+  // Store policies from Shopify; none until the store is connected and policies are written.
+  const policies = await getPolicies();
   return (
     <footer className="theme-dark relative overflow-hidden bg-[linear-gradient(165deg,#0b1c31_0%,#122b49_70%,#1f3150_100%)] text-white/80">
       {/* The M's rose end, glowing in from the corner. */}
@@ -103,6 +106,17 @@ export function Footer() {
           <p>
             © <CopyrightYear /> {site.name}. All rights reserved.
           </p>
+          {policies.length > 0 && (
+            <ul className="flex flex-wrap justify-center gap-x-5 gap-y-1">
+              {policies.map((p) => (
+                <li key={p.handle}>
+                  <Link href={`/policies/${p.handle}`} className="hover:text-white">
+                    {p.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
           <p className="uppercase tracking-[0.15em]">ISO Certified · CE Approved</p>
         </div>
       </div>

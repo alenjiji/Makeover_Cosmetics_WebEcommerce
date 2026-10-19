@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRightIcon, CheckIcon } from "@/components/ui/icons";
 import { Reveal } from "@/components/ui/Reveal";
 import { SplitWords } from "@/components/ui/SplitWords";
+import { ProductStage } from "@/components/ui/ProductStage";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
 type Spotlight = {
@@ -14,7 +15,6 @@ type Spotlight = {
   points: string[];
   image: { src: string; alt: string; width: number; height: number };
   detail?: { src: string; alt: string; width: number; height: number; caption: string };
-  tone: string;
 };
 
 // Copy and figures from the Seductive brochures in assets/source.
@@ -44,7 +44,6 @@ const spotlights: Spotlight[] = [
       height: 363,
       caption: "Five treatment heads, Φ8mm to 20×40mm",
     },
-    tone: "from-blush to-white",
   },
   {
     slug: "emrf-m8-rf-microneedling",
@@ -64,7 +63,6 @@ const spotlights: Spotlight[] = [
       "Single-use probes for hygiene and peace of mind",
     ],
     image: { src: "/images/products/emrf-m8.webp", alt: "EMRF M8 machine with six treatment probes", width: 652, height: 820 },
-    tone: "from-mist to-white",
   },
   {
     slug: "fusion-cold-plasma-machine",
@@ -91,13 +89,12 @@ const spotlights: Spotlight[] = [
       height: 425,
       caption: "Eight interchangeable probes",
     },
-    tone: "from-[#eeecf0] to-white",
   },
 ];
 
 export function NewArrivals() {
   return (
-    <section aria-labelledby="new-arrivals" className="bg-white px-6 py-20 md:px-10 md:py-28 xl:px-[60px]">
+    <section aria-labelledby="new-arrivals" className="bg-[linear-gradient(180deg,var(--color-surface)_0%,#fff_100%)] px-6 py-24 md:px-10 md:py-32 xl:px-[60px]">
       <div className="mx-auto max-w-[1640px]">
         <SectionHeader
           id="new-arrivals"
@@ -116,30 +113,30 @@ export function NewArrivals() {
             <Reveal key={item.slug} variant="none">
               <article className="grid items-center gap-10 lg:grid-cols-2 lg:gap-20">
                 <div className={i % 2 === 1 ? "lg:order-last" : ""}>
-                  <Reveal
-                    variant="clip"
-                    className={`group relative aspect-[5/4] overflow-hidden rounded-[28px] bg-gradient-to-br ring-1 ring-navy/[.06] ${item.tone}`}
-                  >
-                    <Image
+                  <Reveal variant="scale" className="group relative mx-auto aspect-square w-full max-w-[560px]">
+                    <ProductStage
                       src={item.image.src}
                       alt={item.image.alt}
-                      fill
-                      sizes="(min-width: 1024px) 640px, 100vw"
-                      className="settle object-contain p-8 mix-blend-multiply md:p-12"
-                    />
-                    <span className="absolute left-5 top-5 rounded-full bg-navy px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-white">
-                      New
-                    </span>
+                      sizes="(min-width: 1024px) 560px, 100vw"
+                      disc="lg"
+                      imageClassName="settle"
+                      className="size-full"
+                    >
+                      <span className="absolute left-[6%] top-[6%] flex size-16 flex-col items-center justify-center rounded-full bg-navy text-white shadow-navy md:size-20">
+                        <span className="font-display text-[18px] font-bold italic leading-none md:text-[22px]">New</span>
+                        <span className="mt-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-rose-light">Arrival</span>
+                      </span>
+                    </ProductStage>
                   </Reveal>
                   {item.detail && (
-                    <figure className="rise-late mt-4 flex items-center gap-4 rounded-[20px] bg-surface p-3 pr-5 ring-1 ring-line">
+                    <figure className="rise-late mx-auto mt-4 flex max-w-[560px] items-center gap-4 rounded-full bg-white p-2 pr-6 shadow-card ring-1 ring-line">
                       <Image
                         src={item.detail.src}
                         alt={item.detail.alt}
                         width={item.detail.width}
                         height={item.detail.height}
                         sizes="240px"
-                        className="h-20 w-auto max-w-[55%] rounded-lg bg-white object-contain mix-blend-multiply md:h-24"
+                        className="h-16 w-auto max-w-[55%] rounded-full bg-mist object-contain px-3 mix-blend-multiply md:h-20"
                       />
                       <figcaption className="text-[13px] font-semibold text-ink">{item.detail.caption}</figcaption>
                     </figure>

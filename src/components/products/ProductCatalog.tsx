@@ -14,12 +14,13 @@ import {
   type CatalogFilter,
 } from "@/lib/catalog";
 import { ArrowRightIcon, CloseIcon, SearchIcon } from "@/components/ui/icons";
+import type { PriceMap } from "@/lib/commerce/types";
 import { ProductCard } from "./ProductCard";
 
 const countIn = (filter: CatalogFilter) => products.filter((p) => matchesFilter(p, filter)).length;
 
 /** Reads `?category=` and `?q=` from the URL; must render inside <Suspense>. */
-export function ProductCatalog() {
+export function ProductCatalog({ prices = {} }: { prices?: PriceMap }) {
   const params = useSearchParams();
   const [query, setQuery] = useState(params.get("q") ?? "");
 
@@ -36,6 +37,7 @@ export function ProductCatalog() {
 
   return (
     <CatalogView
+      prices={prices}
       categoryParam={params.get("category")}
       query={query}
       onCategory={(value) => {
@@ -55,6 +57,7 @@ export function ProductCatalog() {
 }
 
 type ViewProps = {
+  prices?: PriceMap;
   categoryParam: string | null;
   query: string;
   onCategory?: (value: string | null) => void;
@@ -62,7 +65,7 @@ type ViewProps = {
 };
 
 /** Stateless catalog UI. Rendered without handlers it is the prerendered (SEO) fallback. */
-export function CatalogView({ categoryParam, query, onCategory, onQuery }: ViewProps) {
+export function CatalogView({ prices = {}, categoryParam, query, onCategory, onQuery }: ViewProps) {
   const filter = resolveFilter(categoryParam);
   const activeFamily = filter.kind === "all" ? undefined : filter.family;
   const results = products.filter((p) => matchesFilter(p, filter) && matchesQuery(p, query));
@@ -204,25 +207,25 @@ export function CatalogView({ categoryParam, query, onCategory, onQuery }: ViewP
                     <ArrowRightIcon className="transition-transform group-hover:translate-x-1" />
                   </Link>
                 </div>
-                <ProductGrid items={products.filter((p) => family.categories.includes(p.category))} />
+                <ProductGrid prices={prices} items={products.filter((p) => family.categories.includes(p.category))} />
               </section>
             ))}
           </div>
         ) : (
-          <ProductGrid items={results} headingLevel="h2" />
+          <ProductGrid prices={prices} items={results} headingLevel="h2" />
         )}
       </div>
     </>
   );
 }
 
-function ProductGrid({ items, headingLevel }: { items: Product[]; headingLevel?: "h2" | "h3" }) {
+function ProductGrid({ items, headingLevel, prices }: { items: Product[]; headingLevel?: "h2" | "h3"; prices: PriceMap }) {
   return (
     <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 xl:gap-8">
       {items.map((product, i) => (
         // Cards that appear after a filter change animate in; ones already shown stay put.
         <div key={product.slug} className="card-in flex" style={{ "--i": i } as React.CSSProperties}>
-          <ProductCard product={product} headingLevel={headingLevel} />
+          <ProductCard product={product} headingLevel={headingLevel} price={prices[product.slug]} />
         </div>
       ))}
     </div>

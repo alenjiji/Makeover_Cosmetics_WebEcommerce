@@ -4,6 +4,7 @@ import { ArrowRightIcon } from "@/components/ui/icons";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { getProduct } from "@/lib/catalog";
+import { getPriceMap } from "@/lib/commerce/shopify";
 import type { Product } from "@/data/products";
 
 // One pick from each kind of treatment room.
@@ -16,8 +17,9 @@ const picks = [
   "dental-treatment-chair-system",
 ];
 
-export function FeaturedProducts() {
+export async function FeaturedProducts() {
   const products = picks.map(getProduct).filter((p): p is Product => Boolean(p));
+  const prices = await getPriceMap();
 
   return (
     <section aria-labelledby="featured" className="bg-white px-6 py-20 md:px-10 md:py-28 xl:px-[60px]">
@@ -48,7 +50,7 @@ export function FeaturedProducts() {
           <div className="stagger grid gap-6 md:grid-cols-2 xl:grid-cols-3 xl:gap-8">
             {products.map((product, i) => (
               <div key={product.slug} className="flex" style={{ "--i": i } as React.CSSProperties}>
-                <ProductCard product={product} />
+                <ProductCard product={product} price={prices[product.slug]} />
               </div>
             ))}
           </div>

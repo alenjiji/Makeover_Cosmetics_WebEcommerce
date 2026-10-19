@@ -23,7 +23,14 @@ Set these in the host's dashboard (see `.env.example`). `NEXT_PUBLIC_SITE_URL` i
 | `CONTACT_TO_EMAIL` | Inbox for inquiries; optional with Gmail |
 | `CONTACT_FROM_EMAIL` | Resend only: e.g. `Makeover Overseas <website@makeoveroverseas.com>` |
 
-The contact form fails in production without credentials for the chosen provider.
+| `SHOPIFY_STORE_DOMAIN` | `your-store.myshopify.com` (see `docs/SHOPIFY.md`) |
+| `SHOPIFY_STOREFRONT_ACCESS_TOKEN` | The Headless channel's public Storefront API token |
+| `SHOPIFY_COUNTRY` | `IN` (prices and checkout in ₹) |
+| `SHOPIFY_WEBHOOK_SECRET` | Webhook signing key (Shopify → Settings → Notifications → Webhooks) |
+
+The contact form fails in production without credentials for the chosen provider. Without
+the Shopify variables, "Place Order" sends the order to your inbox (the team confirms price,
+payment and delivery); add them and redeploy to switch on Shopify checkout.
 **Switching from Gmail to Resend** later is only an env change: set `EMAIL_PROVIDER=resend`
 plus the Resend variables, then redeploy.
 

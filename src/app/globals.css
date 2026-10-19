@@ -140,27 +140,94 @@ body {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  padding-inline: 0.06em;
-  margin-inline: -0.06em;
+  /* The gradient only paints inside the element's box, so pad it past the italic lean
+     (most on the right, a little on the left for letters like "f" and "j"). */
+  padding-inline: 0.06em 0.16em;
+  margin-inline: -0.06em -0.16em;
   &:has(.split-word) {
     background-image: none;
     padding-inline: 0;
     margin-inline: 0;
   }
   & .split-word {
-    padding-inline: 0.08em;
-    margin-inline: -0.08em;
+    padding-inline: 0.1em 0.2em;
+    margin-inline: -0.1em -0.2em;
   }
+  /* Each word paints its own gradient: give that box the same room as the mask. */
   & .split-word > span {
     background-image: var(--accent, var(--gradient-ink));
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
+    padding: 0.18em 0.18em 0.3em 0.08em;
+    margin: -0.18em -0.18em -0.3em -0.08em;
   }
 }
-/* Pair with text-accent on dark backgrounds. */
+/* Pair with text-accent on dark backgrounds (automatic inside .theme-dark). */
 @utility text-accent-light {
   --accent: var(--gradient-ink-dark);
+}
+.theme-dark .text-accent {
+  --accent: var(--gradient-ink-dark);
+}
+
+/* Store policies from Shopify (rich text written in Shopify admin). */
+.policy-body {
+  color: var(--color-muted);
+  font-size: 16px;
+  line-height: 1.8;
+}
+.policy-body :is(h1, h2, h3, h4) {
+  margin: 2em 0 0.6em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--color-ink);
+}
+.policy-body :is(h1, h2) {
+  font-size: 26px;
+}
+.policy-body :is(h3, h4) {
+  font-size: 20px;
+}
+.policy-body > :first-child {
+  margin-top: 0;
+}
+.policy-body p,
+.policy-body ul,
+.policy-body ol {
+  margin: 0 0 1.1em;
+}
+.policy-body ul,
+.policy-body ol {
+  padding-left: 1.4em;
+  list-style: revert;
+}
+.policy-body a {
+  color: var(--color-navy);
+  text-decoration: underline;
+  text-decoration-color: var(--color-rose);
+  text-underline-offset: 3px;
+}
+.policy-body strong {
+  color: var(--color-ink);
+}
+
+/* Cart drawer sliding in from the right. */
+@keyframes drawer-in {
+  from {
+    transform: translateX(100%);
+  }
+}
+
+/* The logo's disc as a stage for product shots (<ProductStage>): a slow orbit ring. */
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.orbit {
+  animation: orbit 60s linear infinite;
 }
 @utility bg-gradient-m {
   background-image: var(--gradient-m);
@@ -170,6 +237,17 @@ body {
 @utility world-map {
   -webkit-mask: url("/brand/world-map.svg") center / contain no-repeat;
   mask: url("/brand/world-map.svg") center / contain no-repeat;
+}
+
+/* A grid with no column template sizes its track to the widest child's min-content, so
+   one long email or label can push a whole section past the screen edge (where
+   overflow-hidden then crops it). Default every grid to one shrinkable column. Written
+   as :where() in the base layer (a plain .grid rule clashes with the utility of that
+   name), so every grid-cols-* utility still overrides it. */
+@layer base {
+  :where(.grid) {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 @layer components {
@@ -186,8 +264,10 @@ body {
     font-weight: 600;
     letter-spacing: 0.12em;
     line-height: 1.25;
+    text-align: center;
     text-transform: uppercase;
-    white-space: nowrap;
+    /* Labels stay on one line where they fit, and wrap rather than spill on narrow phones. */
+    text-wrap: balance;
     transition:
       transform 0.3s var(--ease-out),
       box-shadow 0.3s var(--ease-out),
@@ -331,9 +411,11 @@ body {
   display: inline-block;
   overflow: hidden;
   vertical-align: top;
-  /* Room for descenders so the mask doesn't crop them. */
-  padding-bottom: 0.12em;
-  margin-bottom: -0.12em;
+  /* Room inside the mask for Playfair's tall capitals, deep descenders (g, y, p) and
+     italic overhangs, which reach past the line box at tight line-heights. The negative
+     margins cancel it out, so spacing and line breaks are unchanged. */
+  padding: 0.18em 0.08em 0.3em;
+  margin: -0.18em -0.08em -0.3em;
 }
 .split-word > span {
   display: inline-block;
@@ -365,6 +447,22 @@ body {
     opacity: 0;
     transform: translateY(30%);
   }
+}
+
+/* Hero title on navy: white lettering, and "Borders" warming from white to rose instead of
+   from navy (which would vanish on the navy background). */
+@utility hero-title-light {
+  color: #fff;
+  --hero-stop-0: #ffffff;
+  --hero-stop-1: #ffffff;
+  --hero-stop-2: #ffffff;
+  --hero-stop-3: #fdf8f6;
+  --hero-stop-4: #f9eeea;
+  --hero-stop-5: #f3e1db;
+  --hero-stop-6: #ecd3cb;
+  --hero-stop-7: #e3c4bb;
+  --hero-stop-8: #d6ada2;
+  --hero-stop-9: #ca998e;
 }
 
 /* Lists and grids: direct children cascade in. --i is the child index. */
@@ -599,6 +697,12 @@ body {
 /* Navy would vanish on the dark sections. */
 .theme-dark :focus-visible {
   outline-color: var(--color-rose-light);
+}
+/* Sections that are only dark below lg (the home hero and the header over it). */
+@media (width < 64rem) {
+  .theme-dark-below-lg :focus-visible {
+    outline-color: var(--color-rose-light);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

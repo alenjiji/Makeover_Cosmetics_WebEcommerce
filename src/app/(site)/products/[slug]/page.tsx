@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { products, type Product } from "@/data/products";
 import { InquiryBand } from "@/components/products/InquiryBand";
+import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { ProductCard } from "@/components/products/ProductCard";
+import { ProductStage } from "@/components/ui/ProductStage";
+import { getPriceMap } from "@/lib/commerce/shopify";
+import { priceLabel } from "@/lib/commerce/types";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -126,8 +129,10 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
   const family = familyOf(product.category);
   const related = relatedProducts(product, 3);
   const { previous, next } = adjacentProducts(product);
-  const quoteHref = `/contact?product=${product.slug}#inquiry`;
+  const inquiryHref = `/contact?product=${product.slug}#inquiry`;
   const waMessage = inquiryMessage(product);
+  const prices = await getPriceMap();
+  const price = prices[product.slug];
   const specs: [string, string][] = [
     [specLabel(product.spec), product.spec],
     ["Category", product.category],
@@ -148,6 +153,16 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
         category: product.category,
         url: new URL(`/products/${product.slug}`, site.url).toString(),
         brand: { "@type": "Brand", name: site.name },
+        // Offer data (price, currency, stock) for search results, once priced in Shopify.
+        ...(price?.purchasable && {
+          offers: {
+            "@type": "Offer",
+            price: price.price.amount,
+            priceCurrency: price.price.currencyCode,
+            availability: "https://schema.org/InStock",
+            url: new URL(`/products/${product.slug}`, site.url).toString(),
+          },
+        }),
       },
       {
         "@type": "BreadcrumbList",
@@ -199,18 +214,19 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-16 xl:gap-20">
             {/* Media */}
             <div className="lg:sticky lg:top-[calc(var(--nav-h)+24px)] lg:self-start">
-              <div className="group relative aspect-[4/3] animate-wipe-up overflow-hidden rounded-[28px] sm:aspect-square bg-[radial-gradient(circle_at_50%_40%,#fff_0%,#fff_40%,var(--color-mist)_100%)] ring-1 ring-navy/[.06]">
+              <div className="group relative aspect-square animate-wipe-up overflow-hidden rounded-[32px] bg-[linear-gradient(180deg,#fff_0%,var(--color-surface)_100%)] ring-1 ring-navy/[.06]">
                 <div
                   aria-hidden="true"
                   className="absolute -bottom-1/4 -right-1/4 size-3/4 rounded-full bg-[radial-gradient(circle,rgb(202_153_142/0.22)_0%,transparent_70%)]"
                 />
-                <Image
+                <ProductStage
                   src={product.image}
                   alt={product.alt}
-                  fill
                   preload
+                  disc="lg"
                   sizes="(min-width: 1400px) 680px, (min-width: 1024px) 50vw, 100vw"
-                  className="animate-settle object-contain p-10 mix-blend-multiply transition-transform duration-700 group-hover:scale-[1.03] md:p-16"
+                  imageClassName="animate-settle transition-transform duration-700 group-hover:scale-[1.03]"
+                  className="size-full"
                 />
                 <span className="absolute left-5 top-5 rounded-full bg-navy px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white">
                   {product.category}
@@ -241,6 +257,12 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
                 <SplitWords>{product.name}</SplitWords>
               </h1>
 
+              <p className="mb-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <span className="font-display text-[34px] font-bold text-navy">{priceLabel(price)}</span>
+                <span className="text-[13px] text-muted">
+                  {price?.purchasable ? "excl. shipping & taxes" : "Price on request: ask us for a quote"}
+                </span>
+              </p>
               <div className="mb-9 rounded-[20px] border border-rose/30 bg-blush px-6 py-5">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
                   {specLabel(product.spec)}
@@ -263,23 +285,25 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
                 ))}
               </ul>
 
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Link href={quoteHref} className="btn btn-primary group flex-1">
-                  Request a Quote
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
+                <AddToCartButton
+                  slug={product.slug}
+                  name={product.name}
+                  purchasable={price?.purchasable ?? false}
+                  className="btn btn-primary w-full disabled:opacity-70"
+                />
+                <Link href={inquiryHref} className="btn btn-secondary group flex-1">
+                  Send Inquiry
                   <ArrowRightIcon className="transition-transform group-hover:translate-x-1" />
                 </Link>
-                <ContactChooser
-                  channel="whatsapp"
-                  message={waMessage}
-                  className="btn btn-secondary flex-1 hover:border-whatsapp hover:text-whatsapp"
-                >
-                  <WhatsAppIcon />
+              </div>
+              <p className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
+                <ContactChooser channel="whatsapp" message={waMessage} className="inline-flex items-center gap-1.5 font-semibold text-whatsapp underline-offset-4 hover:underline">
+                  <WhatsAppIcon size={16} />
                   Ask on WhatsApp
                 </ContactChooser>
-              </div>
-              <p className="mt-4 flex flex-wrap items-center gap-x-2 text-sm text-muted">
+                <span aria-hidden="true">·</span>
                 <PhoneIcon size={15} className="text-rose-deep" />
-                Prefer to talk?
                 <ContactChooser channel="call" className="font-semibold text-ink underline-offset-4 hover:text-navy hover:underline">
                   Call us in the UAE or India
                 </ContactChooser>
@@ -343,11 +367,11 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
           </div>
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 xl:gap-8">
             {related.map((p) => (
-              <ProductCard key={p.slug} product={p} />
+              <ProductCard key={p.slug} product={p} price={prices[p.slug]} />
             ))}
           </div>
 
-          <nav aria-label="More products" className="mt-14 grid gap-4 border-t border-divider pt-8 sm:grid-cols-2">
+          <nav aria-label="More products" className="mt-14 grid grid-cols-[minmax(0,1fr)] gap-4 border-t border-divider pt-8 sm:grid-cols-2">
             {previous ? (
               <AdjacentLink product={previous} direction="previous" />
             ) : (
@@ -368,8 +392,15 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
 
       {/* Mobile CTA: sticks to the viewport bottom until the footer scrolls in. */}
       <div className="sticky bottom-0 z-30 flex gap-3 border-t border-divider bg-white/95 px-4 py-3 shadow-[0_-8px_24px_rgb(0_0_0/0.06)] backdrop-blur lg:hidden">
-        <Link href={quoteHref} className="btn btn-primary flex-1 px-4">
-          Request a Quote
+        <AddToCartButton
+          compact
+          slug={product.slug}
+          name={product.name}
+          purchasable={price?.purchasable ?? false}
+          className="btn btn-primary min-w-0 flex-1 px-4 disabled:opacity-70"
+        />
+        <Link href={inquiryHref} aria-label="Send an inquiry about this product" className="btn btn-secondary px-5">
+          Inquire
         </Link>
         <ContactChooser
           channel="whatsapp"
@@ -418,7 +449,7 @@ function AdjacentLink({ product, direction }: { product: Product; direction: "pr
         <span className="block text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
           {isNext ? "Next" : "Previous"}
         </span>
-        <span className="block truncate font-display text-[20px] font-bold text-ink">
+        <span className="block font-display text-[20px] font-bold leading-snug text-ink">
           {productTitle(product)}
         </span>
       </span>
