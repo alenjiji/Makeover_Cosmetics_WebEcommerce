@@ -6,6 +6,7 @@ const pages: { path: string; priority: number; changeFrequency: "weekly" | "mont
   { path: "", priority: 1, changeFrequency: "weekly" },
   { path: "/products", priority: 0.9, changeFrequency: "weekly" },
   { path: "/about", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/our-services", priority: 0.8, changeFrequency: "monthly" },
   { path: "/global-presence", priority: 0.7, changeFrequency: "monthly" },
   { path: "/partner-brands", priority: 0.7, changeFrequency: "monthly" },
   { path: "/contact", priority: 0.8, changeFrequency: "monthly" },
