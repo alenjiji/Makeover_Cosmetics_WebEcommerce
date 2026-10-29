@@ -18,7 +18,7 @@ const links = [
 ] as const;
 
 /** Pages that open on a navy <PageHeader> (or navy hero) at every width. */
-const navyTopPages = ["/products", "/about", "/contact", "/cart", "/checkout"];
+const navyTopPages = ["/products", "/about", "/contact", "/global-presence", "/partner-brands", "/cart", "/checkout"];
 
 export function Navbar() {
   const pathname = usePathname();

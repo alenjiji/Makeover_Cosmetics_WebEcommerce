@@ -51,3 +51,6 @@ REBUILD.md
 /public/final/
 /public/landscape_final/
 /public/logo_makeover.pdf
+
+# Google Business Profile exports (generated, not served by the site)
+/marketing/

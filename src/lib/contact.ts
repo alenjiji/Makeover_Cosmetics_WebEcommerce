@@ -10,6 +10,7 @@ export const interestOptions = [
   { value: "ems", label: "EMS Body Sculpting" },
   { value: "dental", label: "Dental Products" },
   { value: "other", label: "Other Products" },
+  { value: "partnership", label: "Distribution / OEM Partnership" },
 ] as const;
 
 export type Interest = (typeof interestOptions)[number]["value"];

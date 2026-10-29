@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { sendInquiry, type InquiryState } from "@/app/(site)/contact/actions";
 import { getProduct, productTitle } from "@/lib/catalog";
-import { inquiryWhatsappMessage, interestForCategory, interestOptions } from "@/lib/contact";
+import { inquiryWhatsappMessage, interestForCategory, interestOptions, type Interest } from "@/lib/contact";
 import { ContactChooser } from "@/components/ui/ContactChooser";
 import type { Product } from "@/data/products";
 import { site } from "@/lib/site";
@@ -19,15 +19,21 @@ export function ContactFormFromUrl() {
   return <ContactForm product={slug ? getProduct(slug) : undefined} />;
 }
 
+type FormProps = {
+  product?: Product;
+  /** Preselected "Product Interest" when there's no product, e.g. "partnership". */
+  interest?: Interest;
+};
+
 /** Remounting via `key` is how "Send another message" resets the action state. */
-export function ContactForm({ product }: { product?: Product }) {
+export function ContactForm({ product, interest }: FormProps) {
   const [round, setRound] = useState(0);
-  return <InquiryForm key={round} product={product} onReset={() => setRound((r) => r + 1)} />;
+  return <InquiryForm key={round} product={product} interest={interest} onReset={() => setRound((r) => r + 1)} />;
 }
 
 const initialState: InquiryState = { status: "idle" };
 
-function InquiryForm({ product: initialProduct, onReset }: { product?: Product; onReset: () => void }) {
+function InquiryForm({ product: initialProduct, interest, onReset }: FormProps & { onReset: () => void }) {
   const [state, formAction, pending] = useActionState(sendInquiry, initialState);
   const [product, setProduct] = useState(initialProduct);
   const formRef = useRef<HTMLFormElement>(null);
@@ -65,7 +71,7 @@ function InquiryForm({ product: initialProduct, onReset }: { product?: Product; 
     );
   }
 
-  const fallbackInterest = product ? interestForCategory(product.category) : "";
+  const fallbackInterest = product ? interestForCategory(product.category) : (interest ?? "");
 
   return (
     <form

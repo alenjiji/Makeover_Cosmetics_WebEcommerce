@@ -6,6 +6,15 @@ const nextConfig: NextConfig = {
   // Product images in Shopify carts are served from Shopify's CDN.
   images: { remotePatterns: [{ protocol: "https", hostname: "cdn.shopify.com" }] },
   partialPrefetching: true,
+  // Addresses from the previous makeoveroverseas.com site that Google still lists.
+  async redirects() {
+    return [
+      { source: "/about-us", destination: "/about", permanent: true },
+      { source: "/contact-us", destination: "/contact", permanent: true },
+      { source: "/home", destination: "/", permanent: true },
+      { source: "/index.html", destination: "/", permanent: true },
+    ];
+  },
   // Self-hosted behind nginx (Hostinger VPS / Node.js hosting): turn off proxy buffering so
   // streamed and partially prerendered pages arrive progressively. Harmless on Netlify.
   async headers() {
