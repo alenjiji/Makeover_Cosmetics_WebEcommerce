@@ -36,7 +36,7 @@ confirmation. Your team then confirms price, payment and delivery. Once Shopify 
 - **Settings → Payments:** Shopify Payments isn't available in India, so add a provider such as Razorpay, PayU or Cashfree. Also add a manual method (bank transfer) for large orders. Use the provider's test mode for the first order.
 
 ### 2. Products
-1. Generate the import file: `npm run shopify:export`. This writes `docs/shopify-products.csv`: all products as drafts, without prices, with images from the live site.
+1. Generate the import file: `npm run shopify:export` (or `npm run shopify:export -- https://makeoveroverseas.netlify.app` if the domain isn't serving the site yet; Shopify downloads the images from that address). This writes `docs/shopify-products.csv`: all products as drafts, without prices, with images from the live site.
 2. **Products → Import**, and upload the CSV. **Don't change the handles.**
 3. For each product, set the **price** (anything left at ₹0 stays "₹ N.A / Ask for Price" on the site), set status **Active**, and tick the **Headless** sales channel. The import already allows ordering when out of stock (made-to-order equipment).
 
@@ -56,7 +56,7 @@ confirmation. Your team then confirms price, payment and delivery. Once Shopify 
 
 ### 6. Checkout domain (recommended)
 Checkout opens on the store's primary domain. To keep it on your own domain:
-1. **Settings → Domains → Connect existing domain:** add `shop.makeoveroverseas.com`. **Don't** add `makeoveroverseas.com` itself; that stays on Netlify.
+1. **Settings → Domains → Connect existing domain:** add `shop.makeoveroverseas.com`. **Don't** add `makeoveroverseas.com` or `www`; those stay on Netlify. If Shopify connects them automatically (Hostinger "connect" button), the whole website is replaced by Shopify's password page: remove them in Shopify and set Hostinger back to `A @ → 75.2.60.5` and `CNAME www → makeoveroverseas.netlify.app`.
 2. At Hostinger, add: `CNAME  shop  →  shops.myshopify.com`
 3. Once it's verified, set `shop.makeoveroverseas.com` as the **primary domain**.
 

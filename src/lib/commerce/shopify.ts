@@ -9,7 +9,7 @@ import type { Cart, Money, PriceMap } from "./types";
  */
 const domain = process.env.SHOPIFY_STORE_DOMAIN?.replace(/^https?:\/\//, "").replace(/\/$/, "");
 const token = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
-const version = process.env.SHOPIFY_API_VERSION ?? "2025-07";
+const version = process.env.SHOPIFY_API_VERSION ?? "2026-10";
 /** Market whose prices and currency the site shows (ISO country code). */
 const country = (process.env.SHOPIFY_COUNTRY ?? "IN").toUpperCase();
 
