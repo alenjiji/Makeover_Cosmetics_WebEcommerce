@@ -42,9 +42,9 @@ export function CheckoutView() {
           Thank you, <span className="italic text-accent">{state.name.split(" ")[0]}</span>
         </h2>
         <p className="mx-auto mb-9 max-w-md leading-relaxed text-muted">
-          We&apos;ve received your order and sent a confirmation to{" "}
-          <strong className="text-ink">{state.email}</strong>. Our team will contact you within 24 hours to
-          confirm pricing, payment and delivery.
+          We&apos;ve received your order. Our team will contact you at{" "}
+          <strong className="text-ink">{state.email}</strong> within 24 hours to confirm pricing, payment and
+          delivery. Please note your order number.
         </p>
         <Link href="/products" className="btn btn-primary group">
           Continue Browsing

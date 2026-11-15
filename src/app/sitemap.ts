@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 import { products } from "@/data/products";
+import { getPriceMap } from "@/lib/commerce/shopify";
+import { isListed } from "@/lib/commerce/types";
 import { site } from "@/lib/site";
 
 const pages: { path: string; priority: number; changeFrequency: "weekly" | "monthly" }[] = [
@@ -12,10 +14,11 @@ const pages: { path: string; priority: number; changeFrequency: "weekly" | "mont
   { path: "/contact", priority: 0.8, changeFrequency: "monthly" },
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const prices = await getPriceMap();
   return [
     ...pages.map(({ path, priority, changeFrequency }) => ({ url: `${site.url}${path}`, priority, changeFrequency })),
-    ...products.map((p) => ({
+    ...products.filter((p) => isListed(p.slug, prices)).map((p) => ({
       url: `${site.url}/products/${p.slug}`,
       priority: 0.8,
       changeFrequency: "monthly" as const,

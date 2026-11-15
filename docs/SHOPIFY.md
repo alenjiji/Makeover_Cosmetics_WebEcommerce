@@ -21,9 +21,13 @@ Store: `ytgk3g-w3.myshopify.com` · Website: `https://makeoveroverseas.com`
   changes what appears in checkout and on order emails. Change website text in `src/data/products.ts`.
 - Each product uses **one variant only** (the first). Don't add options like 2-hole / 4-hole as
   variants: the site always adds the first one. Make separate products instead.
-- Price rules on the website:
-  - price **above ₹0** and for sale → price shown, **Add to Cart** works
-  - price **₹0**, or product not on the Headless channel → **₹ N.A** and **Ask for Price** (inquiry form)
+- What the website shows for each product:
+  - **Active** on the Website channel, price **above ₹0** → price shown, **Add to Cart** works
+  - **Active** on the Website channel, price **₹0** → **₹ N.A** and **Ask for Price** (inquiry form)
+  - **Draft**, **Archived**, or not on the Website channel → **hidden**: gone from the catalog, home
+    page, related products and sitemap, and its page returns "not found"
+  - If Shopify can't be reached, every product stays visible (nothing disappears by accident).
+- Dental products are deliberately left out of the home page's featured grid (`FeaturedProducts.tsx`).
 - Prices update on the site within seconds (webhooks), or within an hour at most.
 
 ## Domains: the one rule
@@ -153,7 +157,7 @@ Shopify's own theme would duplicate the website, so it only forwards visitors th
    - **Shipping**: "This is a physical product" on; enter the **weight**.
    - **Status: Active**.
    - **Publishing / Sales channels**: tick **Website** (the Headless storefront from step 11). Without
-     it the product shows "Ask for Price" on the site.
+     it the product is hidden on the site.
 4. Faster for many products: in the **Products** list, tick several, then **Bulk edit** to type prices
    in a spreadsheet view, or **More actions → Include in sales channels** to publish them in one go.
 
@@ -180,7 +184,11 @@ SHOPIFY_STORE_DOMAIN=ytgk3g-w3.myshopify.com
 SHOPIFY_STOREFRONT_ACCESS_TOKEN=<public token from step 11>
 SHOPIFY_COUNTRY=IN
 SHOPIFY_WEBHOOK_SECRET=<signing key from step 12>
+SHOPIFY_ACCOUNT_URL=https://shopify.com/104298905965/account
 ```
+
+`SHOPIFY_ACCOUNT_URL` sends the navbar's account icon straight to Shopify customer accounts,
+instead of through the Online Store (which shows the password page while that's on).
 
 Then **Deploys → Trigger deploy → Deploy site**. Environment changes only apply after a deploy.
 
@@ -216,7 +224,11 @@ from Shopify, **unpriced** (₹ N.A) or **not for sale** (not Active or not on t
 **Products → the product → Price → Save.** The website updates within seconds.
 
 ### Take a product off sale (keep it on the website as "Ask for Price")
-Set price to ₹0, **or** untick the **Website** sales channel. Don't delete it, or the history and handle are lost.
+Set its price to ₹0.
+
+### Hide a product from the website
+Set its status to **Draft** (or **Archived**). It disappears from the site within seconds; set it back
+to **Active** to bring it back. Don't delete it, or the history and handle are lost.
 
 ### Add a new product
 This needs both sides, with **the same handle**:
@@ -233,7 +245,8 @@ This needs both sides, with **the same handle**:
      isNew: true,                        // optional "New" badge
    },
    ```
-   Deploy, and the product appears with "Ask for Price".
+   Deploy. It only appears once it's also **Active** in Shopify (step 2), because the site hides
+   products Shopify doesn't list.
 2. **Shopify**: **Products → Add product**. Same title and photo. Under **Search engine listing → Edit**,
    set **URL handle** to exactly the slug (`new-machine-name`). Set the price, Status **Active**, and tick
    the **Website** channel. The price appears on the site within seconds.
@@ -267,7 +280,8 @@ in `next.config.ts` if an old URL needs to point somewhere.
 | You see | Cause | Fix |
 |---|---|---|
 | Whole website shows Shopify "password" page or Cloudflare error 1001 | Domain was connected to Shopify | DNS back to the table in "Domains", remove the domain in Shopify |
-| A product shows ₹ N.A | Price ₹0, not Active, or not on the Website channel | Fix in Shopify; `npm run shopify:check` lists which |
+| A product shows ₹ N.A | Price ₹0 | Set a price in Shopify |
+| A product is missing from the site | Draft, Archived, or not on the Website channel | Set Active and tick Website; `npm run shopify:check` lists which |
 | "This product isn't available to order online yet" | Handle in Shopify differs from the website slug | Set Shopify URL handle to the slug |
 | Checkout shows the password page | Online Store password protection on | Step 9 |
 | Checkout says no shipping available | No rate covers that address | Step 4 |

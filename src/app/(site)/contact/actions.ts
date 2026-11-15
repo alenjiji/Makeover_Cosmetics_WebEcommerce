@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { getProduct, productTitle } from "@/lib/catalog";
 import { interestLabel, interestValues, type InquiryFields } from "@/lib/contact";
-import { detailsTable, escapeHtml, sendMail } from "@/lib/mail";
+import { submitForm } from "@/lib/forms";
 import { isRateLimited } from "@/lib/rate-limit";
 
 export type FieldName = "name" | "email" | "phone" | "interest" | "message";
@@ -93,20 +93,13 @@ export async function sendInquiry(prev: InquiryState, formData: FormData): Promi
   return { status: "success", name: parsed.data.name, email: parsed.data.email };
 }
 
-async function deliver(inquiry: InquiryFields): Promise<boolean> {
-  const interest = interestLabel(inquiry.interest);
-  const rows: [string, string][] = [
-    ["Name", inquiry.name],
-    ["Email", inquiry.email],
-    ["Phone", inquiry.phone],
-    ["Product interest", interest],
-    ...(inquiry.product ? [["Product page", inquiry.product] as [string, string]] : []),
-  ];
-  const subject = `New inquiry: ${inquiry.product ?? interest} – ${inquiry.name}`;
-  const plain = `${rows.map(([k, v]) => `${k}: ${v}`).join("\n")}\n\nMessage:\n${inquiry.message}`;
-  const html = `<h2 style="font-family:sans-serif">New website inquiry</h2>
-${detailsTable(rows)}
-<p style="font-family:sans-serif;font-size:14px;white-space:pre-wrap">${escapeHtml(inquiry.message)}</p>`;
-
-  return sendMail({ subject, text: plain, html, replyTo: inquiry.email });
+function deliver(inquiry: InquiryFields): Promise<boolean> {
+  return submitForm("inquiry", {
+    name: inquiry.name,
+    email: inquiry.email,
+    phone: inquiry.phone,
+    interest: interestLabel(inquiry.interest),
+    product: inquiry.product,
+    message: inquiry.message,
+  });
 }

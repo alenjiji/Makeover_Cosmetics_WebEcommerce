@@ -75,11 +75,11 @@ export function getProduct(slug: string): Product | undefined {
 }
 
 /** Same category first, then the rest of the family, then anything else. */
-export function relatedProducts(product: Product, limit = 3): Product[] {
+export function relatedProducts(product: Product, limit = 3, pool: Product[] = products): Product[] {
   const family = familyOf(product.category);
   const rank = (p: Product) =>
     p.category === product.category ? 0 : family.categories.includes(p.category) ? 1 : 2;
-  return products
+  return pool
     .filter((p) => p.slug !== product.slug)
     .map((p, index) => ({ p, index }))
     .sort((a, b) => rank(a.p) - rank(b.p) || a.index - b.index)
@@ -87,11 +87,11 @@ export function relatedProducts(product: Product, limit = 3): Product[] {
     .map(({ p }) => p);
 }
 
-export function adjacentProducts(product: Product) {
-  const index = products.findIndex((p) => p.slug === product.slug);
+export function adjacentProducts(product: Product, pool: Product[] = products) {
+  const index = pool.findIndex((p) => p.slug === product.slug);
   return {
-    previous: index > 0 ? products[index - 1] : undefined,
-    next: index < products.length - 1 ? products[index + 1] : undefined,
+    previous: index > 0 ? pool[index - 1] : undefined,
+    next: index >= 0 && index < pool.length - 1 ? pool[index + 1] : undefined,
   };
 }
 

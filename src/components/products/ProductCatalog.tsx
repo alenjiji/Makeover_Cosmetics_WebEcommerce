@@ -14,10 +14,10 @@ import {
   type CatalogFilter,
 } from "@/lib/catalog";
 import { ArrowRightIcon, CloseIcon, SearchIcon } from "@/components/ui/icons";
-import type { PriceMap } from "@/lib/commerce/types";
+import { isListed, type PriceMap } from "@/lib/commerce/types";
 import { ProductCard } from "./ProductCard";
 
-const countIn = (filter: CatalogFilter) => products.filter((p) => matchesFilter(p, filter)).length;
+const countIn = (items: Product[], filter: CatalogFilter) => items.filter((p) => matchesFilter(p, filter)).length;
 
 /** Reads `?category=` and `?q=` from the URL; must render inside <Suspense>. */
 export function ProductCatalog({ prices = {} }: { prices?: PriceMap }) {
@@ -68,7 +68,10 @@ type ViewProps = {
 export function CatalogView({ prices = {}, categoryParam, query, onCategory, onQuery }: ViewProps) {
   const filter = resolveFilter(categoryParam);
   const activeFamily = filter.kind === "all" ? undefined : filter.family;
-  const results = products.filter((p) => matchesFilter(p, filter) && matchesQuery(p, query));
+  // Products set to Draft or Archived in Shopify drop out of the catalog, and so do empty ranges.
+  const listed = products.filter((p) => isListed(p.slug, prices));
+  const listedFamilies = families.filter((f) => countIn(listed, { kind: "family", family: f }) > 0);
+  const results = listed.filter((p) => matchesFilter(p, filter) && matchesQuery(p, query));
   const isDefaultView = filter.kind === "all" && !query.trim();
 
   const rangeRef = useRef<HTMLDivElement>(null);
@@ -99,15 +102,15 @@ export function CatalogView({ prices = {}, categoryParam, query, onCategory, onQ
           >
             <FilterPill
               label="All Products"
-              count={products.length}
+              count={listed.length}
               pressed={filter.kind === "all"}
               onClick={() => select(null)}
             />
-            {families.map((family) => (
+            {listedFamilies.map((family) => (
               <FilterPill
                 key={family.slug}
                 label={family.label}
-                count={countIn({ kind: "family", family })}
+                count={countIn(listed, { kind: "family", family })}
                 pressed={activeFamily?.slug === family.slug}
                 onClick={() => select(family.slug)}
               />
@@ -142,11 +145,13 @@ export function CatalogView({ prices = {}, categoryParam, query, onCategory, onQ
               pressed={filter.kind === "family"}
               onClick={() => select(activeFamily.slug)}
             />
-            {activeFamily.categories.map((category) => (
+            {activeFamily.categories
+              .filter((category) => countIn(listed, { kind: "category", family: activeFamily, category }) > 0)
+              .map((category) => (
               <SubPill
                 key={category}
                 label={categoryLabel(category)}
-                count={countIn({ kind: "category", family: activeFamily, category })}
+                count={countIn(listed, { kind: "category", family: activeFamily, category })}
                 pressed={filter.kind === "category" && filter.category === category}
                 onClick={() => select(categorySlug(category))}
               />
@@ -159,7 +164,7 @@ export function CatalogView({ prices = {}, categoryParam, query, onCategory, onQ
         <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
           <p aria-live="polite" className="text-sm text-muted">
             Showing <strong className="font-semibold text-ink">{results.length}</strong> of{" "}
-            {products.length} products
+            {listed.length} products
             {filter.kind === "family" && <> in {filter.family.label}</>}
             {filter.kind === "category" && <> in {categoryLabel(filter.category)}</>}
             {query.trim() && <> matching “{query.trim()}”</>}
@@ -180,7 +185,7 @@ export function CatalogView({ prices = {}, categoryParam, query, onCategory, onQ
           <EmptyState query={query} onClear={onCategory ? clearAll : undefined} />
         ) : isDefaultView ? (
           <div className="space-y-20">
-            {families.map((family) => (
+            {listedFamilies.map((family) => (
               <section key={family.slug} aria-labelledby={`range-${family.slug}`}>
                 <div className="mb-8 flex items-end justify-between gap-4 border-b border-divider pb-5">
                   <div>
@@ -203,11 +208,11 @@ export function CatalogView({ prices = {}, categoryParam, query, onCategory, onQ
                     }}
                     className="group hidden shrink-0 items-center gap-1.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-navy sm:inline-flex"
                   >
-                    {countIn({ kind: "family", family })} models
+                    {countIn(listed, { kind: "family", family })} models
                     <ArrowRightIcon className="transition-transform group-hover:translate-x-1" />
                   </Link>
                 </div>
-                <ProductGrid prices={prices} items={products.filter((p) => family.categories.includes(p.category))} />
+                <ProductGrid prices={prices} items={listed.filter((p) => family.categories.includes(p.category))} />
               </section>
             ))}
           </div>

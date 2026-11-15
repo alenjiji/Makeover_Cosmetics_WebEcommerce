@@ -8,7 +8,7 @@ import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { ProductCard } from "@/components/products/ProductCard";
 import { ProductStage } from "@/components/ui/ProductStage";
 import { getPriceMap } from "@/lib/commerce/shopify";
-import { priceLabel } from "@/lib/commerce/types";
+import { isListed, priceLabel } from "@/lib/commerce/types";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -125,13 +125,16 @@ function ProductSkeleton() {
 async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "params">) {
   const product = getProduct((await params).slug);
   if (!product) notFound();
+  const prices = await getPriceMap();
+  // Draft or archived in Shopify: the page is gone until the product is Active again.
+  if (!isListed(product.slug, prices)) notFound();
+  const listed = products.filter((p) => isListed(p.slug, prices));
 
   const family = familyOf(product.category);
-  const related = relatedProducts(product, 3);
-  const { previous, next } = adjacentProducts(product);
+  const related = relatedProducts(product, 3, listed);
+  const { previous, next } = adjacentProducts(product, listed);
   const inquiryHref = `/contact?product=${product.slug}#inquiry`;
   const waMessage = inquiryMessage(product);
-  const prices = await getPriceMap();
   const price = prices[product.slug];
   const specs: [string, string][] = [
     [specLabel(product.spec), product.spec],

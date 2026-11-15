@@ -39,6 +39,15 @@ export type PriceInfo = {
 
 export type PriceMap = Record<string, PriceInfo>;
 
+/**
+ * Whether a product is listed in Shopify: Active and published to the website's sales channel.
+ * Draft, archived or unpublished products are hidden across the site. Without Shopify data
+ * (not connected, or the lookup failed) every product stays listed.
+ */
+export function isListed(slug: string, prices: PriceMap) {
+  return Object.keys(prices).length === 0 || slug in prices;
+}
+
 /** Shown wherever a price belongs until the product is priced in Shopify. */
 export const PRICE_PLACEHOLDER = "₹ N.A";
 

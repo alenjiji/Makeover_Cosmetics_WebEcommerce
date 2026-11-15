@@ -5,6 +5,8 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SplitWords } from "@/components/ui/SplitWords";
 import { ProductStage } from "@/components/ui/ProductStage";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { getPriceMap } from "@/lib/commerce/shopify";
+import { isListed } from "@/lib/commerce/types";
 
 type Spotlight = {
   slug: string;
@@ -92,7 +94,13 @@ const spotlights: Spotlight[] = [
   },
 ];
 
-export function NewArrivals() {
+const counts = ["A new platform", "Two new platforms", "Three new platforms"];
+
+export async function NewArrivals() {
+  const prices = await getPriceMap();
+  const items = spotlights.filter((item) => isListed(item.slug, prices));
+  if (items.length === 0) return null;
+
   return (
     <section aria-labelledby="new-arrivals" className="bg-[linear-gradient(180deg,var(--color-surface)_0%,#fff_100%)] px-6 py-24 md:px-10 md:py-32 xl:px-[60px]">
       <div className="mx-auto max-w-[1640px]">
@@ -104,12 +112,12 @@ export function NewArrivals() {
               Meet Our Newest <span className="italic text-accent">Systems</span>
             </>
           }
-          subtitle="Three new platforms for clinics ready to offer more, each with full training and support."
+          subtitle={`${counts[items.length - 1]} for clinics ready to offer more, ${items.length > 1 ? "each " : ""}with full training and support.`}
           className="mb-16 md:mb-20"
         />
 
         <div className="space-y-20 md:space-y-28">
-          {spotlights.map((item, i) => (
+          {items.map((item, i) => (
             <Reveal key={item.slug} variant="none">
               <article className="grid items-center gap-10 lg:grid-cols-2 lg:gap-20">
                 <div className={i % 2 === 1 ? "lg:order-last" : ""}>

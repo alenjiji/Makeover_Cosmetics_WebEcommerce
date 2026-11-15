@@ -16,23 +16,24 @@ Set these in the host's dashboard (see `.env.example`). `NEXT_PUBLIC_SITE_URL` i
 | Variable | Value |
 |---|---|
 | `NEXT_PUBLIC_SITE_URL` | `https://makeoveroverseas.com` |
-| `EMAIL_PROVIDER` | `gmail` for now, `resend` once domain email exists |
-| `GMAIL_USER` | The Gmail address that sends (and, by default, receives) inquiries |
-| `GMAIL_APP_PASSWORD` | A Google App Password (needs 2-Step Verification), not the account password |
-| `RESEND_API_KEY` | From resend.com, when `EMAIL_PROVIDER=resend` |
-| `CONTACT_TO_EMAIL` | Inbox for inquiries; optional with Gmail |
-| `CONTACT_FROM_EMAIL` | Resend only: e.g. `Makeover Overseas <website@makeoveroverseas.com>` |
-
 | `SHOPIFY_STORE_DOMAIN` | `your-store.myshopify.com` (see `docs/SHOPIFY.md`) |
 | `SHOPIFY_STOREFRONT_ACCESS_TOKEN` | The Headless channel's public Storefront API token |
 | `SHOPIFY_COUNTRY` | `IN` (prices and checkout in ₹) |
 | `SHOPIFY_WEBHOOK_SECRET` | Webhook signing key (Shopify → Settings → Notifications → Webhooks) |
 
-The contact form fails in production without credentials for the chosen provider. Without
-the Shopify variables, "Place Order" sends the order to your inbox (the team confirms price,
-payment and delivery); add them and redeploy to switch on Shopify checkout.
-**Switching from Gmail to Resend** later is only an env change: set `EMAIL_PROVIDER=resend`
-plus the Resend variables, then redeploy.
+Without the Shopify variables, "Place Order" sends the order to the team as a form
+submission (the team confirms price, payment and delivery); add them and redeploy to switch
+on Shopify checkout.
+
+## Forms (contact, inquiry, order requests)
+
+Forms are delivered by **Netlify Forms**: no email keys or passwords. The forms are registered
+from `public/__forms.html` at deploy time and submitted by `src/lib/forms.ts`.
+
+1. **Netlify → Forms → Enable form detection** (once), then redeploy.
+2. **Forms → Form notifications → Add notification → Email notification**: choose
+   **Any form**, and enter the inbox that should receive inquiries and order requests.
+3. Every submission is also listed under **Netlify → Forms**, with a spam filter.
 
 ## Netlify
 
@@ -87,6 +88,5 @@ and a shared cache; see Next.js's self-hosting guide.
 
 ## After the first deploy
 
-- Submit a contact-form test and confirm the email arrives.
+- Submit a contact-form test: it appears under Netlify → Forms and arrives by email.
 - Check `https://makeoveroverseas.com/products/2-in-1-diode-nd-yag-laser` loads, and the WhatsApp/call chooser opens.
-- In Resend, verify the sending domain (SPF/DKIM DNS records) before going live.

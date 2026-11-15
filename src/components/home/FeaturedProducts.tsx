@@ -5,21 +5,29 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { getProduct } from "@/lib/catalog";
 import { getPriceMap } from "@/lib/commerce/shopify";
+import { isListed } from "@/lib/commerce/types";
 import type { Product } from "@/data/products";
 
-// One pick from each kind of treatment room.
+// One pick per treatment room, in order of preference; the first six listed in Shopify show.
+// Dental products are kept off the home page.
 const picks = [
   "4-wavelength-diode-laser-hair-removal",
   "picosecond-laser-machine-gl030",
   "7d-hifu-machine",
   "co2-fractional-laser-gl066",
   "10-in-1-hydra-skin-facial-spa",
-  "dental-treatment-chair-system",
+  "ems-body-sculpting",
+  "cryolipolysis-ems-slimming",
+  "led-pdt-skin-therapy",
+  "diode-laser-hair-removal-gld18",
 ];
 
 export async function FeaturedProducts() {
-  const products = picks.map(getProduct).filter((p): p is Product => Boolean(p));
   const prices = await getPriceMap();
+  const products = picks
+    .map(getProduct)
+    .filter((p): p is Product => p !== undefined && isListed(p.slug, prices))
+    .slice(0, 6);
 
   return (
     <section aria-labelledby="featured" className="bg-white px-6 py-20 md:px-10 md:py-28 xl:px-[60px]">

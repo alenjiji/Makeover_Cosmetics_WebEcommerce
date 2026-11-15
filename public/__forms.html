@@ -1,0 +1,35 @@
+<!doctype html>
+<!--
+  Netlify Forms reads this file at deploy time to register the website's forms. The real forms
+  are rendered by Next.js and submitted from the server (src/lib/forms.ts) to this path.
+  Keep the form names and field names in sync with src/lib/forms.ts.
+-->
+<html lang="en">
+<head><meta charset="utf-8"><title>Forms</title><meta name="robots" content="noindex"></head>
+<body>
+  <form name="inquiry" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="inquiry">
+    <input name="bot-field">
+    <input name="name">
+    <input name="email" type="email">
+    <input name="phone">
+    <input name="interest">
+    <input name="product">
+    <textarea name="message"></textarea>
+  </form>
+
+  <form name="order" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="order">
+    <input name="bot-field">
+    <input name="order">
+    <input name="items">
+    <input name="name">
+    <input name="email" type="email">
+    <input name="phone">
+    <input name="company">
+    <input name="gstin">
+    <textarea name="address"></textarea>
+    <textarea name="notes"></textarea>
+  </form>
+</body>
+</html>

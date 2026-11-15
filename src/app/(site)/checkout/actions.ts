@@ -3,14 +3,13 @@
 import { randomBytes } from "node:crypto";
 import { z } from "zod";
 import { getProduct, productTitle } from "@/lib/catalog";
-import { detailsTable, escapeHtml, sendMail } from "@/lib/mail";
+import { submitForm } from "@/lib/forms";
 import { isRateLimited } from "@/lib/rate-limit";
-import { site } from "@/lib/site";
 
 /*
- * Order placement while Shopify isn't connected: the order is emailed to the team (who
- * confirm price, payment and delivery) and a confirmation goes to the customer. Once
- * Shopify is connected, "Place Order" goes to Shopify checkout instead.
+ * Order placement while Shopify isn't connected: the order is sent to the team through
+ * Netlify Forms (see src/lib/forms.ts), and the team confirms price, payment and delivery.
+ * Once Shopify is connected, "Place Order" goes to Shopify checkout instead.
  */
 
 export type OrderField =
@@ -117,46 +116,18 @@ export async function placeOrder(prev: OrderState, formData: FormData): Promise<
   const address = [order.address1, order.address2, `${order.city}, ${order.state} ${order.pincode}`, order.country]
     .filter(Boolean)
     .join("\n");
-  const itemsText = lines.map((l) => `${l.quantity} × ${l.title}`).join("\n");
-  const itemsHtml = `<table style="font-family:sans-serif;font-size:14px;border-collapse:collapse;margin:12px 0">${lines
-    .map(
-      (l) =>
-        `<tr><td style="padding:6px 16px 6px 0;font-weight:bold">${l.quantity} ×</td><td style="padding:6px 0"><a href="${site.url}/products/${l.slug}">${escapeHtml(l.title)}</a></td></tr>`,
-    )
-    .join("")}</table>`;
-
-  const rows: [string, string][] = [
-    ["Order", number],
-    ["Name", order.name],
-    ["Email", order.email],
-    ["Phone", order.phone],
-    ...(order.company ? [["Company / clinic", order.company] as [string, string]] : []),
-    ...(order.gstin ? [["GSTIN", order.gstin] as [string, string]] : []),
-    ["Deliver to", address],
-    ...(order.notes ? [["Notes", order.notes] as [string, string]] : []),
-  ];
-
-  const toTeam = await sendMail({
-    subject: `New order ${number} – ${order.name} (${lines.reduce((n, l) => n + l.quantity, 0)} items)`,
-    text: `${rows.map(([k, v]) => `${k}: ${v}`).join("\n")}\n\nItems:\n${itemsText}`,
-    html: `<h2 style="font-family:sans-serif">New website order ${number}</h2>${itemsHtml}${detailsTable(rows)}`,
-    replyTo: order.email,
+  const sent = await submitForm("order", {
+    order: number,
+    items: lines.map((l) => `${l.quantity} × ${l.title}`).join("\n"),
+    name: order.name,
+    email: order.email,
+    phone: order.phone,
+    company: order.company,
+    gstin: order.gstin,
+    address,
+    notes: order.notes,
   });
-  if (!toTeam) return fail("We couldn't place your order just now. Please try again, or call us to order.");
-
-  // Confirmation for the customer: best effort, the order is already with the team.
-  await sendMail({
-    to: order.email,
-    replyTo: process.env.CONTACT_TO_EMAIL || process.env.GMAIL_USER || site.email,
-    subject: `We've received your order ${number} – ${site.name}`,
-    text: `Hi ${order.name},\n\nThank you for your order. Our team will contact you within 24 hours to confirm pricing, payment and delivery.\n\nOrder ${number}\n${itemsText}\n\nDeliver to:\n${address}\n\n${site.name}`,
-    html: `<div style="font-family:sans-serif;font-size:15px;color:#101b2b;line-height:1.6">
-<p>Hi ${escapeHtml(order.name)},</p>
-<p>Thank you for your order. Our team will contact you within 24 hours to confirm pricing, payment and delivery.</p>
-<h3 style="margin:24px 0 4px">Order ${number}</h3>${itemsHtml}
-<p style="white-space:pre-line"><strong>Deliver to</strong><br>${escapeHtml(address)}</p>
-<p>${site.name}<br>${site.tagline}</p></div>`,
-  });
+  if (!sent) return fail("We couldn't place your order just now. Please try again, or call us to order.");
 
   return { status: "success", orderNumber: number, name: order.name, email: order.email };
 }
