@@ -6,6 +6,7 @@ import { products, type Product } from "@/data/products";
 import { InquiryBand } from "@/components/products/InquiryBand";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { ProductCard } from "@/components/products/ProductCard";
+import { ProductGallery } from "@/components/products/ProductGallery";
 import { ProductStage } from "@/components/ui/ProductStage";
 import { getPriceMap } from "@/lib/commerce/shopify";
 import { isListed, priceLabel } from "@/lib/commerce/types";
@@ -13,6 +14,7 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
   BadgeIcon,
+  BagIcon,
   CheckIcon,
   GlobeIcon,
   GraduationIcon,
@@ -33,6 +35,7 @@ import {
   productDescription,
   productTitle,
   relatedProducts,
+  sellsOnline,
   specLabel,
 } from "@/lib/catalog";
 import { ContactChooser } from "@/components/ui/ContactChooser";
@@ -89,6 +92,30 @@ const ordering = [
   },
 ];
 
+// Products sold online: what buying from the website involves.
+const onlineOrdering = [
+  {
+    icon: TruckIcon,
+    title: "Delivery",
+    text: "7–15 business days after order confirmation, with express shipping available.",
+  },
+  {
+    icon: BagIcon,
+    title: "Order online",
+    text: "Add to cart and pay through our secure checkout.",
+  },
+  {
+    icon: LayersIcon,
+    title: "Bulk orders",
+    text: "Buying for a clinic, salon or academy? Ask us for volume pricing.",
+  },
+  {
+    icon: HeadsetIcon,
+    title: "Support",
+    text: "Questions before or after you buy? Call or WhatsApp our team.",
+  },
+];
+
 function inquiryMessage(product: Product) {
   return `Hi ${site.name}, I'm interested in the ${productTitle(product)}. Could you share pricing and availability?`;
 }
@@ -131,6 +158,8 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
   const listed = products.filter((p) => isListed(p.slug, prices));
 
   const family = familyOf(product.category);
+  // Professional machines are sold on inquiry only; the online range can be added to the cart.
+  const online = sellsOnline(product);
   const related = relatedProducts(product, 3, listed);
   const { previous, next } = adjacentProducts(product, listed);
   const inquiryHref = `/contact?product=${product.slug}#inquiry`;
@@ -139,9 +168,10 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
   const specs: [string, string][] = [
     [specLabel(product.spec), product.spec],
     ["Category", product.category],
-    ["Range", family.label],
+    ...(family.label !== product.category ? [["Range", family.label] as [string, string]] : []),
     ...(product.model ? [["Model", product.model] as [string, string]] : []),
-    ["Certification", "ISO certified · CE approved"],
+    ["Ordering", online ? "Order online" : "On inquiry"],
+    ...(online ? [] : [["Certification", "ISO certified · CE approved"] as [string, string]]),
   ];
 
   const jsonLd = {
@@ -155,9 +185,9 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
         image: new URL(product.image, site.url).toString(),
         category: product.category,
         url: new URL(`/products/${product.slug}`, site.url).toString(),
-        brand: { "@type": "Brand", name: site.name },
+        ...(!online && { brand: { "@type": "Brand", name: site.name } }),
         // Offer data (price, currency, stock) for search results, once priced in Shopify.
-        ...(price?.purchasable && {
+        ...(online && price?.purchasable && {
           offers: {
             "@type": "Offer",
             price: price.price.amount,
@@ -217,6 +247,17 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-16 xl:gap-20">
             {/* Media */}
             <div className="lg:sticky lg:top-[calc(var(--nav-h)+24px)] lg:self-start">
+              {online ? (
+                <ProductGallery
+                  images={[product.image, ...(product.gallery ?? [])]}
+                  alt={product.alt}
+                  label={
+                    <span className="absolute left-5 top-5 rounded-full bg-navy px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white">
+                      {product.category}
+                    </span>
+                  }
+                />
+              ) : (
               <div className="group relative aspect-square animate-wipe-up overflow-hidden rounded-[32px] bg-[linear-gradient(180deg,#fff_0%,var(--color-surface)_100%)] ring-1 ring-navy/[.06]">
                 <div
                   aria-hidden="true"
@@ -235,7 +276,8 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
                   {product.category}
                 </span>
               </div>
-              <TrustTiles className="mt-4 max-lg:hidden" />
+              )}
+              {!online && <TrustTiles className="mt-4 max-lg:hidden" />}
             </div>
 
             {/* Summary */}
@@ -261,9 +303,15 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
               </h1>
 
               <p className="mb-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span className="font-display text-[34px] font-bold text-navy">{priceLabel(price)}</span>
+                <span className="font-display text-[34px] font-bold text-navy">
+                  {online ? priceLabel(price) : "Price on request"}
+                </span>
                 <span className="text-[13px] text-muted">
-                  {price?.purchasable ? "excl. shipping & taxes" : "Price on request: ask us for a quote"}
+                  {!online
+                    ? "Send an inquiry for pricing, configuration and delivery"
+                    : price?.purchasable
+                      ? "excl. shipping & taxes"
+                      : "Price on request: ask us for a quote"}
                 </span>
               </p>
               <div className="mb-9 rounded-[20px] border border-rose/30 bg-blush px-6 py-5">
@@ -289,13 +337,16 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
               </ul>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
-                <AddToCartButton
-                  slug={product.slug}
-                  name={product.name}
-                  purchasable={price?.purchasable ?? false}
-                  className="btn btn-primary w-full disabled:opacity-70"
-                />
-                <Link href={inquiryHref} className="btn btn-secondary group flex-1">
+                {online && (
+                  <AddToCartButton
+                    slug={product.slug}
+                    name={product.name}
+                    image={product.image}
+                    purchasable={price?.purchasable ?? false}
+                    className="btn btn-primary w-full disabled:opacity-70"
+                  />
+                )}
+                <Link href={inquiryHref} className={`btn ${online ? "btn-secondary" : "btn-primary"} group flex-1`}>
                   Send Inquiry
                   <ArrowRightIcon className="transition-transform group-hover:translate-x-1" />
                 </Link>
@@ -312,7 +363,7 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
                 </ContactChooser>
                 <span aria-hidden="true">·</span> Replies within 24 hours
               </p>
-              <TrustTiles className="mt-8 sm:grid-cols-4 lg:hidden" />
+              {!online && <TrustTiles className="mt-8 sm:grid-cols-4 lg:hidden" />}
 
               <div className="mt-10 border-t border-divider pt-8">
                 <h2 className="eyebrow mb-5">At a glance</h2>
@@ -340,7 +391,7 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
             </h2>
           </div>
           <ul className="grid gap-px overflow-hidden rounded-[24px] bg-line ring-1 ring-line sm:grid-cols-2 xl:grid-cols-4">
-            {ordering.map(({ icon: Icon, title, text }) => (
+            {(online ? onlineOrdering : ordering).map(({ icon: Icon, title, text }) => (
               <li key={title} className="bg-white p-7">
                 <span className="mb-5 flex size-12 items-center justify-center rounded-full bg-mist text-navy">
                   <Icon size={20} />
@@ -395,16 +446,25 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
 
       {/* Mobile CTA: sticks to the viewport bottom until the footer scrolls in. */}
       <div className="sticky bottom-0 z-30 flex gap-3 border-t border-divider bg-white/95 px-4 py-3 shadow-[0_-8px_24px_rgb(0_0_0/0.06)] backdrop-blur lg:hidden">
-        <AddToCartButton
-          compact
-          slug={product.slug}
-          name={product.name}
-          purchasable={price?.purchasable ?? false}
-          className="btn btn-primary min-w-0 flex-1 px-4 disabled:opacity-70"
-        />
-        <Link href={inquiryHref} aria-label="Send an inquiry about this product" className="btn btn-secondary px-5">
-          Inquire
-        </Link>
+        {online ? (
+          <>
+            <AddToCartButton
+              compact
+              slug={product.slug}
+              name={product.name}
+              image={product.image}
+              purchasable={price?.purchasable ?? false}
+              className="btn btn-primary min-w-0 flex-1 px-4 disabled:opacity-70"
+            />
+            <Link href={inquiryHref} aria-label="Send an inquiry about this product" className="btn btn-secondary px-5">
+              Inquire
+            </Link>
+          </>
+        ) : (
+          <Link href={inquiryHref} aria-label="Send an inquiry about this product" className="btn btn-primary min-w-0 flex-1 px-4">
+            Send Inquiry
+          </Link>
+        )}
         <ContactChooser
           channel="whatsapp"
           message={waMessage}

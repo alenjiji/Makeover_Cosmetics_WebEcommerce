@@ -8,6 +8,8 @@ import { useCart } from "./CartProvider";
 type Props = {
   slug: string;
   name: string;
+  /** Product photo, shown in the cart. */
+  image?: string;
   className?: string;
   /** For tight spaces (product cards): the product name goes in the accessible label. */
   compact?: boolean;
@@ -19,7 +21,7 @@ type Props = {
 };
 
 /** Adds a product, then opens the cart drawer. Errors show inline. */
-export function AddToCartButton({ slug, name, className = "", compact = false, purchasable = true }: Props) {
+export function AddToCartButton({ slug, name, image, className = "", compact = false, purchasable = true }: Props) {
   const { add, openDrawer, cart } = useCart();
   const [state, setState] = useState<"idle" | "adding" | "added" | "error">("idle");
 
@@ -44,7 +46,7 @@ export function AddToCartButton({ slug, name, className = "", compact = false, p
         aria-label={compact ? `Add ${name} to cart` : undefined}
         onClick={async () => {
           setState("adding");
-          if (await add(slug, 1)) {
+          if (await add(slug, 1, { title: name, image })) {
             setState("added");
             openDrawer();
             setTimeout(() => setState("idle"), 1800);

@@ -2,7 +2,7 @@
 
 import { randomBytes } from "node:crypto";
 import { z } from "zod";
-import { getProduct, productTitle } from "@/lib/catalog";
+import { getProduct, productTitle, sellsOnline } from "@/lib/catalog";
 import { submitForm } from "@/lib/forms";
 import { isRateLimited } from "@/lib/rate-limit";
 
@@ -103,7 +103,7 @@ export async function placeOrder(prev: OrderState, formData: FormData): Promise<
   const items = itemsSchema.safeParse(raw);
   const lines = (items.success ? items.data : []).flatMap(({ slug, quantity }) => {
     const product = getProduct(slug);
-    return product ? [{ quantity, title: productTitle(product), slug }] : [];
+    return product && sellsOnline(product) ? [{ quantity, title: productTitle(product), slug }] : [];
   });
   if (!lines.length) return fail("Your cart is empty. Add a product before placing an order.");
 

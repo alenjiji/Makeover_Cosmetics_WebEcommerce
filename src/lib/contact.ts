@@ -39,6 +39,15 @@ const interestByCategory: Record<ProductCategory, Interest> = {
   "High Speed": "dental",
   "Low Speed": "dental",
   Surgical: "dental",
+  "Facial & Skin Machines": "other",
+  "Microneedling Pens & Rollers": "other",
+  "Microneedling Cartridges & Needles": "other",
+  "Skin-care Consumables": "other",
+  "PMU & Microblading": "other",
+  "Salon Furniture": "other",
+  Massagers: "other",
+  "Physiotherapy & Home Health": "other",
+  "Pain-relief Oils": "other",
 };
 
 export const interestForCategory = (category: ProductCategory) => interestByCategory[category];

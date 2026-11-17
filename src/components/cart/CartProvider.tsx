@@ -14,7 +14,8 @@ type CartContext = {
   drawerOpen: boolean;
   openDrawer: () => void;
   closeDrawer: () => void;
-  add: (slug: string, quantity?: number) => Promise<boolean>;
+  /** `item` names the product for the local cart (Shopify describes its own lines). */
+  add: (slug: string, quantity?: number, item?: { title: string; image?: string }) => Promise<boolean>;
   setQuantity: (lineId: string, quantity: number) => void;
   remove: (lineId: string) => void;
   /** Saves the order note (Shopify mode). Resolves true when saved. */
@@ -104,7 +105,7 @@ export function CartProvider({
   }, []);
 
   const add = useCallback(
-    (slug: string, quantity = 1) =>
+    (slug: string, quantity = 1, item?: { title: string; image?: string }) =>
       new Promise<boolean>((resolve) => {
         setError(null);
         if (!shopify) {
@@ -113,7 +114,7 @@ export function CartProvider({
           saveLocal(
             existing
               ? lines.map((l) => (l.slug === slug ? { ...l, quantity: Math.min(99, l.quantity + quantity) } : l))
-              : [...lines, { slug, quantity }],
+              : [...lines, { slug, quantity, title: item?.title, image: item?.image }],
           );
           resolve(true);
           return;

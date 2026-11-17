@@ -4,17 +4,22 @@ import { CatalogView, ProductCatalog } from "@/components/products/ProductCatalo
 import { InquiryBand } from "@/components/products/InquiryBand";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { getPriceMap } from "@/lib/commerce/shopify";
+import { products } from "@/data/products";
+import { toCatalogItem } from "@/lib/catalog";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Products",
   description:
-    "Browse our medical aesthetic and dental devices: diode, Nd:YAG, picosecond and CO2 lasers, HIFU, RF microneedling, cold plasma, EMS sculpting, hydra facial and dental units. ISO certified, CE approved.",
+    "Professional aesthetic machines on inquiry (diode, Nd:YAG, picosecond and CO2 lasers, HIFU, RF microneedling, EMS sculpting) plus facial devices, derma pens, cartridges, PMU supplies, skin-care consumables, massagers and salon furniture to order online.",
   alternates: { canonical: "/products" },
   openGraph: { url: "/products" },
 };
 
-const trust = ["ISO Certified", "CE Approved", `${site.claims.countries} Countries`, "<24h Response"];
+// Only the fields the cards, filters and search use reach the browser.
+const items = products.map(toCatalogItem);
+
+const trust = ["Machines on Inquiry", "Supplies to Order Online", `${site.claims.countries} Countries`, "<24h Response"];
 
 export default async function ProductsPage() {
   const prices = await getPriceMap();
@@ -40,8 +45,8 @@ export default async function ProductsPage() {
       </PageHeader>
 
       <section aria-label="Product catalog" className="bg-surface px-6 pb-20 md:px-10 md:pb-24 xl:px-[60px]">
-        <Suspense fallback={<CatalogView prices={prices} categoryParam={null} query="" />}>
-          <ProductCatalog prices={prices} />
+        <Suspense fallback={<CatalogView items={items} prices={prices} categoryParam={null} query="" />}>
+          <ProductCatalog items={items} prices={prices} />
         </Suspense>
         <div className="mx-auto mt-20 max-w-[1640px] md:mt-24">
           <InquiryBand />

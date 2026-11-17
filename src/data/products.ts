@@ -1,5 +1,7 @@
-// Seeded from docs/products.source.json (legacy catalog order), plus the new systems from the
-// brochures in assets/source (marked `isNew`).
+// Professional machines: seeded from docs/products.source.json (legacy catalog order), plus the new
+// systems from the brochures in assets/source (marked `isNew`). These are sold on inquiry only.
+// Devices, accessories and consumables sold online (Add to Cart) are generated into ./supplies.ts.
+import { supplies } from "./supplies";
 
 export const productCategories = [
   "Diode Laser",
@@ -20,6 +22,16 @@ export const productCategories = [
   "High Speed",
   "Low Speed",
   "Surgical",
+  // Sold online (supplies.ts)
+  "Facial & Skin Machines",
+  "Microneedling Pens & Rollers",
+  "Microneedling Cartridges & Needles",
+  "Skin-care Consumables",
+  "PMU & Microblading",
+  "Salon Furniture",
+  "Massagers",
+  "Physiotherapy & Home Health",
+  "Pain-relief Oils",
 ] as const;
 
 export type ProductCategory = (typeof productCategories)[number];
@@ -33,12 +45,20 @@ export type Product = {
   spec: string;
   image: string;
   alt: string;
-  features: [string, string, string];
+  features: string[];
   /** New arrival, highlighted on the home page and product cards. */
   isNew?: boolean;
+  /** More photos for the product page, after `image`. */
+  gallery?: string[];
+  /**
+   * How it's sold. Professional machines are "inquiry" (the default): no cart, the visitor sends an
+   * inquiry. "online" products can be added to the cart and bought through checkout.
+   */
+  ordering?: "inquiry" | "online";
 };
 
-export const products: Product[] = [
+
+const machines: Product[] = [
   {
     slug: "2-in-1-diode-nd-yag-laser",
     name: "2-in-1 Diode + Nd:YAG Laser",
@@ -428,3 +448,5 @@ export const products: Product[] = [
     ],
   },
 ];
+
+export const products: Product[] = [...machines, ...supplies];

@@ -10,6 +10,7 @@ import {
   updateCartLine,
 } from "@/lib/commerce/shopify";
 import type { Cart, CartResult } from "@/lib/commerce/types";
+import { getProduct, sellsOnline } from "@/lib/catalog";
 
 /* Shopify cart operations for the client cart (Shopify mode only; the local cart never calls these). */
 
@@ -41,6 +42,10 @@ export async function fetchCart(cartId: string): Promise<Cart | null> {
 }
 
 export async function addItem(cartId: string | null, slug: string, qty = 1): Promise<CartResult> {
+  const product = getProduct(slug);
+  if (!product || !sellsOnline(product)) {
+    return { ok: false, error: "This product is available on inquiry only. Please send us an inquiry." };
+  }
   return run(() => addToCart(cartId, slug, Math.max(1, quantity(qty))));
 }
 

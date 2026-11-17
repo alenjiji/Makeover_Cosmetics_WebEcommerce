@@ -9,6 +9,11 @@ type Props = {
   imageClassName?: string;
   /** Disc diameter as a share of the stage. */
   disc?: "md" | "lg";
+  /**
+   * Product photos with their own background (the online range): shown whole on white, without the
+   * disc and its multiply blend, which suits cut-out machine shots only.
+   */
+  plain?: boolean;
   className?: string;
   children?: React.ReactNode;
 };
@@ -24,9 +29,19 @@ export function ProductStage({
   preload = false,
   imageClassName = "",
   disc = "md",
+  plain = false,
   className = "",
   children,
 }: Props) {
+  if (plain) {
+    return (
+      <div className={`relative isolate bg-white ${className}`}>
+        <Image src={src} alt={alt} fill sizes={sizes} preload={preload} className={`object-contain p-[7%] ${imageClassName}`} />
+        {children}
+      </div>
+    );
+  }
+
   const size = disc === "lg" ? "size-[88%]" : "size-[78%]";
   return (
     <div className={`relative isolate ${className}`}>
