@@ -146,7 +146,7 @@ export function CatalogView({ items, prices = {}, categoryParam, query, onCatego
       )}
 
       {/* Online shop: category tiles, then the product list */}
-      <section aria-labelledby="shop-categories" className="mx-auto max-w-[1640px] pt-14 md:pt-20">
+      <section id="shop" aria-labelledby="shop-categories" className="mx-auto max-w-[1640px] scroll-mt-[var(--nav-h)] pt-14 md:pt-20">
         <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-end md:justify-between md:gap-8">
           <div>
             <p className="eyebrow mb-3">Order Online</p>

@@ -561,6 +561,16 @@ body {
     transform: translateY(-14px);
   }
 }
+/* Hero product showcase (<HeroShowcase>): time each product spends on stage. */
+@keyframes hero-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 @keyframes wave-in {
   from {
     opacity: 0;
