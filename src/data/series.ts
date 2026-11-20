@@ -7,7 +7,7 @@ export const series: Series[] = [
   { title: "Diode Laser Hair Removal", href: "/products?category=diode-laser" },
   { title: "1064nm ND YAG Laser", href: "/products?category=nd-yag-laser" },
   { title: "Picosecond Laser", href: "/products?category=picosecond-laser" },
-  { title: "Dental Laser Equipment", href: "/products?category=dental" },
+  { title: "Facial & Skin Devices", href: "/products?category=facial-skin-machines" },
   { title: "Q Switch ND YAG Laser", href: "/products?category=q-switch-laser" },
   { title: "Spider Veins Removal", href: "/products?category=laser-light" },
   { title: "E-light IPL RF Systems", href: "/products?category=ipl-machine" },
@@ -17,6 +17,6 @@ export const series: Series[] = [
   { title: "Cooling Beauty Machines", href: "/products?category=cooling-system" },
   { title: "LED Mask Systems", href: "/products?category=led-machine" },
   { title: "Hydro Facial Equipment", href: "/products?category=hydra-facial" },
-  { title: "Dental Chairs", href: "/products?category=dental-chair" },
-  { title: "Dental Handpieces", href: "/products?category=dental" },
+  { title: "Derma Pens & Microneedling", href: "/products?category=microneedling-pens-rollers" },
+  { title: "PMU & Microblading", href: "/products?category=pmu-microblading" },
 ];

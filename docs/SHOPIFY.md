@@ -22,7 +22,7 @@ Store: `ytgk3g-w3.myshopify.com` · Website: `https://makeoveroverseas.com`
 - Each product uses **one variant only** (the first). Don't add options like 2-hole / 4-hole as
   variants: the site always adds the first one. Make separate products instead.
 - Two kinds of product:
-  - **Professional machines** (lasers, HIFU, body and dental systems: `src/data/products.ts`) are
+  - **Professional machines** (lasers, HIFU and body systems: `src/data/products.ts`, 25) are
     **inquiry only**. The site never shows their price or an Add to Cart button, whatever Shopify
     says; visitors send an inquiry. They still need to be **Active** in Shopify to appear.
   - **The online range** (facial devices, derma pens, cartridges, PMU, consumables, massagers,
@@ -34,7 +34,7 @@ Store: `ytgk3g-w3.myshopify.com` · Website: `https://makeoveroverseas.com`
   - **Draft**, **Archived**, or not on the Website channel → **hidden**: gone from the catalog, home
     page, related products and sitemap, and its page returns "not found"
   - If Shopify can't be reached, every product stays visible (nothing disappears by accident).
-- Dental products are deliberately left out of the home page's featured grid (`FeaturedProducts.tsx`).
+- Dental products were removed from the range (Nov 2026); their old addresses redirect to /products.
 - Prices update on the site within seconds (webhooks), or within an hour at most.
 
 ## Domains: the one rule
@@ -153,7 +153,7 @@ Shopify's own theme would duplicate the website, so it only forwards visitors th
    ```bash
    npm run shopify:export -- https://makeoveroverseas.netlify.app
    ```
-   It writes `docs/shopify-products.csv`: all 29 website products as **drafts**, without prices,
+   It writes `docs/shopify-products.csv`: the 25 machines as **drafts**, without prices,
    "continue selling when out of stock" (made-to-order equipment), with photos.
 2. **Products → Import → Add file** → that CSV → **Upload and preview** → **Import products**.
 3. For each product (open it from the list):
@@ -248,33 +248,57 @@ Set its price to ₹0.
 Set its status to **Draft** (or **Archived**). It disappears from the site within seconds; set it back
 to **Active** to bring it back. Don't delete it, or the history and handle are lost.
 
-### Add a new product
-This needs both sides, with **the same handle**:
-1. **Website** (developer): add an entry to `src/data/products.ts`, and put its photo in `public/images/products/`:
-   ```ts
-   {
-     slug: "new-machine-name",          // becomes /products/new-machine-name and the Shopify handle
-     name: "New Machine Name",
-     category: "HIFU Machine",           // one of productCategories at the top of the file
-     spec: "Headline spec line",
-     image: "/images/products/new-machine.webp",
-     alt: "Describe the photo",
-     features: ["Feature one", "Feature two", "Feature three"],
-     isNew: true,                        // optional "New" badge
-   },
-   ```
-   Deploy. It only appears once it's also **Active** in Shopify (step 2), because the site hides
-   products Shopify doesn't list.
-2. **Shopify**: **Products → Add product**. Same title and photo. Under **Search engine listing → Edit**,
-   set **URL handle** to exactly the slug (`new-machine-name`). Set the price, Status **Active**, and tick
-   the **Website** channel. The price appears on the site within seconds.
-   For several products at once, run `npm run shopify:export` again, delete the rows of products
-   already in Shopify from the CSV, and import the rest. Leave "Overwrite products with matching
-   handles" unticked so existing prices aren't touched.
+### Add a new product (standard procedure)
+Every product exists in **two places, joined by its handle** (the slug): the website holds the name,
+text and photos; Shopify holds the price and stock. Do them in this order.
+
+**1. Pick the slug.** Lowercase words joined by hyphens, e.g. `led-face-mask`. It becomes the page
+address (`/products/led-face-mask`) and the Shopify URL handle. Never change it later.
+
+**2. Photos** (in the project folder):
+```bash
+npm run product:photos -- led-face-mask path/to/front.jpg path/to/side.jpg path/to/box.jpg
+```
+The first photo is the main one. They're resized to 1000 px WebP into
+`public/images/products/supplies/led-face-mask/`, and the script prints the `image:` and `gallery:`
+lines for step 3. Use your own or your supplier's photos (with permission).
+
+**3. Website entry.** Online products (Add to Cart) go in `src/data/supplies.ts`; professional
+machines (inquiry only) go in `src/data/products.ts`. Add an entry in its category, e.g.:
+```ts
+  {
+    slug: "led-face-mask",
+    name: "7-Colour LED Face Mask",
+    category: "Facial & Skin Machines",   // one of productCategories in src/data/products.ts
+    spec: "Red, blue and green light therapy",
+    image: "/images/products/supplies/led-face-mask/1.webp",   // printed by step 2
+    alt: "7-colour LED face mask",
+    features: ["Seven light colours", "Covers face and neck", "Rechargeable"],
+    gallery: ["/images/products/supplies/led-face-mask/2.webp"], // printed by step 2
+    ordering: "online",                    // leave out for an inquiry-only machine
+    isNew: true,                           // optional "New" badge
+  },
+```
+Check it with `npm run dev` (it appears straight away locally), then commit, push and **publish the
+deploy** in Netlify (auto publishing is locked).
+
+**4. Shopify.** **Products → Add product**: same title; price (online products); **Status: Active**;
+**Sales channels: tick Website**; under **Search engine listing → Edit**, set **URL handle** to exactly
+the slug. Add the photos too (they appear in checkout and order emails). For a machine, any price is
+fine: the site never shows it.
+
+**Until step 4 is done the product stays hidden on the live site**, because the site only shows what
+Shopify lists on the Website channel. Run `npm run shopify:check` to list any product that is missing
+from Shopify, unpriced or not for sale.
+
+**A new category** also needs a line in `productCategories` (`src/data/products.ts`), a range in
+`families` (`src/lib/catalog-filters.ts`), and an inquiry topic in `src/lib/contact.ts`; TypeScript
+points at anything missed.
 
 ### Remove a product
-Remove it from `src/data/products.ts` (website) and **archive** it in Shopify. The site has 308 redirects
-in `next.config.ts` if an old URL needs to point somewhere.
+Delete its entry (and its photo folder) from `src/data/supplies.ts` or `src/data/products.ts`,
+**archive** it in Shopify, and add a 308 redirect for its old address in `next.config.ts` (see the
+dental products there). Archiving alone already hides it on the live site within seconds.
 
 ### Handle an order
 1. New-order email or app notification → **Orders → the order**.

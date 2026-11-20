@@ -46,12 +46,6 @@ export const families: Family[] = [
     ],
     ordering: "inquiry",
   },
-  {
-    slug: "dental",
-    label: "Dental",
-    categories: ["Dental Chair", "High Speed", "Low Speed", "Surgical"],
-    ordering: "inquiry",
-  },
   single("Facial & Skin Machines"),
   single("Microneedling Pens & Rollers"),
   single("Microneedling Cartridges & Needles"),
@@ -65,9 +59,6 @@ export const families: Family[] = [
 
 /** Friendlier filter labels where the raw category reads oddly on its own. */
 const categoryLabels: Partial<Record<ProductCategory, string>> = {
-  "High Speed": "High-Speed Handpieces",
-  "Low Speed": "Low-Speed Handpieces",
-  Surgical: "Surgical Handpieces",
   "Q Switch Laser": "Q-Switch Laser",
 };
 

@@ -1,7 +1,8 @@
 // Professional machines: seeded from docs/products.source.json (legacy catalog order), plus the new
 // systems from the brochures in assets/source (marked `isNew`). These are sold on inquiry only.
 // Devices, accessories and consumables sold online (Add to Cart) are generated into ./supplies.ts.
-import { supplies } from "./supplies";
+// With the .ts extension so the Node scripts in scripts/ can load the catalog too.
+import { supplies } from "./supplies.ts";
 
 export const productCategories = [
   "Diode Laser",
@@ -18,10 +19,6 @@ export const productCategories = [
   "LED Machine",
   "Cooling System",
   "Hydra Facial",
-  "Dental Chair",
-  "High Speed",
-  "Low Speed",
-  "Surgical",
   // Sold online (supplies.ts)
   "Facial & Skin Machines",
   "Microneedling Pens & Rollers",
@@ -393,58 +390,6 @@ const machines: Product[] = [
       "Skin tightening & wrinkle removal",
       "Diamond dermabrasion & bio-polar RF",
       "Full body anti-aging treatment",
-    ],
-  },
-  {
-    slug: "dental-treatment-chair-system",
-    name: "Dental Treatment Chair System",
-    category: "Dental Chair",
-    spec: "Complete Unit",
-    image: "/images/products/chair.webp",
-    alt: "Dental Treatment Chair",
-    features: [
-      "Tri-fold patient chair with electric leg plate",
-      "LED dental light with induction control",
-      "Rotary mouthwash basin & floor control box",
-    ],
-  },
-  {
-    slug: "high-speed-dental-handpiece",
-    name: "High-Speed Dental Handpiece",
-    category: "High Speed",
-    spec: "LED & Standard Models",
-    image: "/images/products/high.webp",
-    alt: "High-Speed Handpiece",
-    features: [
-      "Speed: 300,000-450,000 RPM",
-      "E-type air turbine with 1:1 ratio",
-      "2-hole & 4-hole options available",
-    ],
-  },
-  {
-    slug: "low-speed-handpiece-kit",
-    name: "Low-Speed Handpiece Kit",
-    category: "Low Speed",
-    spec: "Multiple Ratio Options",
-    image: "/images/products/low.webp",
-    alt: "Low-Speed Handpiece",
-    features: [
-      "1:1, 1:5 speed increase options",
-      "4:1 & 20:1 contra angle models",
-      "Internal & external water spray systems",
-    ],
-  },
-  {
-    slug: "surgical-implant-handpiece",
-    name: "Surgical & Implant Handpiece",
-    category: "Surgical",
-    spec: "Specialized Tools",
-    image: "/images/products/sur.webp",
-    alt: "Surgical Handpiece",
-    features: [
-      "20:1 speed reduction without light",
-      "Dental implant handpiece available",
-      "Reciprocating saw handpiece for IPR",
     ],
   },
 ];

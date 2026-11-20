@@ -7,7 +7,7 @@ export const site = {
   descriptor: "Export & Imports",
   markets: ["India", "UAE", "China"],
   description:
-    "Makeover Overseas exports and imports medical aesthetic and dental equipment across India, the UAE and China: 40+ models across laser, HIFU, body sculpting, facial and dental ranges, trusted since 2009.",
+    "Makeover Overseas exports and imports medical aesthetic equipment across India, the UAE and China: 40+ models across laser, HIFU, body sculpting and facial ranges, trusted since 2009.",
 
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://makeoveroverseas.com",
   email: "admin@makeoveroverseas.com",

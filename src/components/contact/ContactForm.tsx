@@ -13,29 +13,37 @@ import { site } from "@/lib/site";
 import { AlertIcon, ArrowRightIcon, CheckIcon, CloseIcon, WhatsAppIcon } from "@/components/ui/icons";
 import { Field, fieldProps, inputClass } from "@/components/ui/form";
 
-/** Reads `?product=<slug>`; must render inside <Suspense>. */
+/** Most products one inquiry can carry (the machine picker on /products selects several). */
+export const MAX_INQUIRY_PRODUCTS = 12;
+
+/** Reads `?product=<slug>` or `?product=<slug>,<slug>,…`; must render inside <Suspense>. */
 export function ContactFormFromUrl() {
-  const slug = useSearchParams().get("product");
-  return <ContactForm product={slug ? getProduct(slug) : undefined} />;
+  const param = useSearchParams().get("product") ?? "";
+  const products = [...new Set(param.split(","))]
+    .map((slug) => getProduct(slug.trim()))
+    .filter((p): p is Product => Boolean(p))
+    .slice(0, MAX_INQUIRY_PRODUCTS);
+  return <ContactForm products={products} />;
 }
 
 type FormProps = {
-  product?: Product;
+  /** Products the inquiry is about (from a product page, or several from the machine picker). */
+  products?: Product[];
   /** Preselected "Product Interest" when there's no product, e.g. "partnership". */
   interest?: Interest;
 };
 
 /** Remounting via `key` is how "Send another message" resets the action state. */
-export function ContactForm({ product, interest }: FormProps) {
+export function ContactForm({ products, interest }: FormProps) {
   const [round, setRound] = useState(0);
-  return <InquiryForm key={round} product={product} interest={interest} onReset={() => setRound((r) => r + 1)} />;
+  return <InquiryForm key={round} products={products} interest={interest} onReset={() => setRound((r) => r + 1)} />;
 }
 
 const initialState: InquiryState = { status: "idle" };
 
-function InquiryForm({ product: initialProduct, interest, onReset }: FormProps & { onReset: () => void }) {
+function InquiryForm({ products: initialProducts = [], interest, onReset }: FormProps & { onReset: () => void }) {
   const [state, formAction, pending] = useActionState(sendInquiry, initialState);
-  const [product, setProduct] = useState(initialProduct);
+  const [products, setProducts] = useState(initialProducts);
   const formRef = useRef<HTMLFormElement>(null);
 
   const attempt = state.status === "error" ? state.attempt : 0;
@@ -71,7 +79,7 @@ function InquiryForm({ product: initialProduct, interest, onReset }: FormProps &
     );
   }
 
-  const fallbackInterest = product ? interestForCategory(product.category) : (interest ?? "");
+  const fallbackInterest = products[0] ? interestForCategory(products[0].category) : (interest ?? "");
 
   return (
     <form
@@ -82,26 +90,30 @@ function InquiryForm({ product: initialProduct, interest, onReset }: FormProps &
       noValidate
       className="flex flex-col gap-6"
     >
-      {product && (
-        <div className="flex items-center gap-4 rounded-2xl border border-rose/30 bg-blush p-3 pr-4">
-          <span className="relative size-14 shrink-0 overflow-hidden rounded-lg bg-white">
-            <Image src={product.image} alt="" fill sizes="56px" className="object-contain p-1 mix-blend-multiply" />
-          </span>
-          <span className="min-w-0 flex-1">
-            <span className="block text-[11px] font-semibold uppercase tracking-[0.15em] text-rose-deep">
-              Asking about
-            </span>
-            <span className="block font-semibold leading-snug text-ink">{productTitle(product)}</span>
-          </span>
-          <button
-            type="button"
-            onClick={() => setProduct(undefined)}
-            aria-label="Remove product from inquiry"
-            className="flex size-8 shrink-0 items-center justify-center rounded-full text-muted hover:bg-white hover:text-ink"
-          >
-            <CloseIcon size={16} />
-          </button>
-          <input type="hidden" name="product" value={product.slug} />
+      {products.length > 0 && (
+        <div className="rounded-2xl border border-rose/30 bg-blush p-3">
+          <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-rose-deep">
+            Asking about {products.length > 1 ? `${products.length} products` : ""}
+          </p>
+          <ul className="flex flex-col gap-2">
+            {products.map((product) => (
+              <li key={product.slug} className="flex items-center gap-3 rounded-xl bg-white/70 p-2 pr-3">
+                <span className="relative size-12 shrink-0 overflow-hidden rounded-lg bg-white">
+                  <Image src={product.image} alt="" fill sizes="48px" className="object-contain p-1 mix-blend-multiply" />
+                </span>
+                <span className="min-w-0 flex-1 font-semibold leading-snug text-ink">{productTitle(product)}</span>
+                <button
+                  type="button"
+                  onClick={() => setProducts((list) => list.filter((p) => p.slug !== product.slug))}
+                  aria-label={`Remove ${productTitle(product)} from inquiry`}
+                  className="flex size-8 shrink-0 items-center justify-center rounded-full text-muted hover:bg-white hover:text-ink"
+                >
+                  <CloseIcon size={16} />
+                </button>
+              </li>
+            ))}
+          </ul>
+          <input type="hidden" name="product" value={products.map((p) => p.slug).join(",")} />
         </div>
       )}
 
@@ -208,7 +220,7 @@ function InquiryForm({ product: initialProduct, interest, onReset }: FormProps &
               phone: get("phone"),
               interest: get("interest"),
               message: get("message"),
-              product: product ? productTitle(product) : undefined,
+              product: products.length ? products.map(productTitle).join(", ") : undefined,
             });
           }}
           className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-whatsapp underline-offset-4 hover:underline"

@@ -73,10 +73,14 @@ export async function sendInquiry(prev: InquiryState, formData: FormData): Promi
     };
   }
 
-  const product = getProduct(text(formData, "product"));
+  // One product from a product page, or several (comma-separated slugs) from the machine picker.
+  const products = [...new Set(text(formData, "product").split(","))]
+    .map((slug) => getProduct(slug.trim()))
+    .filter((p) => p !== undefined)
+    .slice(0, 12);
   const inquiry: InquiryFields = {
     ...parsed.data,
-    product: product ? productTitle(product) : undefined,
+    product: products.length ? products.map(productTitle).join("; ") : undefined,
   };
 
   const sent = await deliver(inquiry);

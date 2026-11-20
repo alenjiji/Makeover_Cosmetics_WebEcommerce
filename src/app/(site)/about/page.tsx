@@ -126,7 +126,7 @@ export default function AboutPage() {
             <p className="rise-late mb-9 text-base leading-[1.8] text-muted md:text-[17px]">
               Our comprehensive product portfolio spans 14 specialized series, including CO2 laser systems,
               diode laser hair removal machines, 1064nm long pulse ND YAG lasers, picosecond laser
-              technology, dental lasers, Q-Switch ND YAG lasers, spider vein removal lasers, multifunctional
+              technology, Q-Switch ND YAG lasers, spider vein removal lasers, multifunctional
               Elight IPL RF ND YAG systems, SHR technology, HIFU devices, LED therapy equipment,
               cryolipolysis slimming machines, cooling beauty systems, and advanced facial care machines.
             </p>

@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 
 export const metadata: Metadata = {
   title: "Checkout",
-  description: "Place your order for medical aesthetic and dental equipment.",
+  description: "Place your order for medical aesthetic equipment and supplies.",
   robots: { index: false },
 };
 

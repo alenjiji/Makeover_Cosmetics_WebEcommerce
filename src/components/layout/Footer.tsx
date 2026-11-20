@@ -49,7 +49,7 @@ export async function Footer() {
               Quality Beyond <em className="text-accent text-accent-light">Borders.</em>
             </p>
             <p className="mt-6 max-w-md text-base leading-[1.8] text-white/75">
-              Medical aesthetic and dental equipment, exported and imported across India, the UAE and
+              Medical aesthetic equipment and supplies, exported and imported across India, the UAE and
               China.
             </p>
           </div>

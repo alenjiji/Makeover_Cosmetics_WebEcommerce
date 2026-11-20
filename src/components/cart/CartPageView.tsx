@@ -34,7 +34,7 @@ export function CartPageView() {
         <h2 className="mb-3 font-display text-[32px] font-bold text-ink">
           Your cart is <span className="italic text-accent">empty</span>
         </h2>
-        <p className="mb-9 text-muted">Browse 40+ models across laser, HIFU, body, facial and dental ranges.</p>
+        <p className="mb-9 text-muted">Browse 40+ models across laser, HIFU, body and facial ranges, plus supplies to order online.</p>
         <Link href="/products" className="btn btn-primary group">
           Browse Products
           <ArrowRightIcon className="transition-transform group-hover:translate-x-1" />

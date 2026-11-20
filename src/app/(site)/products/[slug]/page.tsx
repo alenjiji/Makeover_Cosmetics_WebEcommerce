@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { products, type Product } from "@/data/products";
 import { InquiryBand } from "@/components/products/InquiryBand";
@@ -152,9 +153,8 @@ function ProductSkeleton() {
 async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "params">) {
   const product = getProduct((await params).slug);
   if (!product) notFound();
+  // Only used for the related / previous / next links, which may lag Shopify by up to an hour.
   const prices = await getPriceMap();
-  // Draft or archived in Shopify: the page is gone until the product is Active again.
-  if (!isListed(product.slug, prices)) notFound();
   const listed = products.filter((p) => isListed(p.slug, prices));
 
   const family = familyOf(product.category);
@@ -164,7 +164,6 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
   const { previous, next } = adjacentProducts(product, listed);
   const inquiryHref = `/contact?product=${product.slug}#inquiry`;
   const waMessage = inquiryMessage(product);
-  const price = prices[product.slug];
   const specs: [string, string][] = [
     [specLabel(product.spec), product.spec],
     ["Category", product.category],
@@ -179,6 +178,7 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
     "@graph": [
       {
         "@type": "Product",
+        "@id": new URL(`/products/${product.slug}#product`, site.url).toString(),
         name: product.name,
         ...(product.model && { model: product.model, sku: product.model }),
         description: productDescription(product),
@@ -186,16 +186,7 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
         category: product.category,
         url: new URL(`/products/${product.slug}`, site.url).toString(),
         ...(!online && { brand: { "@type": "Brand", name: site.name } }),
-        // Offer data (price, currency, stock) for search results, once priced in Shopify.
-        ...(online && price?.purchasable && {
-          offers: {
-            "@type": "Offer",
-            price: price.price.amount,
-            priceCurrency: price.price.currencyCode,
-            availability: "https://schema.org/InStock",
-            url: new URL(`/products/${product.slug}`, site.url).toString(),
-          },
-        }),
+        // Offer data (price, stock) is added per request by <OnlinePrice>.
       },
       {
         "@type": "BreadcrumbList",
@@ -302,18 +293,16 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
                 <SplitWords>{product.name}</SplitWords>
               </h1>
 
-              <p className="mb-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span className="font-display text-[34px] font-bold text-navy">
-                  {online ? priceLabel(price) : "Price on request"}
-                </span>
-                <span className="text-[13px] text-muted">
-                  {!online
-                    ? "Send an inquiry for pricing, configuration and delivery"
-                    : price?.purchasable
-                      ? "excl. shipping & taxes"
-                      : "Price on request: ask us for a quote"}
-                </span>
-              </p>
+              {online ? (
+                <Suspense fallback={<PriceSkeleton />}>
+                  <OnlinePrice product={product} />
+                </Suspense>
+              ) : (
+                <p className="mb-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  <span className="font-display text-[34px] font-bold text-navy">Price on request</span>
+                  <span className="text-[13px] text-muted">Send an inquiry for pricing, configuration and delivery</span>
+                </p>
+              )}
               <div className="mb-9 rounded-[20px] border border-rose/30 bg-blush px-6 py-5">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
                   {specLabel(product.spec)}
@@ -338,13 +327,9 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
                 {online && (
-                  <AddToCartButton
-                    slug={product.slug}
-                    name={product.name}
-                    image={product.image}
-                    purchasable={price?.purchasable ?? false}
-                    className="btn btn-primary w-full disabled:opacity-70"
-                  />
+                  <Suspense fallback={<span className="btn btn-primary w-full opacity-60">Add to Cart</span>}>
+                    <OnlineCartButton product={product} className="btn btn-primary w-full disabled:opacity-70" />
+                  </Suspense>
                 )}
                 <Link href={inquiryHref} className={`btn ${online ? "btn-secondary" : "btn-primary"} group flex-1`}>
                   Send Inquiry
@@ -448,14 +433,9 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
       <div className="sticky bottom-0 z-30 flex gap-3 border-t border-divider bg-white/95 px-4 py-3 shadow-[0_-8px_24px_rgb(0_0_0/0.06)] backdrop-blur lg:hidden">
         {online ? (
           <>
-            <AddToCartButton
-              compact
-              slug={product.slug}
-              name={product.name}
-              image={product.image}
-              purchasable={price?.purchasable ?? false}
-              className="btn btn-primary min-w-0 flex-1 px-4 disabled:opacity-70"
-            />
+            <Suspense fallback={<span className="btn btn-primary min-w-0 flex-1 px-4 opacity-60">Add to Cart</span>}>
+              <OnlineCartButton compact product={product} className="btn btn-primary min-w-0 flex-1 px-4 disabled:opacity-70" />
+            </Suspense>
             <Link href={inquiryHref} aria-label="Send an inquiry about this product" className="btn btn-secondary px-5">
               Inquire
             </Link>
@@ -475,6 +455,77 @@ async function ProductDetails({ params }: Pick<PageProps<"/products/[slug]">, "p
         </ContactChooser>
       </div>
     </>
+  );
+}
+
+/*
+ * Price and Add to Cart for the online range are read for each visitor (connection()), from the
+ * Shopify price map (cached for an hour, refreshed at once by the product webhooks). They never get
+ * baked into the static page, so imports, price changes and drafts in Shopify show up straight away.
+ */
+async function OnlinePrice({ product }: { product: Product }) {
+  await connection();
+  const prices = await getPriceMap();
+  const price = prices[product.slug];
+  const available = isListed(product.slug, prices);
+  const offer = available && price?.purchasable && {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "@id": new URL(`/products/${product.slug}#product`, site.url).toString(),
+    name: product.name,
+    offers: {
+      "@type": "Offer",
+      price: price.price.amount,
+      priceCurrency: price.price.currencyCode,
+      availability: "https://schema.org/InStock",
+      url: new URL(`/products/${product.slug}`, site.url).toString(),
+    },
+  };
+
+  return (
+    <>
+      {offer && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(offer).replace(/</g, "\\u003c") }} />
+      )}
+      <p className="mb-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <span className="font-display text-[34px] font-bold text-navy">
+          {available ? priceLabel(price) : "Currently unavailable"}
+        </span>
+        <span className="text-[13px] text-muted">
+          {!available
+            ? "Send an inquiry and we'll tell you when it's back"
+            : price?.purchasable
+              ? "excl. shipping & taxes"
+              : "Price on request: ask us for a quote"}
+        </span>
+      </p>
+    </>
+  );
+}
+
+async function OnlineCartButton({ product, className, compact = false }: { product: Product; className: string; compact?: boolean }) {
+  await connection();
+  const prices = await getPriceMap();
+  // Not listed in Shopify (draft, archived, removed): nothing to add; the inquiry button remains.
+  if (!isListed(product.slug, prices)) return null;
+  return (
+    <AddToCartButton
+      compact={compact}
+      slug={product.slug}
+      name={product.name}
+      image={product.image}
+      purchasable={prices[product.slug]?.purchasable ?? false}
+      className={className}
+    />
+  );
+}
+
+function PriceSkeleton() {
+  return (
+    <p aria-hidden="true" className="mb-6 flex animate-pulse items-baseline gap-3">
+      <span className="h-10 w-36 rounded-lg bg-line" />
+      <span className="h-4 w-32 rounded bg-surface" />
+    </p>
   );
 }
 

@@ -11,7 +11,8 @@
     "start": "next start",
     "lint": "eslint",
     "shopify:check": "node --env-file-if-exists=.env.local scripts/check-shopify.mts",
-    "shopify:export": "node scripts/export-shopify-products.mts"
+    "shopify:export": "node scripts/export-shopify-products.mts",
+    "product:photos": "node scripts/product-photos.mjs"
   },
   "dependencies": {
     "next": "16.4.6",

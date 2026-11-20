@@ -31,7 +31,7 @@ const services = [
   {
     icon: GlobeIcon,
     title: "Sourcing & Manufacturing",
-    text: "Lasers, HIFU, body sculpting, facial and dental systems built and sourced through our production network.",
+    text: "Lasers, HIFU, body sculpting and facial systems built and sourced through our production network.",
     href: "/global-presence",
     cta: "Our production network",
   },

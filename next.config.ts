@@ -13,6 +13,16 @@ const nextConfig: NextConfig = {
       { source: "/contact-us", destination: "/contact", permanent: true },
       { source: "/home", destination: "/", permanent: true },
       { source: "/index.html", destination: "/", permanent: true },
+      // Products removed from the range.
+      ...[
+        "dental-treatment-chair-system",
+        "high-speed-dental-handpiece",
+        "low-speed-handpiece-kit",
+        "surgical-implant-handpiece",
+        "panchratan-pain-relief-oil",
+      ].map(
+        (slug) => ({ source: `/products/${slug}`, destination: "/products", permanent: true }),
+      ),
     ];
   },
   // Self-hosted behind nginx (Hostinger VPS / Node.js hosting): turn off proxy buffering so

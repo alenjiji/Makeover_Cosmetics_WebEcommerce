@@ -8,7 +8,6 @@ export const interestOptions = [
   { value: "ndyag", label: "Q-Switch ND YAG" },
   { value: "hifu", label: "HIFU Machine" },
   { value: "ems", label: "EMS Body Sculpting" },
-  { value: "dental", label: "Dental Products" },
   { value: "other", label: "Other Products" },
   { value: "partnership", label: "Distribution / OEM Partnership" },
 ] as const;
@@ -35,10 +34,6 @@ const interestByCategory: Record<ProductCategory, Interest> = {
   "LED Machine": "other",
   "Cooling System": "other",
   "Hydra Facial": "other",
-  "Dental Chair": "dental",
-  "High Speed": "dental",
-  "Low Speed": "dental",
-  Surgical: "dental",
   "Facial & Skin Machines": "other",
   "Microneedling Pens & Rollers": "other",
   "Microneedling Cartridges & Needles": "other",

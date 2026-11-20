@@ -9,7 +9,6 @@ import { isListed } from "@/lib/commerce/types";
 import type { Product } from "@/data/products";
 
 // One pick per treatment room, in order of preference; the first six listed in Shopify show.
-// Dental products are kept off the home page.
 const picks = [
   "4-wavelength-diode-laser-hair-removal",
   "picosecond-laser-machine-gl030",

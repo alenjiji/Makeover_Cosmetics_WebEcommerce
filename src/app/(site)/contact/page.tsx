@@ -21,7 +21,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    `Talk to Makeover Overseas about medical aesthetic and dental equipment: call or WhatsApp our UAE (${site.lines[0].display}) or India (${site.lines[1].display}) lines, or email ${site.email}. Replies within 24 hours.`,
+    `Talk to Makeover Overseas about medical aesthetic equipment and supplies: call or WhatsApp our UAE (${site.lines[0].display}) or India (${site.lines[1].display}) lines, or email ${site.email}. Replies within 24 hours.`,
   alternates: { canonical: "/contact" },
   openGraph: { url: "/contact" },
 };

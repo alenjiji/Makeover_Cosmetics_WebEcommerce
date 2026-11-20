@@ -92,7 +92,7 @@ export default function GlobalPresencePage() {
             </h2>
             <p className="rise-late mb-5 text-base leading-[1.8] text-muted md:text-[17px]">
               Makeover Overseas sources and manufactures medical cosmetic equipment and moves it across
-              borders. Lasers, HIFU, body sculpting, facial and dental systems are built and tested
+              borders. Lasers, HIFU, body sculpting and facial systems are built and tested
               through our production network, then exported to clinics and distributors.
             </p>
             <p className="rise-late mb-9 text-base leading-[1.8] text-muted md:text-[17px]">

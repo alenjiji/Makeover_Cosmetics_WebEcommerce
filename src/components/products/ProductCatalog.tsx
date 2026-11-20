@@ -12,10 +12,13 @@ import {
   matchesFilter,
   matchesQuery,
   resolveFilter,
+  sellsOnline,
+  type CatalogFilter,
   type Family,
 } from "@/lib/catalog-filters";
 import { CloseIcon, SearchIcon } from "@/components/ui/icons";
 import { isListed, type PriceMap } from "@/lib/commerce/types";
+import { MachinePicker } from "./MachinePicker";
 import { ProductCard } from "./ProductCard";
 
 /** Cards rendered per step; more are added as the visitor nears the end of the list. */
@@ -45,10 +48,10 @@ export function ProductCatalog({ items, prices = {} }: CatalogProps) {
       prices={prices}
       categoryParam={params.get("category")}
       query={query}
-      onCategory={(value) => {
+      onCategory={(value, anchor) => {
         updateUrl("category", value, "push");
-        // Bring the start of the results into view once a category is picked.
-        const top = document.getElementById("catalog");
+        // Bring the start of the section into view once a range is picked.
+        const top = document.getElementById(anchor);
         if (top && top.getBoundingClientRect().top < 0) top.scrollIntoView();
       }}
       onQuery={(value) => {
@@ -62,23 +65,32 @@ export function ProductCatalog({ items, prices = {} }: CatalogProps) {
 type ViewProps = CatalogProps & {
   categoryParam: string | null;
   query: string;
-  onCategory?: (value: string | null) => void;
+  onCategory?: (value: string | null, anchor: "machines" | "catalog") => void;
   onQuery?: (value: string) => void;
 };
 
 /** Stateless catalog UI. Rendered without handlers it is the prerendered (SEO) fallback. */
 export function CatalogView({ items, prices = {}, categoryParam, query, onCategory, onQuery }: ViewProps) {
-  const filter = resolveFilter(categoryParam);
-  const activeFamily = filter.kind === "all" ? undefined : filter.family;
   // Products set to Draft or Archived in Shopify drop out of the catalog, and so do empty ranges.
   const listed = items.filter((p) => isListed(p.slug, prices));
+  // Two sections: professional machines (pick and inquire) and the online shop (list + cart).
+  const machines = listed.filter((p) => !sellsOnline(p));
+  const shop = listed.filter((p) => sellsOnline(p));
+
+  // `?category=` targets whichever section owns that range; the other section shows everything.
+  const requested = resolveFilter(categoryParam);
+  const all: CatalogFilter = { kind: "all" };
+  const machineFilter = requested.kind !== "all" && requested.family.ordering === "inquiry" ? requested : all;
+  const filter = requested.kind !== "all" && requested.family.ordering === "online" ? requested : all;
+  const activeFamily = filter.kind === "all" ? undefined : filter.family;
   const ranges = families
-    .map((family) => ({ family, items: listed.filter((p) => family.categories.includes(p.category)) }))
+    .filter((family) => family.ordering === "online")
+    .map((family) => ({ family, items: shop.filter((p) => family.categories.includes(p.category)) }))
     .filter((r) => r.items.length > 0);
-  const results = listed.filter((p) => matchesFilter(p, filter) && matchesQuery(p, query));
+  const results = shop.filter((p) => matchesFilter(p, filter) && matchesQuery(p, query));
 
   // Show the list a page at a time; a new filter or search starts again from the first page.
-  const view = `${categoryParam ?? ""}|${query.trim()}`;
+  const view = `${activeFamily ? categoryParam : ""}|${query.trim()}`;
   const [page, setPage] = useState({ view, limit: PAGE });
   const limit = page.view === view ? page.limit : PAGE;
   if (page.view !== view) setPage({ view, limit: PAGE });
@@ -101,7 +113,7 @@ export function CatalogView({ items, prices = {}, categoryParam, query, onCatego
     return () => observer.disconnect();
   }, [remaining, view]);
 
-  const select = (value: string | null) => onCategory?.(value);
+  const select = (value: string | null) => onCategory?.(value, "catalog");
   const clearAll = () => {
     onQuery?.("");
     select(null);
@@ -110,13 +122,41 @@ export function CatalogView({ items, prices = {}, categoryParam, query, onCatego
 
   return (
     <>
-      {/* Shop by category */}
-      <section aria-labelledby="shop-categories" className="mx-auto max-w-[1640px] pt-10 md:pt-14">
-        <div className="mb-4 flex items-end justify-between gap-4">
-          <h2 id="shop-categories" className="font-display text-[22px] font-bold tracking-[-0.01em] text-ink md:text-[28px]">
-            Shop by Category
-          </h2>
-          <p className="text-[13px] text-muted">{ranges.length} categories</p>
+      {/* Professional machines: pick several, send one inquiry */}
+      {machines.length > 0 && (
+        <section id="machines" aria-labelledby="machines-title" className="mx-auto max-w-[1640px] scroll-mt-[var(--nav-h)] pt-10 md:pt-14">
+          <div className="mb-6 flex flex-col gap-2 md:mb-8 md:flex-row md:items-end md:justify-between md:gap-8">
+            <div>
+              <p className="eyebrow mb-3">On Inquiry</p>
+              <h2 id="machines-title" className="font-display text-[28px] font-bold leading-tight tracking-[-0.01em] text-ink md:text-[38px]">
+                Professional <span className="italic text-accent">Machines</span>
+              </h2>
+            </div>
+            <p className="max-w-xl text-[15px] leading-relaxed text-muted">
+              Tick the machines you&apos;re interested in and send one inquiry. Our team replies within 24 hours with
+              pricing, configuration and delivery.
+            </p>
+          </div>
+          <MachinePicker
+            machines={machines}
+            filter={machineFilter}
+            onFilter={onCategory ? (value) => onCategory(value, "machines") : undefined}
+          />
+        </section>
+      )}
+
+      {/* Online shop: category tiles, then the product list */}
+      <section aria-labelledby="shop-categories" className="mx-auto max-w-[1640px] pt-14 md:pt-20">
+        <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-end md:justify-between md:gap-8">
+          <div>
+            <p className="eyebrow mb-3">Order Online</p>
+            <h2 id="shop-categories" className="font-display text-[28px] font-bold leading-tight tracking-[-0.01em] text-ink md:text-[38px]">
+              Shop by <span className="italic text-accent">Category</span>
+            </h2>
+          </div>
+          <p className="max-w-xl text-[15px] leading-relaxed text-muted">
+            Devices, derma pens, cartridges, consumables and salon supplies: add to cart and check out online.
+          </p>
         </div>
         <div
           role="group"
@@ -125,8 +165,8 @@ export function CatalogView({ items, prices = {}, categoryParam, query, onCatego
         >
           <CategoryTile
             label="All Products"
-            note={`${listed.length} products`}
-            image={listed[0]?.image}
+            note={`${shop.length} products`}
+            image={shop[0]?.image}
             href="/products"
             pressed={filter.kind === "all"}
             onSelect={onCategory ? () => select(null) : undefined}
@@ -135,7 +175,7 @@ export function CatalogView({ items, prices = {}, categoryParam, query, onCatego
             <CategoryTile
               key={family.slug}
               label={family.label}
-              note={`${inRange.length} · ${family.ordering === "online" ? "Shop online" : "On inquiry"}`}
+              note={`${inRange.length} ${inRange.length === 1 ? "product" : "products"}`}
               image={inRange[0].image}
               href={`/products?category=${family.slug}`}
               pressed={activeFamily?.slug === family.slug}
@@ -158,7 +198,7 @@ export function CatalogView({ items, prices = {}, categoryParam, query, onCatego
               {query.trim() && <> matching “{query.trim()}”</>}
             </p>
             {activeFamily && activeFamily.categories.length > 1 && (
-              <SubCategories family={activeFamily} filter={filter} listed={listed} onSelect={onCategory ? select : undefined} />
+              <SubCategories family={activeFamily} filter={filter} listed={shop} onSelect={onCategory ? select : undefined} />
             )}
           </div>
           <div className="flex items-center gap-3">
@@ -180,7 +220,7 @@ export function CatalogView({ items, prices = {}, categoryParam, query, onCatego
                 value={query}
                 readOnly={!onQuery}
                 onChange={(e) => onQuery?.(e.target.value)}
-                placeholder="Search products, models, specs"
+                placeholder="Search the online shop"
                 className="h-11 w-full rounded-full border border-divider bg-white pl-11 pr-4 text-sm text-ink placeholder:text-muted/80 focus:border-navy focus:outline-none focus:ring-4 focus:ring-navy/10"
               />
             </label>
